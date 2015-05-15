@@ -1,0 +1,8 @@
+[
+   { 
+   	  "comment":							"Factory configuration for Firefly",
+      "service.factoryPid":					"be.iminds.iot.firefly",
+      "service.pid":						"initial",
+      "name":								"FIREFLY"
+   }
+]
