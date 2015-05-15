@@ -1,52 +1,61 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" href=/be.iminds.iot.firefly/favicon.ico">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="An intuitive and user friendly user interface for managing Interet devices.">
+	<meta name="keywords" content="Aiolos, Dyamand, IoT, Internet of Things">
+	<meta name="author" content="Tim Verbelen and Elias De Coninck">
+    <title>Your Internet of Things</title>
 
-<title></title>
+	<link rel="stylesheet" type="text/css" href="/osgi.enroute.webresource/${bsn}/${Bundle-Version}/*.css">
+	<!--  for now fix code the icons css here, not yet working with the enRoute webresources -->
+	<link rel="stylesheet" type="text/css" href="/be.iminds.iot.firefly/icons/icons.css">
 
-<link rel="stylesheet" type="text/css"
-	href="/osgi.enroute.webresource/${bsn}/${Bundle-Version}/*.css">
 
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+      <script src="js/respond.min.js"></script>
     <![endif]-->
-    
-</head>
+  </head>
+  
+  <body ng-app="be.iminds.iot.firefly">
 
-<body ng-app="be.iminds.iot.firefly">
+    <div class="site-wrapper">
 
-	<div class="container">
-		
-		<div class="header">
-			<ul class="nav nav-pills pull-right">
-				<li ng-class="{active: page() == '/'}"><a href="#/">Home</a></li>
-				<li ng-class="{active: page() == '/about'}"><a href="#/about">About</a></li>
-			</ul>
-			<h3 class="text-muted">Firefly</h3>
-			<div ng-repeat="alert in alerts" class="alert alert-{{alert.type || 'alert'}} alert-dismissible">
-				{{alert.msg}}
-				<button type="button" ng-click='closeAlert($index)' class="close pull-right"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-			</div>
-		</div>
-  		
-  		<div ng-view>
-  		</div>  	
+      <div class="site-wrapper-inner">
 
-		<div class="footer">
-			<p>&copy; ${def;Bundle-Vendor;Company} ${tstamp;YYYY}</p>
-		</div>
+          <header class="navbar-fixed-top custom-navbar">
+            <div class="inner">
+              <h3 class="masthead-brand">Your Internet of Things</h3>
+            </div>
+          </header>
 
-	</div>
-
+		  <!--  Things container -->
+          <div class="container" ng-controller="ThingsCtrl">
+	          <div id="things" class="row">
+	          		<div ng-repeat="thing in things" id="{{thing.id}}" class="thing col-xs-12 col-sm-6 col-md-4 col-lg-2 mix {{thing.type}} {{thing.room}}">
+						<div class="row vertical-align">
+							<div class="col-xs-6 icon {{thing.iconclass}}"></div>
+							<div class="col-xs-6 state">{{thing.state}}</div>
+						</div>
+						<div class="name">{{thing.name}}</div>
+					</div>
+	          </div>
+          </div>
+          
+		  <footer class="navbar-fixed-bottom custom-footer">
+		  	<img class="footer-image" src="images/iminds_white.png" />
+            <div class="inner">
+              <p>&copy; ${def;Bundle-Vendor;Company}, ${tstamp;YYYY}</p>
+            </div>
+          </footer>
+       </div>
+    </div>
+  
 	<script src="/osgi.enroute.webresource/${bsn}/${Bundle-Version}/*.js"></script>
 
 </body>

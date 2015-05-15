@@ -1,84 +1,315 @@
 /*
-	be.iminds.iot.firefly Style Sheet
+ * Globals
+ */
 
-*/
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #555;
+}
 
-/* Space out content a bit */
+/*
+ * Base structure
+ */
+
+html,
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  height: 100%;
+  background-color: #333;
 }
-
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-/* Custom page header */
-.header {
-  border-bottom: 1px solid #e5e5e5;
-}
-/* Make the masthead heading the same height as the navigation */
-.header h3 {
-  padding-bottom: 19px;
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 40px;
-}
-
-/* Custom page footer */
-.footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
-}
-
-/* Customize container */
-@media (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
-}
-.container-narrow > hr {
-  margin: 30px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
+body {
+  color: #fff;
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-}
-.jumbotron .btn {
-  padding: 14px 24px;
-  font-size: 21px;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
 
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-}
-.marketing p + h4 {
-  margin-top: 28px;
+.vertical-align {
+    display: flex;
+    align-items: center;
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-  /* Remove the padding we set earlier */
-  .header,
-  .marketing,
-  .footer {
-    padding-right: 0;
-    padding-left: 0;
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+  box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+  padding: 196px 0 90px 0;
+}
+.site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top;
+}
+
+/* Padding for spacing */
+.inner {
+  padding: 30px;
+}
+
+/*
+ * Header
+ */
+ .custom-navbar {
+ 	background-color: #333;
+    box-shadow: 0 0 100px rgba(0,0,0,.5);
+ }
+ 
+.masthead-brand {
+  margin: auto 0;
+}
+
+/*
+ * Icon menu
+ */
+ .menu-nav {
+ 	margin-top: 25px;
+ 	padding: 0;
+ }
+.menu-nav > li {
+  display: inline-block;
+  margin: 0 10px;
+}
+.menu-nav > li > a {
+  color: #fff; /* IE8 proofing */
+}
+.menu-nav > li > a:hover,
+.menu-nav > li > a:focus {
+  background-color: transparent;
+}
+
+.masthead-nav > li {
+  display: inline-block;
+}
+.masthead-nav > li + li {
+  margin-left: 20px;
+}
+.masthead-nav > li > a {
+  padding-right: 0;
+  padding-left: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff; /* IE8 proofing */
+  color: rgba(255,255,255,.75);
+  border-bottom: 2px solid transparent;
+}
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus {
+  background-color: transparent;
+  border-bottom-color: #a9a9a9;
+  border-bottom-color: rgba(255,255,255,.25);
+}
+.masthead-nav > li > a.active,
+.masthead-nav > li > a.active:hover,
+.masthead-nav > li > a.active:focus {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+@media (min-width: 768px) {
+  .masthead-brand {
+    float: left;
   }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
+  .menu-nav {
+  	margin-top: 0; 
+  	padding-left: 20px;
+	float: left;
   }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
+  .masthead-nav {
+    float: right;
   }
+}
+
+@media (min-width: 992px) {
+	.custom-navbar {
+	  	padding: 0 5%;
+	  }
+}
+
+/*
+ * Thing layout
+ */
+.thing {
+ 	padding: 20px;
+ 	overflow: hidden;
+ 	word-break: break-all;
+ 	max-height: 250px;
+} 
+
+.icon {
+	font-size: 800%;
+}
+
+.icon-small {
+	font-size: 200%;
+}
+
+.name {
+	font-size: 200%;
+	font-style: bold;
+	align: center;
+} 
+.state {
+	font-size: 130%;
+	text-transform: uppercase;
+}
+.on {
+	color: #FFFF66;
+}
+.pressed {
+	color: #5C85FF;	
+}
+.open {
+	color: #FF5F5F;
+}
+.record {
+	color: #FF5F5F;
+}
+
+/*
+ * Footer
+ */
+
+footer {
+  color: #999; /* IE8 proofing */
+  color: rgba(255,255,255,.5);
+  box-shadow: 0 0 100px rgba(0,0,0,.5);
+}
+
+.custom-footer {
+	background-color: #333;
+}
+
+.footer-image {
+	float: right;
+	margin: 0px 10px 0px 10px;
+	height: 75px;
+}
+
+/*
+ * Modal
+ */ 
+.modal{
+	color: #333;
+	text-shadow: none;
+} 
+
+/*
+ * Carousel
+ */ 
+.carousel-control{
+	color: #333;
+	text-shadow: none;
+}
+
+.carousel-control:hover{
+	color: #444;
+}
+
+.carousel-control.left{
+	background-image: none;
+}
+
+.carousel-control.right{
+	background-image: none;
+}
+
+/*
+ * Rules modal
+ */
+.tab-content {
+	margin: 20px 0;	
+}
+ 
+/*
+ * filter modal
+ */
+#filter-form {
+	width: 50%;
+	margin: auto;
+}
+.checkbox{
+  display: block;
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.checkbox input[type="checkbox"]{
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  margin: 0;
+  opacity: 0;
+  z-index: 1;
+}
+
+.checkbox label{
+  display: inline-block;
+  vertical-align: top;
+  text-align: left;
+  padding-left: 1.5em;
+}
+
+.checkbox label:before,
+.checkbox label:after{
+  content: '';
+  display: block;
+  position: absolute;
+}
+
+.checkbox label:before{
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  background: #ddd;
+  border-radius: 3px;
+}
+
+.checkbox label:after{
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: #68b8c4;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.checkbox input:checked ~ label:after{
+  opacity: 1;
+}
+
+.checkbox input:focus ~ label:before{
+  background: #eee;
+}
+
+/*
+ * Affix and center
+ */
+
+@media (min-width: 768px) {
+	.site-wrapper {
+	  padding: 74px 0 90px 0;
+	}
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    vertical-align: middle;
+  }
+}
+
+@media (min-width: 1600px) {
+	.container {
+		width: 1600px;
+	}
 }

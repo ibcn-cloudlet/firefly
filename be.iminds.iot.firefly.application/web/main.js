@@ -1,43 +1,32 @@
 'use strict';
 
-(function() {
+var fireflyApp = angular.module('be.iminds.iot.firefly', []);
 
-	var MODULE = angular.module('be.iminds.iot.firefly',
-			[ 'ngRoute', 'ngResource' ]);
-
-	MODULE.config( function($routeProvider) {
-		$routeProvider.when('/', { controller: mainProvider, templateUrl: '/be.iminds.iot.firefly/main/htm/home.htm'});
-		$routeProvider.when('/about', { templateUrl: '/be.iminds.iot.firefly/main/htm/about.htm'});
-		$routeProvider.otherwise('/');
-	});
-	
-	MODULE.run( function($rootScope, $location) {
-		$rootScope.alerts = [];
-		$rootScope.closeAlert = function(index) {
-			$rootScope.alerts.splice(index, 1);
-		};
-		$rootScope.page = function() {
-			return $location.path();
-		}
-	});
-	
-	
-	
-	var mainProvider = function($scope, $http) {
-		
-		$scope.upper = function() {
-			var name = prompt("Under what name?");
-			if ( name ) {
-				$http.get('/rest/upper/'+name).then(
-						function(d) {
-							$scope.alerts.push( { type: 'success', msg: d.data });
-						}, function(d) {
-							$scope.alerts.push( { type: 'danger', msg: 'Failed with ['+ d.status + '] '+ d.statusText });
-						}
-				);
-			}
-		};
-	
-	}
-	
-})();
+fireflyApp.controller('ThingsCtrl', function ($scope) {
+	  $scope.things = [
+	                   {
+	                	    'id': '0',
+	                	 	'name': 'Button',
+	                	 	'type': 'button',
+	                     	'room': 'Kitchen',
+	                     	'state': 'PRESSED',
+	                    	'iconclass':'icon-button'
+	                   },
+	                   {
+	                	    'id': '1',
+	                	    'name': 'Lamp',
+	                	    'type': 'lamp',
+		                 	'room': 'Kitchen',
+		                 	'state': 'ON',
+		                 	'iconclass':'icon-lamp'
+		                },	                  
+		                {
+		                	'id': '2',
+		                	'name': 'Temperature',
+		                	'type': 'temperature',
+		                	'room': 'Kitchen',
+		                    'state': '20 C',
+		                    'iconclass':'icon-temperature'
+		                }                
+		              ];
+});
