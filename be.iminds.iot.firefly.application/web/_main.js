@@ -3,10 +3,10 @@
 
 	'use strict';
 	
-	var fireflyApp = angular.module('be.iminds.iot.firefly', []);
+	angular.module('be.iminds.iot.firefly', ['ui.bootstrap']);
 	
 	// introduce onLongclick and onClick directives
-	fireflyApp.directive('onLongclick', function($timeout) {
+	angular.module('be.iminds.iot.firefly').directive('onLongclick', function($timeout) {
 		return {
 			restrict: 'A',
 			link: function($scope, $elm, $attrs) {
@@ -42,7 +42,7 @@
 		};
 	});
 	
-	fireflyApp.controller('ThingsCtrl', function ($scope) {
+	angular.module('be.iminds.iot.firefly').controller('ThingsCtrl', function ($scope, $modal) {
 		  $scope.things = {};
 		  $scope.things['0'] = 
 		                   {
@@ -74,14 +74,26 @@
 		  $scope.action = function(id){
 			  console.log("ACTION "+id);
 			  var thing = $scope.things[id];
-			  window[thing.type+"_action"](thing);
+			  // TODO send action request to server
+	 		  // window[thing.type+"_action"](thing);
 		  };
+		  
 		  
 		  $scope.dialog = function(id){
 			  console.log("DIALOG "+id);
 			  var thing = $scope.things[id];
-			  window[thing.type+"_dialog"](thing);
+		
+			  var modalInstance = $modal.open({
+			      templateUrl: thing.type+'Content.html',
+			      controller: thing.type+'Ctrl',
+			      size: 'lg',
+			      resolve: {
+			        thing: function () {
+			          return thing;
+			        }
+			      }
+			    });
 		  };
 	});
-	
+
 })();

@@ -39,7 +39,7 @@
 	          <div id="things" class="row">
 	          		<div ng-repeat="(id, thing) in things"	       	
 	          			 on-longclick="dialog(id)" on-click="action(id)"
-	          			 id="{{id}}" class="thing col-xs-12 col-sm-6 col-md-4 col-lg-2 mix {{thing.type}} {{thing.room}}">
+	          			 id="{{thing.id}}" class="thing col-xs-12 col-sm-6 col-md-4 col-lg-2 mix {{thing.type}} {{thing.room}}">
 						<div class="row vertical-align">
 							<div class="col-xs-6 icon {{thing.iconclass}}"></div>
 							<div class="col-xs-6 state">{{thing.state}}</div>
@@ -58,6 +58,7 @@
        </div>
     </div>
   
+
 	<script src="/osgi.enroute.webresource/${bsn}/${Bundle-Version}/*.js"></script>
 
 </body>
