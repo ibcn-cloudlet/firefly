@@ -1,0 +1,21 @@
+#
+# 
+#
+
+Bundle-Version:1.0.0.${tstamp}
+Bundle-Description: 				\
+	This is  project. An API project should in general not contain any \
+	implementation code.\
+	\
+	${warning;Please update this Bundle-Description in be.iminds.iot.things.api/bnd.bnd}
+
+	
+Export-Package:  \
+	be.iminds.iot.things.api;provide:=true
+
+
+Require-Capability: \
+	compile-only
+
+-buildpath: \
+	osgi.enroute.base.api;version=1.0
