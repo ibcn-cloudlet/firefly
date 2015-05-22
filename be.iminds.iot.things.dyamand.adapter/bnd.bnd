@@ -12,10 +12,19 @@ Bundle-Description: 				\
 
 Private-Package:  \
 	be.iminds.iot.things.dyamand.adapter
+
+# DYAMAND plugin stuff
+
+Plugin-Main-Class: be.iminds.iot.things.dyamand.adapter.DyamandAdapterPlugin
+Plugin-Group-Id: be.iminds.iot.things.dyamand
+Plugin-Artifact-Id: adapter
+Implementation-Version: ${Bundle-Version}
+Implementation-BuildNumber: 0
 	
--buildpath:  \
+-buildpath: \
 	osgi.enroute.base.api;version=1.0,\
-	biz.aQute.junit
+	biz.aQute.junit,\
+	org.dyamand.api
 
 -includeresource: {readme.md}
 

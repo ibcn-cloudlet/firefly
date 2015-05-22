@@ -15,10 +15,12 @@ JPMCommand:					firefly
 	osgi.identity;filter:='(osgi.identity=org.dyamand.osgi)',\
 	osgi.identity;filter:='(osgi.identity=org.dyamand.plugins.support.development.debug)',\
 	osgi.identity;filter:='(osgi.identity=org.dyamand.plugins.support.sdp.enocean)',\
-	osgi.identity;filter:='(osgi.identity=org.dyamand.plugins.support.sdp.usb)'
+	osgi.identity;filter:='(osgi.identity=org.dyamand.plugins.support.sdp.usb)',\
+	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.dyamand.adapter)'
 
 -runbundles: \
 	be.iminds.iot.firefly.application;version='[1.0.0,1.0.1)',\
+	be.iminds.iot.things.dyamand.adapter;version='[1.0.0,1.0.1)',\
 	biz.aQute.bnd.annotation;version='[2.4.0,2.4.1)',\
 	biz.aQute.bndlib;version='[2.4.0,2.4.1)',\
 	com.sun.jna;version='[4.0.0,4.0.1)',\
