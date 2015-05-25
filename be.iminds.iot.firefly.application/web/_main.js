@@ -3,7 +3,7 @@
 
 	'use strict';
 	
-	angular.module('be.iminds.iot.firefly', ['ui.bootstrap']);
+	angular.module('be.iminds.iot.firefly', ['ui.bootstrap','enEasse']);
 	
 	// introduce onLongclick and onClick directives
 	angular.module('be.iminds.iot.firefly').directive('onLongclick', function($timeout) {
@@ -42,7 +42,7 @@
 		};
 	});
 	
-	angular.module('be.iminds.iot.firefly').controller('ThingsCtrl', function ($scope, $modal) {
+	angular.module('be.iminds.iot.firefly').controller('ThingsCtrl', function ($scope, $modal, en$easse) {
 		  $scope.things = {};
 		  $scope.things['0'] = 
 		                   {
@@ -70,6 +70,38 @@
 			                    'state': '20 C',
 			                    'iconclass':'icon-temperature'
 			                };
+		  
+		  
+		  // listeners for events
+		  $scope.online = function(event) {
+				console.log("ONLINE! "+event);
+				
+				
+				//$scope.$apply();
+		  };	
+			
+		  $scope.offline = function(event) {
+			  console.log("OFFLINE! "+event);
+				
+				
+				//$scope.$apply();
+		  };
+		  
+		  $scope.change = function(event) {
+			  console.log("CHANGE! "+event);
+				
+				
+				//$scope.$apply();
+		  };
+			
+		  $scope.error = function(e){
+				console.log("Error... "+e);
+		  };
+			
+		  en$easse.handle("be/iminds/iot/thing/online/*", $scope.online, $scope.error);
+		  en$easse.handle("be/iminds/iot/thing/offline/*", $scope.offline, $scope.error);
+		  en$easse.handle("be/iminds/iot/thing/change/*", $scope.change, $scope.error);
+
 		  
 		  $scope.action = function(id){
 			  console.log("ACTION "+id);

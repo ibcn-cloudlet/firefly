@@ -13,7 +13,6 @@ import org.dyamand.event.EventListener;
 import org.dyamand.event.ServicePOJOOfflineEvent;
 import org.dyamand.event.ServicePOJOOnlineEvent;
 import org.dyamand.event.StateChangedEvent;
-import org.dyamand.service.Service;
 import org.dyamand.service.ServicePOJO;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -93,7 +92,7 @@ public class DyamandAdapter implements EventListener {
 			    final Object service = adapter.getServiceObject(servicePOJO);
 
 				final UUID deviceId = servicePOJO.getService().getOriginalDevice().getId();
-				final String serviceName = servicePOJO.getService().getName().toString();
+				final String serviceName = servicePOJO.getService().getName().toString().replaceAll("\\.", "_");
 
 				final Dictionary<String, Object> properties = new Hashtable<String, Object>();
 				properties.put(Thing.ID, deviceId.toString());
@@ -108,7 +107,7 @@ public class DyamandAdapter implements EventListener {
 					    properties);
 			    this.services.put(servicePOJO, registration);
 			    
-			    final String topic = "be/iminds/iot/thing/"+deviceId+"/"+serviceName+"/online";
+			    final String topic = "be/iminds/iot/thing/online/"+deviceId+"/"+serviceName;
 				this.notifyStateChangeListeners(deviceId.toString(),
 						serviceName, null, null, topic);
 			} catch (final Exception e) {
@@ -123,8 +122,8 @@ public class DyamandAdapter implements EventListener {
 			registration.unregister();
 			
 			final UUID deviceId = servicePOJO.getService().getOriginalDevice().getId();
-			final String serviceName = servicePOJO.getService().getName().toString();
-		    final String topic = "be/iminds/iot/thing/"+deviceId+"/"+serviceName+"/online";
+			final String serviceName = servicePOJO.getService().getName().toString().replaceAll("\\.", "_");;
+		    final String topic = "be/iminds/iot/thing/offline/"+deviceId+"/"+serviceName;
 			this.notifyStateChangeListeners(deviceId.toString(),
 					serviceName, null, null, topic);
 		}
@@ -135,7 +134,7 @@ public class DyamandAdapter implements EventListener {
 		final UUID deviceId = stateChange.getService().getOriginalDevice()
 				.getId();
 		final String serviceName = stateChange.getService().getName()
-				.toString();
+				.toString().replaceAll("\\.", "_");;
 		final String stateVariable = stateChange.getStateVariable().toString();
 		final Object value = stateChange.getValue();
 
@@ -144,7 +143,7 @@ public class DyamandAdapter implements EventListener {
 				final StateVariable translated = adapter
 						.translateStateVariable(stateVariable, value);
 				// TODO which TOPIC namespaces to use?
-				final String topic = "be/iminds/iot/thing/"+deviceId+"/"+serviceName+"/change";
+				final String topic = "be/iminds/iot/thing/change/"+deviceId+"/"+serviceName;
 				this.notifyStateChangeListeners(deviceId.toString(),
 						serviceName, translated.getName(),
 						translated.getValue(), topic);
@@ -164,16 +163,6 @@ public class DyamandAdapter implements EventListener {
 		p.put("timestamp", System.currentTimeMillis());
 		final EventProperties e = new EventProperties(p);
 		ea.postEvent(new org.osgi.service.event.Event(topic, e));
-	}
-
-	private Dictionary<String, Object> getProperties(final Service service) {
-		final String serviceName = service.getName().toString();
-		final UUID id = service.getOriginalDevice().getId();
-
-		final Dictionary<String, Object> properties = new Hashtable<String, Object>();
-		properties.put(Thing.ID, id.toString());
-		properties.put(Thing.SERVICE, serviceName);
-		return properties;
 	}
 
 	@Reference
