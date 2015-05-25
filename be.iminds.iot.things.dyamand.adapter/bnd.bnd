@@ -4,14 +4,11 @@
 
 
 Bundle-Version:					1.0.0.${tstamp}
-Bundle-Description: 				\
-	A bundle with a provider. Notice that this provider exports the API package. \
-	It also provides a JUnit test and it can be run standalone. \
-	\
-	${warning;Please update this Bundle-Description in be.iminds.iot.things.dyamand.adapter/bnd.bnd}
+Bundle-Description: This bundle converts DYAMAND services IoT Things API
 
-Private-Package:  \
-	be.iminds.iot.things.dyamand.adapter
+Private-Package: \
+	be.iminds.iot.things.dyamand.adapter,\
+	be.iminds.iot.things.dyamand.adapters
 
 # DYAMAND plugin stuff
 
@@ -24,7 +21,10 @@ Implementation-BuildNumber: 0
 -buildpath: \
 	osgi.enroute.base.api;version=1.0,\
 	biz.aQute.junit,\
-	org.dyamand.api
+	org.dyamand.api,\
+	be.iminds.iot.things.api;version=latest,\
+	org.dyamand.plugins.types.sensors,\
+	org.dyamand.plugins.support.sdp.v4l2
 
 -includeresource: {readme.md}
 
@@ -34,3 +34,16 @@ Implementation-BuildNumber: 0
 	
 -runbundles: \
 	${error;Resolve first}
+Bundle-Name: IoT Things - DYAMAND adapters
+Export-Package: \
+	be.iminds.iot.things.api,\
+	be.iminds.iot.things.api.button,\
+	be.iminds.iot.things.api.light,\
+	be.iminds.iot.things.api.sensor.contact,\
+	be.iminds.iot.things.api.sensor.light,\
+	be.iminds.iot.things.api.sensor.motion,\
+	be.iminds.iot.things.api.sensor.temperature
+Import-Package: \
+	org.dyamand.sensors.*;resolution:=optional,\
+	org.dyamand.v4l2;resolution:=optional,\
+	*
