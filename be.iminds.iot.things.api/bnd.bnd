@@ -3,15 +3,18 @@
 #
 
 Bundle-Version:1.0.0.${tstamp}
-Bundle-Description: 				\
-	This is  project. An API project should in general not contain any \
-	implementation code.\
-	\
-	${warning;Please update this Bundle-Description in be.iminds.iot.things.api/bnd.bnd}
+Bundle-Description: API project for selected supported IoT Things.
 
 	
-Export-Package:  \
-	be.iminds.iot.things.api;provide:=true
+Export-Package: \
+	be.iminds.iot.things.api;provide:=true,\
+	be.iminds.iot.things.api.button,\
+	be.iminds.iot.things.api.camera,\
+	be.iminds.iot.things.api.light,\
+	be.iminds.iot.things.api.sensor.contact,\
+	be.iminds.iot.things.api.sensor.light,\
+	be.iminds.iot.things.api.sensor.motion,\
+	be.iminds.iot.things.api.sensor.temperature
 
 
 Require-Capability: \
@@ -19,3 +22,4 @@ Require-Capability: \
 
 -buildpath: \
 	osgi.enroute.base.api;version=1.0
+Bundle-Name: IoT Things API
