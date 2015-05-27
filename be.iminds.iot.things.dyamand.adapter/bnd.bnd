@@ -23,8 +23,7 @@ Implementation-BuildNumber: 0
 	biz.aQute.junit,\
 	org.dyamand.api,\
 	be.iminds.iot.things.api;version=latest,\
-	org.dyamand.plugins.types.sensors,\
-	org.dyamand.plugins.support.sdp.v4l2
+	org.dyamand.plugins.types.sensors
 
 -includeresource: {readme.md}
 

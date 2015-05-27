@@ -58,7 +58,6 @@ public class DyamandAdapter implements EventListener {
 		adapters.add(new LightSensorAdapter());
 		adapters.add(new MotionSensorAdapter());
 		adapters.add(new TemperatureSensorAdapter());
-		
 	}
 	
 	@Deactivate
@@ -89,27 +88,28 @@ public class DyamandAdapter implements EventListener {
 		for(ServiceAdapter adapter : adapters){
 			try {
 			    // ADAPT!
-			    final Object service = adapter.getServiceObject(servicePOJO);
+			    final Object so = adapter.getServiceObject(servicePOJO);
 
-				final UUID deviceId = servicePOJO.getService().getOriginalDevice().getId();
-				final String serviceName = servicePOJO.getService().getName().toString().replaceAll("\\.", "_");
-
+				final String device = servicePOJO.getService().getOriginalDevice().getName().toString();
+				final String service = servicePOJO.getService().getName().toString();
+				final UUID thingId = UUID.nameUUIDFromBytes((device+service).getBytes());
+				
 				final Dictionary<String, Object> properties = new Hashtable<String, Object>();
-				properties.put(Thing.ID, deviceId.toString());
-				properties.put(Thing.SERVICE, serviceName);
+				properties.put(Thing.ID, thingId);
+				properties.put(Thing.DEVICE, device);
+				properties.put(Thing.SERVICE, service);
 			    // Add some AIOLOS stuff
 			    properties.put("aiolos.instance.id", servicePOJO
 				    .getService().getId().toString());
 			    properties.put("aiolos.combine", "*");
 
 			    final ServiceRegistration registration = this.context
-				    .registerService(adapter.getTargets(), service,
+				    .registerService(adapter.getTargets(), so,
 					    properties);
 			    this.services.put(servicePOJO, registration);
 			    
-			    final String topic = "be/iminds/iot/thing/online/"+deviceId+"/"+serviceName;
-				this.notifyStateChangeListeners(deviceId.toString(),
-						serviceName, null, null, topic);
+			    final String topic = "be/iminds/iot/thing/online/"+thingId;
+				this.notifyStateChangeListeners(thingId.toString(), device, service, topic);
 			} catch (final Exception e) {
 			}
 		}
@@ -121,20 +121,22 @@ public class DyamandAdapter implements EventListener {
 		if (registration != null) {
 			registration.unregister();
 			
-			final UUID deviceId = servicePOJO.getService().getOriginalDevice().getId();
-			final String serviceName = servicePOJO.getService().getName().toString().replaceAll("\\.", "_");;
-		    final String topic = "be/iminds/iot/thing/offline/"+deviceId+"/"+serviceName;
-			this.notifyStateChangeListeners(deviceId.toString(),
-					serviceName, null, null, topic);
+			final String device = servicePOJO.getService().getOriginalDevice().getName().toString();
+			final String service = servicePOJO.getService().getName().toString();
+			final UUID thingId = UUID.nameUUIDFromBytes((device+service).getBytes());
+			
+		    final String topic = "be/iminds/iot/thing/offline/"+thingId;
+			this.notifyStateChangeListeners(thingId.toString(), device, service, topic);
 		}
 	}
 
 	private void processStateChange(
 			final org.dyamand.service.StateChange stateChange) {
-		final UUID deviceId = stateChange.getService().getOriginalDevice()
-				.getId();
-		final String serviceName = stateChange.getService().getName()
-				.toString().replaceAll("\\.", "_");;
+		
+		final String device = stateChange.getService().getOriginalDevice().getName().toString();
+		final String service = stateChange.getService().getName().toString();
+		final UUID thingId = UUID.nameUUIDFromBytes((device+service).getBytes());
+		
 		final String stateVariable = stateChange.getStateVariable().toString();
 		final Object value = stateChange.getValue();
 
@@ -143,26 +145,41 @@ public class DyamandAdapter implements EventListener {
 				final StateVariable translated = adapter
 						.translateStateVariable(stateVariable, value);
 				// TODO which TOPIC namespaces to use?
-				final String topic = "be/iminds/iot/thing/change/"+deviceId+"/"+serviceName;
-				this.notifyStateChangeListeners(deviceId.toString(),
-						serviceName, translated.getName(),
+				final String topic = "be/iminds/iot/thing/change/"+thingId;
+				this.notifyStateChangeListeners(thingId.toString(),
+						device, service, translated.getName(),
 						translated.getValue(), topic);
 			} catch (final Exception e) {
 			}
 		}
 	}
-
-	private void notifyStateChangeListeners(final String deviceId,
-			final String serviceName, final String stateVariable,
-			final Object stateValue, final String topic) {
+	
+	private void notifyStateChangeListeners(
+			final String thingId,
+			final String device,
+			final String service, 
+			final String stateVariable,
+			final Object stateValue, 
+			final String topic) {
 		final HashMap<String, Object> p = new HashMap<>();
-		p.put(Thing.ID, deviceId);
-		p.put(Thing.SERVICE, serviceName);
-		p.put(Thing.STATE_VAR, stateVariable);
-		p.put(Thing.STATE_VAL, stateValue);
+		p.put(Thing.ID, thingId);
+		p.put(Thing.DEVICE, device);
+		p.put(Thing.SERVICE, service);
+		if(stateVariable!=null){
+			p.put(Thing.STATE_VAR, stateVariable);
+			p.put(Thing.STATE_VAL, stateValue);
+		}
 		p.put("timestamp", System.currentTimeMillis());
 		final EventProperties e = new EventProperties(p);
 		ea.postEvent(new org.osgi.service.event.Event(topic, e));
+	}
+	
+	private void notifyStateChangeListeners(
+			final String thingId,
+			final String device,
+			final String service,  
+			final String topic){
+		notifyStateChangeListeners(thingId, device, service, null, null, topic);
 	}
 
 	@Reference
