@@ -15,6 +15,7 @@ import org.dyamand.event.ServicePOJOOnlineEvent;
 import org.dyamand.event.StateChangedEvent;
 import org.dyamand.service.ServicePOJO;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -41,6 +42,7 @@ public class DyamandAdapter implements EventListener {
 	static DyamandAdapter instance = null;
 	
 	private BundleContext context;
+	private UUID gatewayId;
 	private EventAdmin ea;
 	
     private final Map<Object, ServiceRegistration> services = new HashMap<>();
@@ -50,6 +52,7 @@ public class DyamandAdapter implements EventListener {
 	public void activate(BundleContext ctx){
 		instance = this;
 		context = ctx;
+		gatewayId = UUID.fromString(context.getProperty(Constants.FRAMEWORK_UUID)); // get frameworkId
 		
 		// for now fix code all adapters... use service mechanism for this?
 		adapters.add(new ButtonAdapter());
@@ -98,6 +101,7 @@ public class DyamandAdapter implements EventListener {
 				properties.put(Thing.ID, thingId);
 				properties.put(Thing.DEVICE, device);
 				properties.put(Thing.SERVICE, service);
+				properties.put(Thing.GATEWAY, gatewayId);
 			    // Add some AIOLOS stuff
 			    properties.put("aiolos.instance.id", servicePOJO
 				    .getService().getId().toString());
