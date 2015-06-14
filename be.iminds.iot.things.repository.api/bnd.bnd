@@ -1,0 +1,18 @@
+#
+# 
+#
+
+Bundle-Version:1.0.0.${tstamp}
+Bundle-Description: API project for a Things repository keeping Thing descriptions
+
+	
+Export-Package:  \
+	be.iminds.iot.things.repository.api;provide:=true
+
+
+Require-Capability: \
+	compile-only
+
+-buildpath: \
+	osgi.enroute.base.api;version=1.0
+Bundle-Name: IoT Things - Repository API
