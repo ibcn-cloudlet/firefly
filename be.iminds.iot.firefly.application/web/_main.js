@@ -3,10 +3,20 @@
 
 	'use strict';
 	
-	angular.module('be.iminds.iot.firefly', ['ui.bootstrap','enEasse']);
+	function error(msg) {
+		alert(msg);
+	}
+	
+	var FIREFLY = angular.module('be.iminds.iot.firefly', ['ui.bootstrap','ngRoute','enJsonrpc','enEasse']);
+	
+	FIREFLY.config(function($routeProvider, en$jsonrpcProvider) {
+		en$jsonrpcProvider.setNotification({
+			error : error
+		});
+	});
 	
 	// introduce onLongclick and onClick directives
-	angular.module('be.iminds.iot.firefly').directive('onLongclick', function($timeout) {
+	FIREFLY.directive('onLongclick', function($timeout) {
 		return {
 			restrict: 'A',
 			link: function($scope, $elm, $attrs) {
@@ -42,65 +52,73 @@
 		};
 	});
 	
-	angular.module('be.iminds.iot.firefly').controller('ThingsCtrl', function ($scope, $modal, en$easse) {
+	
+	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc) {
+		  var repository;
+		  en$jsonrpc.endpoint("be.iminds.iot.things.repository").then(
+				function(r){
+					repository = r;
+					r.listThings().then(function(t){$scope.things = t});
+				}
+		  );
+		  
+		  
 		  $scope.things = {};
-		  $scope.things['0'] = 
-		                   {
-		                	    'id': '0',
-		                	 	'name': 'Button',
-		                	 	'type': 'button',
-		                     	'room': 'Kitchen',
-		                     	'state': 'PRESSED',
-		                    	'iconclass':'icon-button'
-		                   };
-		  $scope.things['1'] =
-		                   {
-		                	    'id': '1',
-		                	    'name': 'Lamp',
-		                	    'type': 'lamp',
-			                 	'room': 'Kitchen',
-			                 	'state': 'ON',
-			                 	'iconclass':'icon-lamp'
-			                };	                  
-		  $scope.things['2'] = {
-			                	'id': '2',
-			                	'name': 'Temperature',
-			                	'type': 'temperature',
-			                	'room': 'Kitchen',
-			                    'state': '20 C',
-			                    'iconclass':'icon-temperature'
-			                };
+//		  $scope.things['0'] = 
+//		                   {
+//		                	    'id': '0',
+//		                	 	'name': 'Button',
+//		                	 	'type': 'button',
+//		                     	'room': 'Kitchen',
+//		                     	'state': 'PRESSED',
+//		                    	'iconclass':'icon-button'
+//		                   };
+//		  $scope.things['1'] =
+//		                   {
+//		                	    'id': '1',
+//		                	    'name': 'Lamp',
+//		                	    'type': 'lamp',
+//			                 	'room': 'Kitchen',
+//			                 	'state': 'ON',
+//			                 	'iconclass':'icon-lamp'
+//			                };	                  
+//		  $scope.things['2'] = {
+//			                	'id': '2',
+//			                	'name': 'Temperature',
+//			                	'type': 'temperature',
+//			                	'room': 'Kitchen',
+//			                    'state': '20 C',
+//			                    'iconclass':'icon-temperature'
+//			                };
 		  
 		  
 		  // listeners for events
 		  $scope.online = function(event) {
-				console.log("ONLINE! "+event);
+				// TODO lookup info from server
+				var thing = {};
+				thing.id = event['be.iminds.iot.thing.id'];
+				thing.name = event['be.iminds.iot.thing.service'];
+				thing.type = 'test';
+				thing.iconclass = 'icon-button';
 				
-				
-				//$scope.$apply();
+				$scope.things[thing.id] = thing;
+				$scope.$apply();
 		  };	
 			
 		  $scope.offline = function(event) {
-			  console.log("OFFLINE! "+event);
-				
-				
-				//$scope.$apply();
+			   delete $scope.things[event['be.iminds.iot.thing.id']];
+			   $scope.$apply();
 		  };
 		  
 		  $scope.change = function(event) {
-			  console.log("CHANGE! "+event);
-				
-				
-				//$scope.$apply();
+			  // TODO which state variable to show?
+			  $scope.things[event['be.iminds.iot.thing.id']].state = event['be.iminds.iot.thing.state.value'];
+			  $scope.$apply();
 		  };
 			
-		  $scope.error = function(e){
-				console.log("Error... "+e);
-		  };
-			
-		  en$easse.handle("be/iminds/iot/thing/online/*", $scope.online, $scope.error);
-		  en$easse.handle("be/iminds/iot/thing/offline/*", $scope.offline, $scope.error);
-		  en$easse.handle("be/iminds/iot/thing/change/*", $scope.change, $scope.error);
+		  en$easse.handle("be/iminds/iot/thing/online/*", $scope.online, error);
+		  en$easse.handle("be/iminds/iot/thing/offline/*", $scope.offline, error);
+		  en$easse.handle("be/iminds/iot/thing/change/*", $scope.change, error);
 
 		  
 		  $scope.action = function(id){

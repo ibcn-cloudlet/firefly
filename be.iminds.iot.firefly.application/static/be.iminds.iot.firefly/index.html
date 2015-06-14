@@ -41,7 +41,7 @@
 	          			 on-longclick="dialog(id)" on-click="action(id)"
 	          			 id="{{thing.id}}" class="thing col-xs-12 col-sm-6 col-md-4 col-lg-2 mix {{thing.type}} {{thing.room}}">
 						<div class="row vertical-align">
-							<div class="col-xs-6 icon {{thing.iconclass}}"></div>
+							<div class="col-xs-6 icon icon-{{thing.type}}"></div>
 							<div class="col-xs-6 state">{{thing.state}}</div>
 						</div>
 						<div class="name">{{thing.name}}</div>
@@ -58,10 +58,8 @@
        </div>
     </div>
   
-
+  	<!-- All .js is loaded using the enRoute webresource mechanism -->
 	<script src="/osgi.enroute.webresource/${bsn}/${Bundle-Version}/*.js"></script>
-<!-- 	<script src="/osgi/enroute/easse/easse.js"></script> -->
-<!-- 	<script src="/osgi/enroute/easse/polyfill/eventsource.js"></script> -->
 
 </body>
 </html>
