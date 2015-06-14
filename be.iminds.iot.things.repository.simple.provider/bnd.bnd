@@ -1,0 +1,28 @@
+#
+#  BUNDLE 
+#
+
+
+Bundle-Version:					1.0.0.${tstamp}
+Bundle-Description: Simple Things Repository provider
+
+Private-Package:  \
+	be.iminds.iot.things.repository.simple.provider
+	
+-buildpath: \
+	osgi.enroute.base.api;version=1.0,\
+	biz.aQute.junit,\
+	be.iminds.iot.things.repository.api;version=latest
+
+-includeresource: {readme.md}
+
+
+-runrequires:  \
+	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.repository.simple.provider)'
+	
+-runbundles: \
+	${error;Resolve first}
+Export-Package: \
+	be.iminds.iot.things.repository.api,\
+	osgi.enroute.jsonrpc.api
+Bundle-Name: IoT Things - Repository
