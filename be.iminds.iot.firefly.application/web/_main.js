@@ -53,7 +53,7 @@
 	});
 	
 	
-	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc) {
+	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc, $http) {
 		  var repository;
 		  en$jsonrpc.endpoint("be.iminds.iot.things.repository").then(
 				function(r){
@@ -122,10 +122,14 @@
 
 		  
 		  $scope.action = function(id){
-			  console.log("ACTION "+id);
-			  var thing = $scope.things[id];
-			  // TODO send action request to server
-	 		  // window[thing.type+"_action"](thing);
+			  console.log("ACTION "+id);		  
+			  $http.get('/rest/action/'+id).
+			  success(function(data, status, headers, config) {
+			    // this callback will be called asynchronously
+			    // when the response is available
+			  }).
+			  error(error);
+			  
 		  };
 		  
 		  

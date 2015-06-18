@@ -10,6 +10,8 @@ import osgi.enroute.capabilities.EasseWebResource;
 import osgi.enroute.capabilities.EventAdminSSEEndpoint;
 import osgi.enroute.capabilities.JsonrpcWebResource;
 import osgi.enroute.capabilities.WebServerExtender;
+import osgi.enroute.rest.api.REST;
+import osgi.enroute.rest.api.RESTRequest;
 
 @AngularWebResource(resource={"angular.js","angular-resource.js", "angular-route.js"}, priority=1000)
 @AngularUIWebResource(resource="ui-bootstrap-tpls.js")
@@ -20,6 +22,9 @@ import osgi.enroute.capabilities.WebServerExtender;
 @WebServerExtender
 @ConfigurerExtender
 @Component(name="be.iminds.iot.firefly")
-public class FireflyApplication {
+public class FireflyApplication implements REST {
 
+	public void getAction(RESTRequest rq, String thingId){
+		System.out.println("DO ACTION FOR THING "+thingId);
+	}
 }
