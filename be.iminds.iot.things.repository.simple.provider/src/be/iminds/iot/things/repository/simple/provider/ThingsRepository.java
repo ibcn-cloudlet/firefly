@@ -12,16 +12,14 @@ import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
-import osgi.enroute.jsonrpc.api.JSONRPC;
 import be.iminds.iot.things.repository.api.Repository;
 import be.iminds.iot.things.repository.api.ThingDTO;
 
 /**
  * 
  */
-@Component(property = JSONRPC.ENDPOINT + "=be.iminds.iot.things.repository",
-service={Repository.class, JSONRPC.class})
-public class ThingsRepository implements Repository, JSONRPC {
+@Component
+public class ThingsRepository implements Repository {
 
 	private Map<UUID, ThingDTO> things = new HashMap<>();
 	
@@ -60,12 +58,6 @@ public class ThingsRepository implements Repository, JSONRPC {
 	public void putThing(ThingDTO thing) {
 		System.out.println("PUT");
 		things.put(thing.id, thing);
-	}
-
-	@Override
-	public Object getDescriptor() throws Exception {
-		// TODO What should this return?
-		return null;
 	}
 
 }

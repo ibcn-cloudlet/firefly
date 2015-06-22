@@ -24,7 +24,6 @@ Private-Package:  \
 	${error;Resolve first}
 Export-Package: \
 	be.iminds.iot.things.repository.api,\
-	osgi.enroute.jsonrpc.api,\
 	osgi.enroute.rest.api
 Bundle-Name: IoT Things - Repository
 -dsannotations: *
