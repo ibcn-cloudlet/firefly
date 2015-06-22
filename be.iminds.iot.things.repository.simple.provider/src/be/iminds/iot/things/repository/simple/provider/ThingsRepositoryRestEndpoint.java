@@ -25,7 +25,7 @@ public class ThingsRepositoryRestEndpoint implements REST{
 		return repository.getThing(id);
 	}
 
-	public Collection<ThingDTO> getThings(RESTRequest rq) {
+	public Collection<ThingDTO> getThing(RESTRequest rq) {
 		return repository.getThings();
 	}
 

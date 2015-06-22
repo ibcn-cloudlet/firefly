@@ -7,7 +7,7 @@
 		alert(msg);
 	}
 	
-	var FIREFLY = angular.module('be.iminds.iot.firefly', ['ui.bootstrap','ngRoute','enJsonrpc','enEasse']);
+	var FIREFLY = angular.module('be.iminds.iot.firefly', ['ui.bootstrap','ngRoute','ngResource','enJsonrpc','enEasse']);
 	
 	FIREFLY.config(function($routeProvider, en$jsonrpcProvider) {
 		en$jsonrpcProvider.setNotification({
@@ -53,17 +53,26 @@
 	});
 	
 	
-	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc, $http) {
-		  var repository;
-		  en$jsonrpc.endpoint("be.iminds.iot.things.repository").then(
-				function(r){
-					repository = r;
-					r.getThings().then(function(t){$scope.things = t});
-				}
-		  );
-		  
-		  
-		  $scope.things = {};
+	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc, $http, $resource) {
+		$scope.things = {};
+		
+		
+//		  var repository;
+//		  en$jsonrpc.endpoint("be.iminds.iot.things.repository").then(
+//				function(r){
+//					repository = r;
+//					r.getThings().then(function(t){$scope.things = t});
+//				}
+//		  );
+		$scope.repository = $resource('/rest/thing/:thingId',{thingId: "@thingId" });
+		$scope.repository.query().$promise.then(function(things){
+			for(var i in things){
+				console.log(things[i].id);
+				$scope.things[things[i].id] = things[i];
+			}
+		});
+
+		
 //		  $scope.things['0'] = 
 //		                   {
 //		                	    'id': '0',
@@ -98,8 +107,7 @@
 				var thing = {};
 				thing.id = event['be.iminds.iot.thing.id'];
 				thing.name = event['be.iminds.iot.thing.service'];
-				thing.type = 'test';
-				thing.iconclass = 'icon-button';
+				thing.type = 'button';
 				
 				$scope.things[thing.id] = thing;
 				$scope.$apply();
