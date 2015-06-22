@@ -10,8 +10,7 @@ import osgi.enroute.capabilities.EasseWebResource;
 import osgi.enroute.capabilities.EventAdminSSEEndpoint;
 import osgi.enroute.capabilities.JsonrpcWebResource;
 import osgi.enroute.capabilities.WebServerExtender;
-import osgi.enroute.rest.api.REST;
-import osgi.enroute.rest.api.RESTRequest;
+import osgi.enroute.jsonrpc.api.JSONRPC;
 
 @AngularWebResource(resource={"angular.js","angular-resource.js", "angular-route.js"}, priority=1000)
 @AngularUIWebResource(resource="ui-bootstrap-tpls.js")
@@ -21,10 +20,16 @@ import osgi.enroute.rest.api.RESTRequest;
 @JsonrpcWebResource(resource={"jsonrpc.js"})
 @WebServerExtender
 @ConfigurerExtender
-@Component(name="be.iminds.iot.firefly")
-public class FireflyApplication implements REST {
+@Component(name="be.iminds.iot.firefly",property=JSONRPC.ENDPOINT+"=be.iminds.iot.firefly")
+public class FireflyApplication implements JSONRPC {
 
-	public void getAction(RESTRequest rq, String thingId){
+	public void action(String thingId){
 		System.out.println("DO ACTION FOR THING "+thingId);
+	}
+
+	@Override
+	public Object getDescriptor() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

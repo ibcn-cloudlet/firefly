@@ -54,16 +54,8 @@
 	
 	
 	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc, $http, $resource) {
+		// fill things map using repository REST endpoint
 		$scope.things = {};
-		
-		
-//		  var repository;
-//		  en$jsonrpc.endpoint("be.iminds.iot.things.repository").then(
-//				function(r){
-//					repository = r;
-//					r.getThings().then(function(t){$scope.things = t});
-//				}
-//		  );
 		$scope.repository = $resource('/rest/thing/:thingId',{thingId: "@thingId" });
 		$scope.repository.query().$promise.then(function(things){
 			for(var i in things){
@@ -72,6 +64,13 @@
 			}
 		});
 
+		// connect to firefly jsonrpc endpoint for actions
+		$scope.ff = {};
+		en$jsonrpc.endpoint("be.iminds.iot.firefly").then(
+				function(ff){
+					$scope.ff = ff;
+				}
+		);
 		
 //		  $scope.things['0'] = 
 //		                   {
@@ -124,23 +123,18 @@
 			  $scope.$apply();
 		  };
 			
+		  // easse callbacks
 		  en$easse.handle("be/iminds/iot/thing/online/*", $scope.online, error);
 		  en$easse.handle("be/iminds/iot/thing/offline/*", $scope.offline, error);
 		  en$easse.handle("be/iminds/iot/thing/change/*", $scope.change, error);
 
-		  
+		  // action callback
 		  $scope.action = function(id){
-			  console.log("ACTION "+id);		  
-			  $http.get('/rest/action/'+id).
-			  success(function(data, status, headers, config) {
-			    // this callback will be called asynchronously
-			    // when the response is available
-			  }).
-			  error(error);
-			  
+			  console.log("ACTION "+id);	
+			  $scope.ff.action(id);
 		  };
 		  
-		  
+		  // thing details dialog
 		  $scope.dialog = function(id){
 			  console.log("DIALOG "+id);
 			  var thing = $scope.things[id];

@@ -28,3 +28,4 @@ Private-Package:  \
 	osgi.enroute.base.api;version=1.4
 	
 Bundle-Vendor: iMinds IoT Lab
+Export-Package: osgi.enroute.jsonrpc.api
