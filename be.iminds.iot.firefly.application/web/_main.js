@@ -58,7 +58,7 @@
 		  en$jsonrpc.endpoint("be.iminds.iot.things.repository").then(
 				function(r){
 					repository = r;
-					r.listThings().then(function(t){$scope.things = t});
+					r.getThings().then(function(t){$scope.things = t});
 				}
 		  );
 		  

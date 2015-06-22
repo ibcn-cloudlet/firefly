@@ -51,7 +51,7 @@ public class ThingsRepository implements Repository, JSONRPC {
 	}
 
 	@Override
-	public Collection<ThingDTO> listThings() {
+	public Collection<ThingDTO> getThings() {
 		System.out.println("LIST");
 		return Collections.unmodifiableCollection(new ArrayList(things.values()));
 	}

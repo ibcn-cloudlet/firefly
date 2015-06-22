@@ -10,7 +10,7 @@ public interface Repository {
 	
 	public ThingDTO getThing(UUID id);
 	
-	public Collection<ThingDTO> listThings();
+	public Collection<ThingDTO> getThings();
 	
 	public void putThing(ThingDTO thing);
 	
