@@ -48,7 +48,7 @@
 	          			 on-longclick="dialog(id)" on-click="action(id)"
 	          			 id="{{thing.id}}" class="thing col-xs-12 col-sm-6 col-md-4 col-lg-2 {{thing.type}}">
 						<div class="row vertical-align">
-							<div class="col-xs-6 icon icon-{{thing.type}}"></div>
+							<div class="col-xs-6 icon icon-{{thing.type}} {{thing.state | lowercase}}"></div>
 							<div class="col-xs-6 state">{{thing.state}}</div>
 						</div>
 						<div class="name">{{thing.name}}</div>
