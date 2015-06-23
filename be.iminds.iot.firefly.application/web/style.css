@@ -154,18 +154,7 @@ body {
 	font-size: 130%;
 	text-transform: uppercase;
 }
-.on {
-	color: #FFFF66;
-}
-.pressed {
-	color: #5C85FF;	
-}
-.open {
-	color: #FF5F5F;
-}
-.record {
-	color: #FF5F5F;
-}
+
 
 /*
  * Footer
@@ -195,104 +184,6 @@ footer {
 	text-shadow: none;
 } 
 
-/*
- * Carousel
- */ 
-.carousel-control{
-	color: #333;
-	text-shadow: none;
-}
-
-.carousel-control:hover{
-	color: #444;
-}
-
-.carousel-control.left{
-	background-image: none;
-}
-
-.carousel-control.right{
-	background-image: none;
-}
-
-/*
- * Rules modal
- */
-.tab-content {
-	margin: 20px 0;	
-}
- 
-/*
- * filter modal
- */
-#filter-form {
-	width: 50%;
-	margin: auto;
-}
-.checkbox{
-  display: block;
-  position: relative;
-  cursor: pointer;
-  margin-bottom: 8px;
-}
-
-.checkbox input[type="checkbox"]{
-  position: absolute;
-  display: block;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  cursor: pointer;
-  margin: 0;
-  opacity: 0;
-  z-index: 1;
-}
-
-.checkbox label{
-  display: inline-block;
-  vertical-align: top;
-  text-align: left;
-  padding-left: 1.5em;
-}
-
-.checkbox label:before,
-.checkbox label:after{
-  content: '';
-  display: block;
-  position: absolute;
-}
-
-.checkbox label:before{
-  left: 0;
-  top: 0;
-  width: 18px;
-  height: 18px;
-  margin-right: 10px;
-  background: #ddd;
-  border-radius: 3px;
-}
-
-.checkbox label:after{
-  content: '';
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-  background: #68b8c4;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.checkbox input:checked ~ label:after{
-  opacity: 1;
-}
-
-.checkbox input:focus ~ label:before{
-  background: #eee;
-}
 
 /*
  * Affix and center
