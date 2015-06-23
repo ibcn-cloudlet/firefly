@@ -15,6 +15,23 @@
 		});
 	});
 	
+	// this allows filtering on map values in ng-repeat
+	FIREFLY.filter('mapFilter', function($filter) {
+		  var filter = $filter('filter');
+
+		  return function(map, expression, comparator) {
+		    if (! expression) return map;
+
+		    var result = {};
+		    angular.forEach(map, function(data, index) {
+		      if (filter([data], expression, comparator).length)
+		        result[index] = data;          
+		    });
+
+		    return result;
+		  }
+	});
+	
 	// introduce onLongclick and onClick directives
 	FIREFLY.directive('onLongclick', function($timeout) {
 		return {
@@ -57,6 +74,7 @@
 		// fill things map using repository REST endpoint
 		$scope.things = {};
 		$scope.locations = {};
+		$scope.filters = { location : ''};
 		
 		repository.query(function(things){
 			for(var i in things){

@@ -35,7 +35,8 @@
             
            <nav class='controls'>
                 <ul id="locations" class="nav masthead-nav control-group">
-                	<li ng-repeat="(l, location) in locations"><a href="#">{{location}}</a></li>
+                	<li><a ng-click="filters.location = ''" ng-class="{active: filters.location === ''}" >All</a></li>
+                	<li ng-repeat="(l, location) in locations"><a ng-click="filters.location = location" ng-class="{active: filters.location === location}">{{location}}</a></li>
                 </ul>
             </nav>
           </header>
@@ -43,9 +44,9 @@
 		  <!--  Things container -->
           <div class="container">
 	          <div id="things" class="row">
-	          		<div ng-repeat="(id, thing) in things"	       	
+	          		<div ng-repeat="(id, thing) in things | mapFilter:filters"	       	
 	          			 on-longclick="dialog(id)" on-click="action(id)"
-	          			 id="{{thing.id}}" class="thing col-xs-12 col-sm-6 col-md-4 col-lg-2 mix {{thing.type}} {{thing.room}}">
+	          			 id="{{thing.id}}" class="thing col-xs-12 col-sm-6 col-md-4 col-lg-2 {{thing.type}}">
 						<div class="row vertical-align">
 							<div class="col-xs-6 icon icon-{{thing.type}}"></div>
 							<div class="col-xs-6 state">{{thing.state}}</div>
