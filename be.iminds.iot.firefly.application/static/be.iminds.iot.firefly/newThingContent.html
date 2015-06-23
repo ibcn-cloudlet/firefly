@@ -1,0 +1,50 @@
+ 		<div class="modal-header">
+       		<button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+ 
+			<h4 class="modal-title">Configure new Thing</h4>
+		</div>
+				  
+		<div class="modal-body">
+			<form role="form" class="form-horizontal">
+				<div>
+					<div class="row vertical-align">
+						<div id="icon" class="col-xs-6 icon icon-{{thing.type}}"></div>
+						<div id="state" class="col-xs-6 state">{{thing.state}}</div>
+					</div>
+				</div>
+
+				<br/>
+				<div id="form-id" class="form-group">
+					<label for="id" class="col-sm-2 control-label">ID:</label>
+					<div class="col-sm-8">
+						<p class="form-control-static" ng-model="thing.id">{{thing.id}}</p>
+					</div>
+				</div>
+				<div id="form-type" class="form-group">
+					<label for="type" class="col-sm-2 control-label">Type:</label>
+					<div class="col-sm-8">
+					 	<select class="col-sm-12" ng-model="thing.type">
+  							<option value={{thing.type}}>{{thing.type}}</option>
+						</select> 
+					</div>
+				</div>		          
+				<div id="form-name" class="form-group">
+					<label for="name" class="col-sm-2 control-label">Name:</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" ng-model="thing.name" value="{{thing.name}}">
+					</div>
+				</div>
+				<div id="form-room" class="form-group">
+					<label for="room" class="col-sm-2 control-label">Location:</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" ng-model="thing.location" value="{{thing.location}}">
+					</div>
+				</div>
+			</form>			  	  
+		</div>
+				  
+		<div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">Save</button>
+		</div>
+ 
+ 

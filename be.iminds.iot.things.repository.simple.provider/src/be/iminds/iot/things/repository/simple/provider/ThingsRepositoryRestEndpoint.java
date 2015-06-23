@@ -29,7 +29,8 @@ public class ThingsRepositoryRestEndpoint implements REST{
 		return repository.getThings();
 	}
 
-	public void putThing(RESTRequest rq, ThingDTO thing) {
+	public void putThing(RESTRequest rq, UUID id, ThingDTO thing) {
+		// TODO only works with our patched rest provider 
 		repository.putThing(thing);
 	}
 	

@@ -7,7 +7,7 @@
 		alert(msg);
 	}
 	
-	var FIREFLY = angular.module('be.iminds.iot.firefly', ['ui.bootstrap','ngRoute','ngResource','enJsonrpc','enEasse']);
+	var FIREFLY = angular.module('be.iminds.iot.firefly', ['ui.bootstrap','ngRoute','ngResource','enJsonrpc','enEasse','be.iminds.iot.repository']);
 	
 	FIREFLY.config(function($routeProvider, en$jsonrpcProvider) {
 		en$jsonrpcProvider.setNotification({
@@ -53,11 +53,11 @@
 	});
 	
 	
-	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc, $http, $resource) {
+	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc, repository) {
 		// fill things map using repository REST endpoint
 		$scope.things = {};
-		$scope.repository = $resource('/rest/thing/:thingId',{thingId: "@thingId" });
-		$scope.repository.query().$promise.then(function(things){
+		
+		repository.query(function(things){
 			for(var i in things){
 				console.log(things[i].id);
 				$scope.things[things[i].id] = things[i];
@@ -103,13 +103,19 @@
 		  // listeners for events
 		  $scope.online = function(event) {
 				// TODO lookup info from server
-				var thing = {};
-				thing.id = event['be.iminds.iot.thing.id'];
-				thing.name = event['be.iminds.iot.thing.service'];
-				thing.type = 'button';
-				
-				$scope.things[thing.id] = thing;
-				$scope.$apply();
+			  	repository.get({ id: event['be.iminds.iot.thing.id'] }, function(thing) {
+				    console.log("ONLINE "+JSON.stringify(thing));
+				    if(angular.equals({}, thing)){
+						thing.id = event['be.iminds.iot.thing.id'];
+						thing.name = event['be.iminds.iot.thing.service'];
+						thing.type = 'button';
+						$scope.newThing(thing);
+				  		
+				  	} else {
+						$scope.things[thing.id] = thing;
+						$scope.$apply();
+				  	}
+			  	});
 		  };	
 			
 		  $scope.offline = function(event) {
@@ -119,8 +125,10 @@
 		  
 		  $scope.change = function(event) {
 			  // TODO which state variable to show?
-			  $scope.things[event['be.iminds.iot.thing.id']].state = event['be.iminds.iot.thing.state.value'];
-			  $scope.$apply();
+			  if( $scope.things[event['be.iminds.iot.thing.id']] != undefined){
+				  $scope.things[event['be.iminds.iot.thing.id']].state = event['be.iminds.iot.thing.state.value'];
+				  $scope.$apply();
+			  }
 		  };
 			
 		  // easse callbacks
@@ -149,6 +157,23 @@
 			        }
 			      }
 			    });
+		  };
+		  
+		  // new thing dialog
+		  $scope.newThing = function(thing){
+			  var modalInstance = $modal.open({
+			      templateUrl: 'newThingContent.html',
+			      controller: 'newThingCtrl',
+			      resolve: {
+			    	  thing: function(){
+			    		  return thing;
+			    	  }
+			      }
+			  });
+			  modalInstance.result.then(function(thing){
+				  $scope.things[thing.id] = thing;
+				  //$scope.$apply();
+			  });
 		  };
 	});
 
