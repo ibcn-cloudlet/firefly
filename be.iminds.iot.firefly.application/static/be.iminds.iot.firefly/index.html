@@ -22,7 +22,7 @@
     <![endif]-->
   </head>
   
-  <body ng-app="be.iminds.iot.firefly">
+  <body ng-app="be.iminds.iot.firefly" ng-controller="ThingsCtrl">
 
     <div class="site-wrapper">
 
@@ -32,10 +32,16 @@
             <div class="inner">
               <h3 class="masthead-brand">Your Internet of Things</h3>
             </div>
+            
+           <nav class='controls'>
+                <ul id="locations" class="nav masthead-nav control-group">
+                	<li ng-repeat="(l, location) in locations"><a href="#">{{location}}</a></li>
+                </ul>
+            </nav>
           </header>
 
 		  <!--  Things container -->
-          <div class="container" ng-controller="ThingsCtrl">
+          <div class="container">
 	          <div id="things" class="row">
 	          		<div ng-repeat="(id, thing) in things"	       	
 	          			 on-longclick="dialog(id)" on-click="action(id)"

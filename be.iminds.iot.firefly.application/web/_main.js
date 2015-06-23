@@ -56,11 +56,13 @@
 	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc, repository) {
 		// fill things map using repository REST endpoint
 		$scope.things = {};
+		$scope.locations = {};
 		
 		repository.query(function(things){
 			for(var i in things){
 				console.log(things[i].id);
 				$scope.things[things[i].id] = things[i];
+				$scope.locations[things[i].location] = things[i].location;
 			}
 		});
 
@@ -113,6 +115,7 @@
 				  		
 				  	} else {
 						$scope.things[thing.id] = thing;
+						$scope.locations[thing.location] = thing.location;
 						$scope.$apply();
 				  	}
 			  	});
@@ -172,6 +175,7 @@
 			  });
 			  modalInstance.result.then(function(thing){
 				  $scope.things[thing.id] = thing;
+				  $scope.locations[thing.location] = thing.location;
 				  //$scope.$apply();
 			  });
 		  };
