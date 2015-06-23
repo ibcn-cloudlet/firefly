@@ -1,0 +1,16 @@
+/**
+ * This css file contains some highlight colors for the icon based on the state
+ */
+
+.on {
+	color: #FFFF66;
+}
+.pressed {
+	color: #5C85FF;	
+}
+.open {
+	color: #FF5F5F;
+}
+.record {
+	color: #FF5F5F;
+}
