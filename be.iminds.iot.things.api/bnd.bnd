@@ -10,7 +10,7 @@ Export-Package: \
 	be.iminds.iot.things.api;provide:=true,\
 	be.iminds.iot.things.api.button,\
 	be.iminds.iot.things.api.camera,\
-	be.iminds.iot.things.api.light,\
+	be.iminds.iot.things.api.lamp,\
 	be.iminds.iot.things.api.sensor.contact,\
 	be.iminds.iot.things.api.sensor.light,\
 	be.iminds.iot.things.api.sensor.motion,\

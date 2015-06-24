@@ -1,10 +1,10 @@
-package be.iminds.iot.things.api.light;
+package be.iminds.iot.things.api.lamp;
 
 import java.awt.Color;
 
 import be.iminds.iot.things.api.Thing;
 
-public interface Light extends Thing {
+public interface Lamp extends Thing {
 
     public final static String STATE = "be.iminds.iot.thing.light.state";
     public final static String LEVEL = "be.iminds.iot.thing.light.level";

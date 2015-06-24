@@ -4,17 +4,18 @@ import java.awt.Color;
 
 import org.dyamand.sensors.lighting.LightServiceType;
 
-import be.iminds.iot.things.api.light.Light;
-import be.iminds.iot.things.api.light.Light.State;
+import be.iminds.iot.things.api.lamp.Lamp;
+import be.iminds.iot.things.api.lamp.Lamp.State;
 import be.iminds.iot.things.dyamand.adapter.ServiceAdapter;
 import be.iminds.iot.things.dyamand.adapter.StateVariable;
 
-public class LightAdapter implements ServiceAdapter {
+public class LampAdapter implements ServiceAdapter {
 
+	
 	@Override
 	public String[] getTargets() {
 		return new String[] { be.iminds.iot.things.api.Thing.class.getName(),
-				be.iminds.iot.things.api.light.Light.class.getName() };
+				be.iminds.iot.things.api.lamp.Lamp.class.getName() };
 	}
 
 	@Override
@@ -22,9 +23,11 @@ public class LightAdapter implements ServiceAdapter {
 		if (!(source instanceof org.dyamand.sensors.lighting.Light)) {
 			throw new Exception("Cannot translate object!");
 		}
-		final Light light = new AdaptedLight(
+		// some name confusion here ... in DYAMAND it is called light but we
+		// call it lamp to avoid confusion with light sensor
+		final Lamp lamp = new AdaptedLight(
 				(org.dyamand.sensors.lighting.Light) source);
-		return light;
+		return lamp;
 	}
 
 	@Override
@@ -35,13 +38,13 @@ public class LightAdapter implements ServiceAdapter {
 			final boolean on = (Boolean) value;
 			final State translatedValue = on ? State.ON
 					: State.OFF;
-			translated = new StateVariable(Light.STATE, translatedValue);
+			translated = new StateVariable(Lamp.STATE, translatedValue);
 		} else if (variable.equals(LightServiceType.LEVEL.toString())) {
 			final int level = (Integer) value;
-			translated = new StateVariable(Light.LEVEL, level);
+			translated = new StateVariable(Lamp.LEVEL, level);
 		} else if (variable.equals(LightServiceType.COLOR.toString())) {
 			final Color color = (Color) value;
-			translated = new StateVariable(Light.COLOR, color);
+			translated = new StateVariable(Lamp.COLOR, color);
 		}
 		else {
 			throw new Exception("Could not translate state variable!");
@@ -49,7 +52,7 @@ public class LightAdapter implements ServiceAdapter {
 		return translated;
 	}
 
-	private class AdaptedLight implements Light {
+	private class AdaptedLight implements Lamp {
 
 		private final org.dyamand.sensors.lighting.Light source;
 
