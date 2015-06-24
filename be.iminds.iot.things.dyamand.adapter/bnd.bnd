@@ -38,6 +38,7 @@ Export-Package: \
 	be.iminds.iot.things.api,\
 	be.iminds.iot.things.api.button,\
 	be.iminds.iot.things.api.lamp,\
+	be.iminds.iot.things.api.sensor,\
 	be.iminds.iot.things.api.sensor.contact,\
 	be.iminds.iot.things.api.sensor.light,\
 	be.iminds.iot.things.api.sensor.motion,\

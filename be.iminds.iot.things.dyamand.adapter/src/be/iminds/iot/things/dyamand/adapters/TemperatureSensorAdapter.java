@@ -3,7 +3,6 @@ package be.iminds.iot.things.dyamand.adapters;
 import org.dyamand.sensors.environment.TemperatureSensorServiceType;
 
 import be.iminds.iot.things.api.sensor.temperature.Temperature;
-import be.iminds.iot.things.api.sensor.temperature.Temperature.Scale;
 import be.iminds.iot.things.api.sensor.temperature.TemperatureSensor;
 import be.iminds.iot.things.dyamand.adapter.ServiceAdapter;
 import be.iminds.iot.things.dyamand.adapter.StateVariable;
@@ -33,9 +32,13 @@ public class TemperatureSensorAdapter implements ServiceAdapter {
 			public Temperature getTemperature() {
 				final org.dyamand.sensors.environment.Temperature t = ((org.dyamand.sensors.environment.TemperatureSensor) source)
 						.getTemperature();
-				final Temperature temp = new Temperature(t.getValue(),
-						Temperature.Scale.values()[t.getScale().ordinal()]);
-				return temp;
+				if(t.getScale().equals(org.dyamand.sensors.environment.Temperature.Scale.CELCIUS)){
+					final Temperature temp = new Temperature(t.getValue());
+					return temp;
+				} else {
+					System.err.println("For now we only support sensor values in Celcius");
+					return null;
+				}
 			}
 
 		};
@@ -50,10 +53,14 @@ public class TemperatureSensorAdapter implements ServiceAdapter {
 		if (variable.equals(TemperatureSensorServiceType.TEMPERATURE_STATE_VAR
 				.toString())) {
 			final org.dyamand.sensors.environment.Temperature temp = (org.dyamand.sensors.environment.Temperature) value;
-			final Temperature translatedValue = new Temperature(
-					temp.getValue(), Scale.values()[temp.getScale().ordinal()]);
-			translated = new StateVariable(TemperatureSensor.TEMPERATURE,
-					translatedValue);
+			if(temp.getScale().equals(org.dyamand.sensors.environment.Temperature.Scale.CELCIUS)){
+				final Temperature translatedValue = new Temperature(
+						temp.getValue());
+				translated = new StateVariable(TemperatureSensor.TEMPERATURE,
+						translatedValue);
+			} else {
+				throw new Exception("For nwo only support sensor values in Celcius");
+			}
 		} else {
 			throw new Exception("Could not translate state variable!");
 		}

@@ -128,7 +128,8 @@
 				    if(angular.equals({}, thing)){
 						thing.id = event['be.iminds.iot.thing.id'];
 						thing.name = event['be.iminds.iot.thing.service'];
-						thing.type = 'button';
+						thing.type = event['be.iminds.iot.thing.type'];
+						thing.gateway = event['be.iminds.iot.thing.gateway'];
 						$scope.newThing(thing);
 				  		
 				  	} else {
@@ -147,7 +148,14 @@
 		  $scope.change = function(event) {
 			  // TODO which state variable to show?
 			  if( $scope.things[event['be.iminds.iot.thing.id']] != undefined){
-				  $scope.things[event['be.iminds.iot.thing.id']].state = event['be.iminds.iot.thing.state.value'];
+				  var state = event['be.iminds.iot.thing.state.value'];
+				  if(angular.isString(state)){
+					  $scope.things[event['be.iminds.iot.thing.id']].state = state;
+				  } else {
+					  // if not string, this is sensor value, auto format
+					  var formatted = parseFloat(state.value).toFixed(2)+" "+state.unit;
+					  $scope.things[event['be.iminds.iot.thing.id']].state = formatted;
+				  }
 				  $scope.$apply();
 			  }
 		  };

@@ -1,20 +1,12 @@
 package be.iminds.iot.things.api.sensor.light;
 
+import be.iminds.iot.things.api.sensor.SensorValue;
+
 // represents light level in lux
-public class LightLevel {
+public class LightLevel extends SensorValue {
 
-	private final int value;
-
-	public LightLevel(final int value) {
-		this.value = value;
+	public LightLevel(double v) {
+		super(v, "lx");
 	}
 
-	public int getValue() {
-		return this.value;
-	}
-
-	@Override
-	public String toString() {
-		return this.value + " lx";
-	}
 }
