@@ -32,34 +32,49 @@
 		  }
 	});
 	
-	// introduce onLongclick and onClick directives
+	// introduce onLongclick directive, also offers onDoubleclick
 	FIREFLY.directive('onLongclick', function($timeout) {
 		return {
 			restrict: 'A',
 			link: function($scope, $elm, $attrs) {
 				$elm.bind('mousedown', function(evt) {
-					// Locally scoped variable that will keep track of the long press
+					// Bookkeeping
+					if($scope.single){
+						$scope.double = true;
+						$scope.single = false;
+					} else {
+						$scope.single = true;
+					}
 					$scope.long = true;
-	 
-					// We'll set a timeout for 600 ms for a long press
+					
+					// Timeout of 600 ms for long click
 					$timeout(function() {
 						if ($scope.long) {
 							$scope.long = false;
-							// If the touchend event hasn't fired,
-							// apply the function given in on the element's ng-longclick attribute
 							$scope.$apply(function() {
 								$scope.$eval($attrs.onLongclick)
 							});
 						}
 					}, 600);
+					
+					// Timeout of 200 ms for double click
+					$timeout(function() {
+						if(!$scope.long && $scope.single){
+							$scope.$apply(function() {
+								$scope.$eval($attrs.onClick)
+							});
+						}
+						$scope.single = false;
+					}, 200);
+			
 				});
 	 
 				$elm.bind('mouseup', function(evt) {
-					// If no long click, then fire click
 					if($scope.long){
-						if ($attrs.onClick) {
+						if($scope.double){
+							$scope.double = false;
 							$scope.$apply(function() {
-								$scope.$eval($attrs.onClick)
+								$scope.$eval($attrs.onDoubleclick)
 							});
 						}
 					}
@@ -91,120 +106,94 @@
 					$scope.ff = ff;
 				}
 		);
-		
-//		  $scope.things['0'] = 
-//		                   {
-//		                	    'id': '0',
-//		                	 	'name': 'Button',
-//		                	 	'type': 'button',
-//		                     	'room': 'Kitchen',
-//		                     	'state': 'PRESSED',
-//		                    	'iconclass':'icon-button'
-//		                   };
-//		  $scope.things['1'] =
-//		                   {
-//		                	    'id': '1',
-//		                	    'name': 'Lamp',
-//		                	    'type': 'lamp',
-//			                 	'room': 'Kitchen',
-//			                 	'state': 'ON',
-//			                 	'iconclass':'icon-lamp'
-//			                };	                  
-//		  $scope.things['2'] = {
-//			                	'id': '2',
-//			                	'name': 'Temperature',
-//			                	'type': 'temperature',
-//			                	'room': 'Kitchen',
-//			                    'state': '20 C',
-//			                    'iconclass':'icon-temperature'
-//			                };
 		  
 		  
-		  // listeners for events
-		  $scope.online = function(event) {
-				// TODO lookup info from server
-			  	repository.get({ id: event['be.iminds.iot.thing.id'] }, function(thing) {
-				    console.log("ONLINE "+JSON.stringify(thing));
-				    if(angular.equals({}, thing)){
-						thing.id = event['be.iminds.iot.thing.id'];
-						thing.name = event['be.iminds.iot.thing.service'];
-						thing.type = event['be.iminds.iot.thing.type'];
-						thing.gateway = event['be.iminds.iot.thing.gateway'];
-						$scope.newThing(thing);
-				  		
-				  	} else {
-						$scope.things[thing.id] = thing;
-						$scope.locations[thing.location] = thing.location;
-						$scope.$apply();
-				  	}
-			  	});
-		  };	
+		// listeners for events
+		$scope.online = function(event) {
+			repository.get({ id: event['be.iminds.iot.thing.id'] }, function(thing) {
+				if(angular.equals({}, thing)){
+					thing.id = event['be.iminds.iot.thing.id'];
+					thing.name = event['be.iminds.iot.thing.service'];
+					thing.type = event['be.iminds.iot.thing.type'];
+					thing.gateway = event['be.iminds.iot.thing.gateway'];
+				} 
+				$scope.things[thing.id] = thing;
+				$scope.locations[thing.location] = thing.location;
+				$scope.$apply();
+			});
+		};	
 			
-		  $scope.offline = function(event) {
-			   delete $scope.things[event['be.iminds.iot.thing.id']];
-			   $scope.$apply();
-		  };
+		$scope.offline = function(event) {
+			delete $scope.things[event['be.iminds.iot.thing.id']];
+			$scope.$apply();
+		};
 		  
-		  $scope.change = function(event) {
-			  // TODO which state variable to show?
-			  if( $scope.things[event['be.iminds.iot.thing.id']] != undefined){
-				  var state = event['be.iminds.iot.thing.state.value'];
-				  if(angular.isString(state)){
-					  $scope.things[event['be.iminds.iot.thing.id']].state = state;
-				  } else {
-					  // if not string, this is sensor value, auto format
-					  var formatted = parseFloat(state.value).toFixed(2)+" "+state.unit;
-					  $scope.things[event['be.iminds.iot.thing.id']].state = formatted;
-				  }
-				  $scope.$apply();
-			  }
-		  };
+		$scope.change = function(event) {
+			// TODO which state variable to show?
+			if( $scope.things[event['be.iminds.iot.thing.id']] != undefined){
+				var state = event['be.iminds.iot.thing.state.value'];
+				if(angular.isString(state)){
+					$scope.things[event['be.iminds.iot.thing.id']].state = state;
+				} else {
+					// if not string, this is sensor value, auto format
+					var formatted = parseFloat(state.value).toFixed(2)+" "+state.unit;
+					$scope.things[event['be.iminds.iot.thing.id']].state = formatted;
+				}
+				$scope.$apply();
+			}
+		};
 			
-		  // easse callbacks
-		  en$easse.handle("be/iminds/iot/thing/online/*", $scope.online, error);
-		  en$easse.handle("be/iminds/iot/thing/offline/*", $scope.offline, error);
-		  en$easse.handle("be/iminds/iot/thing/change/*", $scope.change, error);
+		// easse callbacks
+		en$easse.handle("be/iminds/iot/thing/online/*", $scope.online, error);
+		en$easse.handle("be/iminds/iot/thing/offline/*", $scope.offline, error);
+		en$easse.handle("be/iminds/iot/thing/change/*", $scope.change, error);
 
-		  // action callback
-		  $scope.action = function(id){
-			  console.log("ACTION "+id);	
-			  $scope.ff.action(id);
-		  };
-		  
-		  // thing details dialog
-		  $scope.dialog = function(id){
-			  console.log("DIALOG "+id);
-			  var thing = $scope.things[id];
+		// action callback
+		$scope.action = function(id){
+			console.log("ACTION "+id)
+			$scope.ff.action(id);
+		};
 		
-			  var modalInstance = $modal.open({
-			      templateUrl: thing.type+'Content.html',
-			      controller: thing.type+'Ctrl',
-			      size: 'lg',
-			      resolve: {
-			        thing: function () {
-			          return thing;
-			        }
-			      }
-			    });
-		  };
+		$scope.change = function(id){
+			console.log("CHANGE "+id);
+			$scope.changeThing($scope.things[id]);
+		};
 		  
-		  // new thing dialog
-		  $scope.newThing = function(thing){
-			  var modalInstance = $modal.open({
-			      templateUrl: 'newThingContent.html',
-			      controller: 'newThingCtrl',
-			      resolve: {
-			    	  thing: function(){
-			    		  return thing;
-			    	  }
-			      }
-			  });
-			  modalInstance.result.then(function(thing){
-				  $scope.things[thing.id] = thing;
-				  $scope.locations[thing.location] = thing.location;
-				  //$scope.$apply();
-			  });
-		  };
+		// thing details dialog
+		$scope.dialog = function(id){
+			console.log("DIALOG "+id);
+			var thing = $scope.things[id];
+		
+			var modalInstance = $modal.open({
+				templateUrl: thing.type+'Content.html',
+				controller: thing.type+'Ctrl',
+				size: 'lg',
+				resolve: {
+					thing: function () {
+						return thing;
+					}
+				}
+			});
+		};
+		  
+		// new thing dialog
+		$scope.changeThing = function(thing){
+			console.log("CHANGE THING "+JSON.stringify(thing));
+			var modalInstance = $modal.open({
+				templateUrl: 'changeThingContent.html',
+				controller: 'changeThingCtrl',
+				resolve: {
+					thing: function(){
+						return thing;
+					}
+				}
+			});
+			modalInstance.result.then(function(thing){
+				$scope.things[thing.id] = thing;
+				$scope.locations[thing.location] = thing.location;
+				//$scope.$apply();
+			});
+		};
 	});
 
 })();

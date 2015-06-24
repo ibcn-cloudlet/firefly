@@ -4,7 +4,7 @@
 
 	'use strict';
 
-	angular.module('be.iminds.iot.firefly').controller('newThingCtrl', function ($scope, repository, $modalInstance, thing) {
+	angular.module('be.iminds.iot.firefly').controller('changeThingCtrl', function ($scope, repository, $modalInstance, thing) {
 		
 		  $scope.thing = thing;
 	
