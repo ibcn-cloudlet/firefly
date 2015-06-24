@@ -10,6 +10,11 @@ import be.iminds.iot.things.dyamand.adapter.StateVariable;
 
 public class TemperatureSensorAdapter implements ServiceAdapter {
 
+	@Override
+	public String getType(){
+		return "temperature";
+	}
+	
     @Override
     public String[] getTargets() {
     	return new String[]{

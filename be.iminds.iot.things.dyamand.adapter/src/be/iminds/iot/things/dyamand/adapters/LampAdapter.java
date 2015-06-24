@@ -11,6 +11,10 @@ import be.iminds.iot.things.dyamand.adapter.StateVariable;
 
 public class LampAdapter implements ServiceAdapter {
 
+	@Override
+	public String getType(){
+		return "lamp";
+	}
 	
 	@Override
 	public String[] getTargets() {

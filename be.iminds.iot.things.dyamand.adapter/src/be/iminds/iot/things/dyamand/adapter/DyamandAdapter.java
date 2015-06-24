@@ -27,7 +27,7 @@ import org.osgi.service.event.EventProperties;
 import be.iminds.iot.things.api.Thing;
 import be.iminds.iot.things.dyamand.adapters.ButtonAdapter;
 import be.iminds.iot.things.dyamand.adapters.ContactSensorAdapter;
-import be.iminds.iot.things.dyamand.adapters.LightAdapter;
+import be.iminds.iot.things.dyamand.adapters.LampAdapter;
 import be.iminds.iot.things.dyamand.adapters.LightSensorAdapter;
 import be.iminds.iot.things.dyamand.adapters.MotionSensorAdapter;
 import be.iminds.iot.things.dyamand.adapters.TemperatureSensorAdapter;
@@ -57,7 +57,7 @@ public class DyamandAdapter implements EventListener {
 		// for now fix code all adapters... use service mechanism for this?
 		adapters.add(new ButtonAdapter());
 		adapters.add(new ContactSensorAdapter());
-		adapters.add(new LightAdapter());
+		adapters.add(new LampAdapter());
 		adapters.add(new LightSensorAdapter());
 		adapters.add(new MotionSensorAdapter());
 		adapters.add(new TemperatureSensorAdapter());
@@ -112,8 +112,7 @@ public class DyamandAdapter implements EventListener {
 					    properties);
 			    this.services.put(servicePOJO, registration);
 			    
-			    final String topic = "be/iminds/iot/thing/online/"+thingId;
-				this.notifyStateChangeListeners(thingId.toString(), device, service, topic);
+			    this.notifyOnline(thingId, device, service, adapter.getType());
 			} catch (final Exception e) {
 			}
 		}
@@ -129,8 +128,7 @@ public class DyamandAdapter implements EventListener {
 			final String service = servicePOJO.getService().getName().toString();
 			final UUID thingId = UUID.nameUUIDFromBytes((device+service).getBytes());
 			
-		    final String topic = "be/iminds/iot/thing/offline/"+thingId;
-			this.notifyStateChangeListeners(thingId.toString(), device, service, topic);
+		    this.notifyOffline(thingId);
 		}
 	}
 
@@ -148,42 +146,57 @@ public class DyamandAdapter implements EventListener {
 			try {
 				final StateVariable translated = adapter
 						.translateStateVariable(stateVariable, value);
-				// TODO which TOPIC namespaces to use?
-				final String topic = "be/iminds/iot/thing/change/"+thingId;
-				this.notifyStateChangeListeners(thingId.toString(),
-						device, service, translated.getName(),
-						translated.getValue(), topic);
+				this.notifiyStateChange(thingId, translated.getName(), translated.getValue());
+				
 			} catch (final Exception e) {
 			}
 		}
 	}
 	
-	private void notifyStateChangeListeners(
-			final String thingId,
+	private void notifyOnline(
+			final UUID thingId,
 			final String device,
-			final String service, 
-			final String stateVariable,
-			final Object stateValue, 
-			final String topic) {
+			final String service,
+			final String type){
 		final HashMap<String, Object> p = new HashMap<>();
 		p.put(Thing.ID, thingId);
-		p.put(Thing.DEVICE, device);
+		p.put(Thing.GATEWAY, gatewayId);		
 		p.put(Thing.SERVICE, service);
-		if(stateVariable!=null){
-			p.put(Thing.STATE_VAR, stateVariable);
-			p.put(Thing.STATE_VAL, stateValue);
-		}
-		p.put("timestamp", System.currentTimeMillis());
-		final EventProperties e = new EventProperties(p);
-		ea.postEvent(new org.osgi.service.event.Event(topic, e));
+		p.put(Thing.DEVICE, device);
+		p.put(Thing.TYPE, type);
+		
+		final String topic = "be/iminds/iot/thing/online/"+thingId;
+		notifyListeners(topic, p);
 	}
 	
-	private void notifyStateChangeListeners(
-			final String thingId,
-			final String device,
-			final String service,  
-			final String topic){
-		notifyStateChangeListeners(thingId, device, service, null, null, topic);
+	private void notifyOffline(
+			final UUID thingId){
+		final HashMap<String, Object> p = new HashMap<>();
+		p.put(Thing.ID, thingId);
+		p.put(Thing.GATEWAY, gatewayId);
+		
+	    final String topic = "be/iminds/iot/thing/offline/"+thingId;
+	    notifyListeners(topic, p);
+	}
+	
+	private void notifiyStateChange(
+			final UUID thingId, 
+			final String stateVariable, 
+			final Object stateValue){
+		final HashMap<String, Object> p = new HashMap<>();
+		p.put(Thing.ID, thingId);
+		p.put(Thing.GATEWAY, gatewayId);
+		p.put(Thing.STATE_VAR, stateVariable);
+		p.put(Thing.STATE_VAL, stateValue);
+		
+		final String topic = "be/iminds/iot/thing/change/"+thingId;
+		notifyListeners(topic, p);
+	}
+	
+	private void notifyListeners(final String topic, final Map<String, Object> properties){
+		properties.put("timestamp", System.currentTimeMillis());
+		final EventProperties e = new EventProperties(properties);
+		ea.postEvent(new org.osgi.service.event.Event(topic, properties));
 	}
 
 	@Reference

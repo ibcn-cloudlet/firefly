@@ -4,6 +4,11 @@ package be.iminds.iot.things.dyamand.adapter;
 public interface ServiceAdapter {
 
 	/**
+	 * @return the type string
+	 */
+	public String getType();
+	
+	/**
 	 * @return The target interfaces to adapt to 
 	 */
 	public String[] getTargets();

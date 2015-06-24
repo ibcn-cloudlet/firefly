@@ -9,6 +9,11 @@ import be.iminds.iot.things.dyamand.adapter.StateVariable;
 public class ButtonAdapter implements ServiceAdapter {
 
 	@Override
+	public String getType(){
+		return "button";
+	}
+	
+	@Override
 	public String[] getTargets() {
 		return new String[] { be.iminds.iot.things.api.Thing.class.getName(),
 				be.iminds.iot.things.api.button.Button.class.getName() };

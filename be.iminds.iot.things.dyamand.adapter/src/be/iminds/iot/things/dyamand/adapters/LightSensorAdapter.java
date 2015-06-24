@@ -10,6 +10,11 @@ import be.iminds.iot.things.dyamand.adapter.StateVariable;
 public class LightSensorAdapter implements ServiceAdapter {
 
 	@Override
+	public String getType(){
+		return "light";
+	}
+	
+	@Override
 	public String[] getTargets() {
 		return new String[] {
 				be.iminds.iot.things.api.Thing.class.getName(),
