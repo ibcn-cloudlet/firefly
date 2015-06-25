@@ -6,8 +6,7 @@ import be.iminds.iot.things.api.Thing;
  * Represents a camera device. Using this API the camera metadata can be
  * queried, and the camera device can be turned on.
  *
- * Frames can be fetched from the camera using the next() method and
- * getRGB/getGrayscale methods.
+ * Frames can be fetched from the camera using the getFrame() method
  *
  * One can also use a push method to process frames of the Camera, by
  * registering a CameraListener
@@ -24,7 +23,7 @@ public interface Camera extends Thing {
     }
 
     public static enum Format {
-    	RGBA, GRAYSCALE;
+    	YUV, RGB, GRAYSCALE, MJPEG;
     }
 
     /**
@@ -54,7 +53,20 @@ public interface Camera extends Thing {
      * @return frame height or -1 if not initialized
      */
     public int getHeight();
+    
+    /**
+     * Get the current capturing format
+     * 
+     * @return frame format
+     */
+    public Format getFormat();
 
+    /**
+     * Return the latest camera frame when the camera is turned on
+     * @return byte array in the camera's current format
+     */
+    public byte[] getFrame();
+    
     /**
      * Turn the camera on
      */
@@ -66,11 +78,11 @@ public interface Camera extends Thing {
      * @param width
      * @param height
      */
-    public void start(int width, int height);
+    public void start(int width, int height, Format format);
 
     /**
      * Stop capturing
      */
     public void stop();
-
+    
 }

@@ -23,7 +23,8 @@ Implementation-BuildNumber: 0
 	biz.aQute.junit,\
 	org.dyamand.api,\
 	be.iminds.iot.things.api;version=latest,\
-	org.dyamand.plugins.types.sensors
+	org.dyamand.plugins.types.sensors,\
+	org.dyamand.plugins.support.sdp.v4l2
 
 -includeresource: {readme.md}
 
@@ -38,6 +39,7 @@ Export-Package: \
 	be.iminds.iot.things.api,\
 	be.iminds.iot.things.api.button,\
 	be.iminds.iot.things.api.lamp,\
+	be.iminds.iot.things.api.camera,\
 	be.iminds.iot.things.api.sensor,\
 	be.iminds.iot.things.api.sensor.contact,\
 	be.iminds.iot.things.api.sensor.light,\

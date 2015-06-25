@@ -31,6 +31,7 @@ import be.iminds.iot.things.dyamand.adapters.LampAdapter;
 import be.iminds.iot.things.dyamand.adapters.LightSensorAdapter;
 import be.iminds.iot.things.dyamand.adapters.MotionSensorAdapter;
 import be.iminds.iot.things.dyamand.adapters.TemperatureSensorAdapter;
+import be.iminds.iot.things.dyamand.adapters.V4L2CameraAdapter;
 
 /**
  * 
@@ -61,6 +62,8 @@ public class DyamandAdapter implements EventListener {
 		adapters.add(new LightSensorAdapter());
 		adapters.add(new MotionSensorAdapter());
 		adapters.add(new TemperatureSensorAdapter());
+		adapters.add(new V4L2CameraAdapter(context));
+
 	}
 	
 	@Deactivate
