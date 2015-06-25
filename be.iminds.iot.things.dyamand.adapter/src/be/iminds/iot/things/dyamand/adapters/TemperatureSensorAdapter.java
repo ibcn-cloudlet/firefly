@@ -1,12 +1,14 @@
 package be.iminds.iot.things.dyamand.adapters;
 
 import org.dyamand.sensors.environment.TemperatureSensorServiceType;
+import org.osgi.service.component.annotations.Component;
 
 import be.iminds.iot.things.api.sensor.temperature.Temperature;
 import be.iminds.iot.things.api.sensor.temperature.TemperatureSensor;
 import be.iminds.iot.things.dyamand.adapter.ServiceAdapter;
 import be.iminds.iot.things.dyamand.adapter.StateVariable;
 
+@Component(property={"aiolos.proxy=false"})
 public class TemperatureSensorAdapter implements ServiceAdapter {
 
 	@Override

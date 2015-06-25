@@ -1,12 +1,14 @@
 package be.iminds.iot.things.dyamand.adapters;
 
 import org.dyamand.sensors.occupancy.MotionSensorServiceType;
+import org.osgi.service.component.annotations.Component;
 
 import be.iminds.iot.things.api.sensor.motion.MotionSensor;
 import be.iminds.iot.things.api.sensor.motion.MotionSensor.State;
 import be.iminds.iot.things.dyamand.adapter.ServiceAdapter;
 import be.iminds.iot.things.dyamand.adapter.StateVariable;
 
+@Component(property={"aiolos.proxy=false"})
 public class MotionSensorAdapter implements ServiceAdapter {
 
 	@Override

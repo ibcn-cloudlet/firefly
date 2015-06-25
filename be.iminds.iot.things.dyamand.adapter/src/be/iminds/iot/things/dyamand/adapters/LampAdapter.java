@@ -3,12 +3,14 @@ package be.iminds.iot.things.dyamand.adapters;
 import java.awt.Color;
 
 import org.dyamand.sensors.lighting.LightServiceType;
+import org.osgi.service.component.annotations.Component;
 
 import be.iminds.iot.things.api.lamp.Lamp;
 import be.iminds.iot.things.api.lamp.Lamp.State;
 import be.iminds.iot.things.dyamand.adapter.ServiceAdapter;
 import be.iminds.iot.things.dyamand.adapter.StateVariable;
 
+@Component(property={"aiolos.proxy=false"})
 public class LampAdapter implements ServiceAdapter {
 
 	@Override

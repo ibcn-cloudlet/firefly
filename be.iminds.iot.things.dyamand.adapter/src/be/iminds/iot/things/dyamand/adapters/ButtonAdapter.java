@@ -1,11 +1,13 @@
 package be.iminds.iot.things.dyamand.adapters;
 
 import org.dyamand.sensors.button.ButtonServiceType;
+import org.osgi.service.component.annotations.Component;
 
 import be.iminds.iot.things.api.button.Button;
 import be.iminds.iot.things.dyamand.adapter.ServiceAdapter;
 import be.iminds.iot.things.dyamand.adapter.StateVariable;
 
+@Component(property={"aiolos.proxy=false"})
 public class ButtonAdapter implements ServiceAdapter {
 
 	@Override

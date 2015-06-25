@@ -1,12 +1,14 @@
 package be.iminds.iot.things.dyamand.adapters;
 
 import org.dyamand.sensors.security.DoorWindowContactServiceType;
+import org.osgi.service.component.annotations.Component;
 
 import be.iminds.iot.things.api.sensor.contact.ContactSensor;
 import be.iminds.iot.things.api.sensor.contact.ContactSensor.State;
 import be.iminds.iot.things.dyamand.adapter.ServiceAdapter;
 import be.iminds.iot.things.dyamand.adapter.StateVariable;
 
+@Component(property={"aiolos.proxy=false"})
 public class ContactSensorAdapter implements ServiceAdapter {
 
 	@Override

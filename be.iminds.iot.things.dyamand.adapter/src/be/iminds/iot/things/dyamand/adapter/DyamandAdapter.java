@@ -1,6 +1,7 @@
 package be.iminds.iot.things.dyamand.adapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -21,17 +22,12 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.EventProperties;
 
 import be.iminds.iot.things.api.Thing;
-import be.iminds.iot.things.dyamand.adapters.ButtonAdapter;
-import be.iminds.iot.things.dyamand.adapters.ContactSensorAdapter;
-import be.iminds.iot.things.dyamand.adapters.LampAdapter;
-import be.iminds.iot.things.dyamand.adapters.LightSensorAdapter;
-import be.iminds.iot.things.dyamand.adapters.MotionSensorAdapter;
-import be.iminds.iot.things.dyamand.adapters.TemperatureSensorAdapter;
-import be.iminds.iot.things.dyamand.adapters.V4L2CameraAdapter;
 
 /**
  * 
@@ -47,23 +43,13 @@ public class DyamandAdapter implements EventListener {
 	private EventAdmin ea;
 	
     private final Map<Object, ServiceRegistration> services = new HashMap<>();
-	private final List<ServiceAdapter> adapters = new ArrayList<>();
+	private final List<ServiceAdapter> adapters = Collections.synchronizedList(new ArrayList<>());
 	
 	@Activate
 	public void activate(BundleContext ctx){
 		instance = this;
 		context = ctx;
 		gatewayId = UUID.fromString(context.getProperty(Constants.FRAMEWORK_UUID)); // get frameworkId
-		
-		// for now fix code all adapters... use service mechanism for this?
-		adapters.add(new ButtonAdapter());
-		adapters.add(new ContactSensorAdapter());
-		adapters.add(new LampAdapter());
-		adapters.add(new LightSensorAdapter());
-		adapters.add(new MotionSensorAdapter());
-		adapters.add(new TemperatureSensorAdapter());
-		adapters.add(new V4L2CameraAdapter(context));
-
 	}
 	
 	@Deactivate
@@ -90,35 +76,37 @@ public class DyamandAdapter implements EventListener {
 	}
 
     private void servicePojoOnline(final ServicePOJO servicePOJO) {
-	// translate sensor to IoT types
-		for(ServiceAdapter adapter : adapters){
-			try {
-			    // ADAPT!
-			    final Object so = adapter.getServiceObject(servicePOJO);
-
-				final String device = servicePOJO.getService().getOriginalDevice().getName().toString();
-				final String service = servicePOJO.getService().getName().toString();
-				final UUID thingId = UUID.nameUUIDFromBytes((device+service).getBytes());
-				
-				final Dictionary<String, Object> properties = new Hashtable<String, Object>();
-				properties.put(Thing.ID, thingId);
-				properties.put(Thing.DEVICE, device);
-				properties.put(Thing.SERVICE, service);
-				properties.put(Thing.GATEWAY, gatewayId);
-			    // Add some AIOLOS stuff
-			    properties.put("aiolos.instance.id", servicePOJO
-				    .getService().getId().toString());
-			    properties.put("aiolos.combine", "*");
-
-			    final ServiceRegistration registration = this.context
-				    .registerService(adapter.getTargets(), so,
-					    properties);
-			    this.services.put(servicePOJO, registration);
-			    
-			    this.notifyOnline(thingId, device, service, adapter.getType());
-			} catch (final Exception e) {
+    	// translate sensor to IoT types
+    	synchronized(adapters){
+			for(ServiceAdapter adapter : adapters){
+				try {
+				    // ADAPT!
+				    final Object so = adapter.getServiceObject(servicePOJO);
+	
+					final String device = servicePOJO.getService().getOriginalDevice().getName().toString();
+					final String service = servicePOJO.getService().getName().toString();
+					final UUID thingId = UUID.nameUUIDFromBytes((device+service).getBytes());
+					
+					final Dictionary<String, Object> properties = new Hashtable<String, Object>();
+					properties.put(Thing.ID, thingId);
+					properties.put(Thing.DEVICE, device);
+					properties.put(Thing.SERVICE, service);
+					properties.put(Thing.GATEWAY, gatewayId);
+				    // Add some AIOLOS stuff
+				    properties.put("aiolos.instance.id", servicePOJO
+					    .getService().getId().toString());
+				    properties.put("aiolos.combine", "*");
+	
+				    final ServiceRegistration registration = this.context
+					    .registerService(adapter.getTargets(), so,
+						    properties);
+				    this.services.put(servicePOJO, registration);
+				    
+				    this.notifyOnline(thingId, device, service, adapter.getType());
+				} catch (final Exception e) {
+				}
 			}
-		}
+    	}
     }
 
 	private void servicePojoOffline(final ServicePOJO servicePOJO) {
@@ -145,13 +133,15 @@ public class DyamandAdapter implements EventListener {
 		final String stateVariable = stateChange.getStateVariable().toString();
 		final Object value = stateChange.getValue();
 
-		for (final ServiceAdapter adapter : this.adapters) {
-			try {
-				final StateVariable translated = adapter
-						.translateStateVariable(stateVariable, value);
-				this.notifiyStateChange(thingId, translated.getName(), translated.getValue());
-				
-			} catch (final Exception e) {
+		synchronized(adapters){
+			for (final ServiceAdapter adapter : this.adapters) {
+				try {
+					final StateVariable translated = adapter
+							.translateStateVariable(stateVariable, value);
+					this.notifiyStateChange(thingId, translated.getName(), translated.getValue());
+					
+				} catch (final Exception e) {
+				}
 			}
 		}
 	}
@@ -205,5 +195,15 @@ public class DyamandAdapter implements EventListener {
 	@Reference
 	void setEventAdmin(EventAdmin ea){
 		this.ea = ea;
+	}
+	
+	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
+			policy=ReferencePolicy.DYNAMIC)
+	public void addServiceAdapter(ServiceAdapter sa){
+		adapters.add(sa);
+	}
+	
+	public void removeServiceAdapter(ServiceAdapter sa){
+		adapters.remove(sa);
 	}
 }
