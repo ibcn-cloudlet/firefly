@@ -7,7 +7,7 @@
 		console.error(msg);
 	}
 	
-	var FIREFLY = angular.module('be.iminds.iot.firefly', ['ui.bootstrap','ngRoute','ngResource','enJsonrpc','enEasse','be.iminds.iot.repository']);
+	var FIREFLY = angular.module('be.iminds.iot.firefly', ['ui.bootstrap','ngRoute','ngResource','enJsonrpc','enEasse','be.iminds.iot.repository','be.iminds.iot.firefly.actions']);
 	
 	FIREFLY.config(function($routeProvider, en$jsonrpcProvider) {
 		en$jsonrpcProvider.setNotification({
@@ -85,7 +85,7 @@
 	});
 	
 	
-	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc, repository) {
+	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc, repository, actions) {
 		// fill things map using repository REST endpoint
 		$scope.things = {};
 		$scope.locations = {};
@@ -99,15 +99,6 @@
 			}
 		});
 
-		// connect to firefly jsonrpc endpoint for actions
-		$scope.ff = {};
-		en$jsonrpc.endpoint("be.iminds.iot.firefly").then(
-				function(ff){
-					$scope.ff = ff;
-				}
-		);
-		  
-		  
 		// listeners for events
 		$scope.online = function(event) {
 			repository.get({ id: event['be.iminds.iot.thing.id'] }, function(thing) {
@@ -151,7 +142,7 @@
 		// action callback
 		$scope.action = function(id){
 			console.log("ACTION "+id)
-			$scope.ff.action(id, $scope.things[id].type);
+			actions.action(id, $scope.things[id].type);
 		};
 		
 		$scope.change = function(id){
