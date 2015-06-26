@@ -19,7 +19,7 @@ public interface Camera extends Thing {
     public final static String STATE = "be.iminds.iot.thing.camera.state";
 
     public static enum State {
-    	OFF, ON;
+    	OFF, RECORDING;
     }
 
     public static enum Format {
@@ -39,6 +39,11 @@ public interface Camera extends Thing {
      * @return state of the camera
      */
     public State getState();
+    
+    /**
+     * Return boolean if the camera is on
+     */
+    public boolean isOn();
 
     /**
      * Get the width of the frames the camera is fetching

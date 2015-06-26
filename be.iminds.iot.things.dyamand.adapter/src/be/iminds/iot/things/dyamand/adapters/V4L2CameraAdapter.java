@@ -84,7 +84,6 @@ public class V4L2CameraAdapter implements ServiceAdapter {
 
 	@Override
 	public Object getServiceObject(final Object source) throws Exception {
-		System.out.println("ADAPT TO CAMERA? "+ source.getClass().getName());
 		if (!(source instanceof org.dyamand.v4l2.api.V4L2CameraServicePOJO)) {
 			throw new Exception("Cannot translate object!");
 		}
@@ -119,7 +118,12 @@ public class V4L2CameraAdapter implements ServiceAdapter {
 
 			@Override
 			public State getState() {
-				return pojo.isOn() ? State.ON : State.OFF;
+				return pojo.isOn() ? State.RECORDING : State.OFF;
+			}
+			
+			@Override
+			public boolean isOn(){
+				return pojo.isOn();
 			}
 
 			@Override
@@ -147,7 +151,7 @@ public class V4L2CameraAdapter implements ServiceAdapter {
 		StateVariable translated;
 		if (variable.equals(V4L2CameraServiceType.CAMERA_STATE.toString())) {
 			final boolean on = (Boolean) value;
-			final Camera.State translatedValue = on ? Camera.State.ON
+			final Camera.State translatedValue = on ? Camera.State.RECORDING
 					: Camera.State.OFF;
 			translated = new StateVariable(Camera.STATE, translatedValue);
 		} else {
