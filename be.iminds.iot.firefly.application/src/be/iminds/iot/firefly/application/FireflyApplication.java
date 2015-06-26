@@ -1,6 +1,14 @@
 package be.iminds.iot.firefly.application;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 
 import osgi.enroute.capabilities.AngularUIWebResource;
 import osgi.enroute.capabilities.AngularWebResource;
@@ -23,13 +31,32 @@ import osgi.enroute.jsonrpc.api.JSONRPC;
 @Component(name="be.iminds.iot.firefly",property=JSONRPC.ENDPOINT+"=be.iminds.iot.firefly")
 public class FireflyApplication implements JSONRPC {
 
-	public void action(String thingId){
-		System.out.println("DO ACTION FOR THING "+thingId);
+	private Map<String, Actions> dispatchers = Collections.synchronizedMap(new HashMap<String, Actions>());
+	
+	public void action(UUID thingId, String type, String... params){
+		Actions dispatcher = dispatchers.get(type);
+		if(dispatcher!=null){
+			dispatcher.action(thingId, params);
+		}
 	}
 
 	@Override
 	public Object getDescriptor() throws Exception {
-		// TODO Auto-generated method stub
+		// JSONRPC getDescriptor() ... not used atm
 		return null;
 	}
+	
+	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
+			policy=ReferencePolicy.DYNAMIC)
+	public void addActions(Actions a){
+		dispatchers.put(a.getType(), a);
+	}
+	
+	public void removeActions(Actions a){
+		Actions old = dispatchers.get(a.getType());
+		if(old==a){
+			dispatchers.remove(a);
+		}
+	}
+
 }

@@ -12,8 +12,10 @@ Bundle-Description: \
 #	osgi.enroute.webresource;resource:List<String>="jsonrpc.js";priority:Long=100;filter:="(&(osgi.enroute.webresource=/osgi/enroute/jsonrpc)(&(version>=1.1.1)(!(version>=2.0.0))))"
 
 
-Private-Package:  \
-	be.iminds.iot.firefly.application
+Private-Package: \
+	be.iminds.iot.firefly.application,\
+	be.iminds.iot.firefly.application.actions
+	
 	
 -includeresource: \
 	{readme.md}, \
@@ -25,7 +27,8 @@ Private-Package:  \
 -buildpath: \
 	osgi.enroute.logger.simple.provider,\
 	osgi.enroute.web.simple.provider;version=1.2,\
-	osgi.enroute.base.api;version=1.4
+	osgi.enroute.base.api;version=1.4,\
+	be.iminds.iot.things.api;version=latest
 	
 Bundle-Vendor: iMinds IoT Lab
 Export-Package: osgi.enroute.jsonrpc.api

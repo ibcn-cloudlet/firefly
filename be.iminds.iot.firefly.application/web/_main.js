@@ -4,7 +4,7 @@
 	'use strict';
 	
 	function error(msg) {
-		alert(msg);
+		console.error(msg);
 	}
 	
 	var FIREFLY = angular.module('be.iminds.iot.firefly', ['ui.bootstrap','ngRoute','ngResource','enJsonrpc','enEasse','be.iminds.iot.repository']);
@@ -93,7 +93,7 @@
 		
 		repository.query(function(things){
 			for(var i in things){
-				console.log(things[i].id);
+				console.log(JSON.stringify(things[i]));
 				$scope.things[things[i].id] = things[i];
 				$scope.locations[things[i].location] = things[i].location;
 			}
@@ -151,7 +151,7 @@
 		// action callback
 		$scope.action = function(id){
 			console.log("ACTION "+id)
-			$scope.ff.action(id);
+			$scope.ff.action(id, $scope.things[id].type);
 		};
 		
 		$scope.change = function(id){
@@ -191,7 +191,6 @@
 			modalInstance.result.then(function(thing){
 				$scope.things[thing.id] = thing;
 				$scope.locations[thing.location] = thing.location;
-				//$scope.$apply();
 			});
 		};
 	});
