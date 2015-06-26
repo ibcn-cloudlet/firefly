@@ -4,7 +4,16 @@
             <h3 class="modal-title">{{thing.name}}</h3>
         </div>
         <div class="modal-body">
-	 		<p> This is a details dialog for Camera {{thing.id}}</p>
+        	<div class="row">
+        		<div class="column col-sm-8">
+        			<img src="/be.iminds.iot.firefly/camera.mjpeg?id={{thing.id}}" width=100%>
+        		</div>
+        		<div class="column col-sm-4">
+        			<button class="btn" ng-click="configure()">Apply</button>
+        		</div>
+        	</div>
+        	
+
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" ng-click="ok()">OK</button>

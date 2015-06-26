@@ -24,7 +24,8 @@ Implementation-BuildNumber: 0
 	org.dyamand.api,\
 	be.iminds.iot.things.api;version=latest,\
 	org.dyamand.plugins.types.sensors,\
-	org.dyamand.plugins.support.sdp.v4l2
+	org.dyamand.plugins.support.sdp.v4l2,\
+	biz.aQute.bndlib;version=3.0
 
 -includeresource: {readme.md}
 
@@ -49,3 +50,6 @@ Import-Package: \
 	org.dyamand.sensors.*;resolution:=optional,\
 	org.dyamand.v4l2;resolution:=optional,\
 	*
+	
+Conditional-Package: aQute.lib*
+	

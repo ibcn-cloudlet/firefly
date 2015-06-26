@@ -2,7 +2,9 @@ package be.iminds.iot.things.dyamand.adapters;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.dyamand.v4l2.api.V4L2CameraFormat;
@@ -14,6 +16,7 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 
+import aQute.lib.collections.MultiMap;
 import be.iminds.iot.things.api.camera.Camera;
 import be.iminds.iot.things.api.camera.CameraListener;
 import be.iminds.iot.things.dyamand.adapter.ServiceAdapter;
@@ -23,52 +26,55 @@ import be.iminds.iot.things.dyamand.adapter.StateVariable;
 public class V4L2CameraAdapter implements ServiceAdapter {
 
 	private final Map<UUID, V4L2CameraServicePOJO> cameras = Collections.synchronizedMap(new HashMap<UUID, V4L2CameraServicePOJO>());
-	private final Map<CameraListener, V4L2CameraListener> listeners = Collections.synchronizedMap(new HashMap<>());
+	private final MultiMap<CameraListener, V4L2CameraListener> v4l2listeners = new MultiMap<>(); // map cameralistener to v4l2listeners
+	private final Map<CameraListener, UUID> listeners = new HashMap<>(); // keep all cameralisteners and their target UUID
 	
 	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
 			policy=ReferencePolicy.DYNAMIC)
 	public void addCameraListener(CameraListener listener, Map<String, Object> properties){
-		if (listener != null) {
+		UUID target = null;
+	    String s = (String) properties.get(CameraListener.CAMERA_ID);
+	    if(s!=null){
+	    	target = UUID.fromString(s);
+	    }
+	    listeners.put(listener, target);
+	    
+	    if(target!=null){
+	    	// add only to target camera
+	    	addV4L2CameraListener(listener, target);
+	    } else {
+	    	// add to all cameras
+	    	for(UUID cameraId : this.cameras.keySet()){
+		    	addV4L2CameraListener(listener, cameraId);
+	    	}
+	    }
+	}
+	
+	private void addV4L2CameraListener(final CameraListener listener, final UUID cameraId){
+		V4L2CameraServicePOJO c = cameras.get(cameraId);
+		if(c!=null){
 			V4L2CameraListener l = new V4L2CameraListener() {
 				@Override
 				public void nextFrame(int f, byte[] data) {
-					listener.nextFrame(Camera.Format.values()[f], data);
+					listener.nextFrame(cameraId, Camera.Format.values()[f], data);
 				}
 			};
-			listeners.put(listener, l);
+			v4l2listeners.add(listener, l);
 			
-			// check target, else add as listener for all cameras
-		    final String target = (String) properties.get(CameraListener.CAMERA_ID);
-		    if(target!=null){
-			    final UUID id = UUID.fromString(target);
-				final V4L2CameraServicePOJO c = V4L2CameraAdapter.this.cameras.get(id);
-			    if (c != null) {
-					c.addListener(l);
-			    }
-		    } else {
-		    	for (final V4L2CameraServicePOJO c : V4L2CameraAdapter.this.cameras
-						.values()) {
-					    c.addListener(l);
-				}
-		    }
+			c.addListener(l);
 		}
 	}
 	
 	public void removeCameraListener(CameraListener listener, Map<String, Object> properties){
-		V4L2CameraListener l = listeners.remove(listener);
-    	
-		final String target = (String) properties.get(CameraListener.CAMERA_ID);
-		if (target != null) {
-		    final UUID id = UUID.fromString(target);
-		    final V4L2CameraServicePOJO c = V4L2CameraAdapter.this.cameras.get(id);
-		    if (c != null) {
-		    	c.removeListener(l);
-		    }
-		} else {
-		    for (final V4L2CameraServicePOJO c : V4L2CameraAdapter.this.cameras.values()) {
-		    	c.removeListener(l);
-		    }
-		}
+		List<V4L2CameraListener> ls = v4l2listeners.remove(listener);
+		
+	    for(Entry<UUID, V4L2CameraServicePOJO> e : V4L2CameraAdapter.this.cameras.entrySet()){
+			final V4L2CameraServicePOJO c = e.getValue();
+			for(V4L2CameraListener l : ls)
+				c.removeListener(l);
+	    }
+	    
+		listeners.remove(listener);
 	}
 	
 	@Override
@@ -88,7 +94,24 @@ public class V4L2CameraAdapter implements ServiceAdapter {
 			throw new Exception("Cannot translate object!");
 		}
 		final org.dyamand.v4l2.api.V4L2CameraServicePOJO pojo = (org.dyamand.v4l2.api.V4L2CameraServicePOJO) source;
-		this.cameras.put(pojo.getService().getOriginalDevice().getId(), pojo);
+		// generate same UUID as the adapter does to match listener target UUIDs
+		final String device = pojo.getService().getOriginalDevice().getName().toString();
+		final String service = pojo.getService().getName().toString();
+		final UUID id = UUID.nameUUIDFromBytes((device+service).getBytes());
+		this.cameras.put(id, pojo);
+
+		// add all existing listeners that match the new camera
+		for(Entry<CameraListener, UUID> e : listeners.entrySet()){
+			if(e.getValue()!=null){
+				// check if this is target
+				if(e.getValue().equals(id)){
+					addV4L2CameraListener(e.getKey(), id);
+				}
+			} else {
+				addV4L2CameraListener(e.getKey(), id);
+			}
+		}
+		
 		return new Camera() {
 
 			@Override
