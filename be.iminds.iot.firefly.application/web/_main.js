@@ -156,7 +156,7 @@
 			var thing = $scope.things[id];
 		
 			var modalInstance = $modal.open({
-				templateUrl: thing.type+'Content.html',
+				templateUrl: 'types/'+thing.type+'Content.html',
 				controller: thing.type+'Ctrl',
 				size: 'lg',
 				resolve: {
