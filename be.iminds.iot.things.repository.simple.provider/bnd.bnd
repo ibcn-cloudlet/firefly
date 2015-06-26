@@ -6,13 +6,17 @@
 Bundle-Version:					1.0.0.${tstamp}
 Bundle-Description: Simple Things Repository provider
 
-Private-Package:  \
-	be.iminds.iot.things.repository.simple.provider
+Private-Package: be.iminds.iot.things.repository.simple.provider
+
+Conditional-Package: aQute.lib*
+	
 	
 -buildpath: \
 	osgi.enroute.base.api;version=1.0,\
 	biz.aQute.junit,\
-	be.iminds.iot.things.repository.api;version=latest
+	be.iminds.iot.things.repository.api;version=latest,\
+	be.iminds.iot.things.api;version=latest,\
+	biz.aQute.bndlib;version=3.0
 
 -includeresource: {readme.md}
 
