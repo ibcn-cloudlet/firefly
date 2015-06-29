@@ -6,9 +6,9 @@ import be.iminds.iot.things.api.Thing;
 
 public interface Lamp extends Thing {
 
-    public final static String STATE = "be.iminds.iot.thing.light.state";
-    public final static String LEVEL = "be.iminds.iot.thing.light.level";
-    public final static String COLOR = "be.iminds.iot.thing.light.color";
+    public final static String STATE = "be.iminds.iot.thing.lamp.state";
+    public final static String LEVEL = "be.iminds.iot.thing.lamp.level";
+    public final static String COLOR = "be.iminds.iot.thing.lamp.color";
 
     
     public static enum State {
