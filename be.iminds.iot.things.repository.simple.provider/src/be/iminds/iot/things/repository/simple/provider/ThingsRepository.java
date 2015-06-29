@@ -2,11 +2,12 @@ package be.iminds.iot.things.repository.simple.provider;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.osgi.framework.BundleContext;
@@ -16,8 +17,8 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-import aQute.lib.json.JSONCodec;
 import aQute.lib.converter.TypeReference;
+import aQute.lib.json.JSONCodec;
 import be.iminds.iot.things.api.Thing;
 import be.iminds.iot.things.repository.api.Repository;
 import be.iminds.iot.things.repository.api.ThingDTO;
@@ -31,6 +32,7 @@ public class ThingsRepository implements Repository, EventHandler {
 	private final static JSONCodec json = new JSONCodec();
 	
 	private Map<UUID, ThingDTO> things = new HashMap<>();
+	private Set<ThingDTO> online = new HashSet<>();
 	
 	
 	@Activate
@@ -59,8 +61,9 @@ public class ThingsRepository implements Repository, EventHandler {
 
 	@Override
 	public Collection<ThingDTO> getThings() {
+		// only return online things
 		System.out.println("LIST "+things.values().size());
-		return Collections.unmodifiableCollection(new ArrayList(things.values()));
+		return Collections.unmodifiableCollection(new ArrayList(online));
 	}
 
 	@Override
@@ -71,10 +74,10 @@ public class ThingsRepository implements Repository, EventHandler {
 
 	@Override
 	public void handleEvent(Event event) {
-		// TODO Auto-generated method stub
 		UUID id = (UUID) event.getProperty(Thing.ID);
-		if(!things.containsKey(id)){
-			ThingDTO thing = new ThingDTO();
+		ThingDTO thing = things.get(id);
+		if(thing==null){
+			thing = new ThingDTO();
 			thing.id = id;
 			thing.gateway = (UUID) event.getProperty(Thing.GATEWAY);
 			thing.device = (String) event.getProperty(Thing.DEVICE);
@@ -84,9 +87,15 @@ public class ThingsRepository implements Repository, EventHandler {
 			
 			things.put(id, thing);
 		}
+		
+		// TODO implement more correct check
+		if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
+			online.add(thing);
+		} else if(event.getTopic().startsWith("be/iminds/iot/thing/offline/")){
+			online.remove(thing);
+		}
 
 		// TODO keep all events
-		// TODO keep track of online/offline thing status
 	}
 
 }
