@@ -132,8 +132,17 @@
 				var state = event['state.value'];
 				if(angular.isString(state)){
 					$scope.things[event['thing.id']].state = state;
+				} else if(angular.isNumber(state)) {
+					if(state !== (state|0)) {
+						// float, format nicely
+						var formatted = parseFloat(state).toFixed(2)+" "+state.unit;
+						$scope.things[event['thing.id']].state = formatted;
+					} else {
+						// int
+						$scope.things[event['thing.id']].state = state;
+					}
 				} else {
-					// if not string, this is sensor value, auto format
+					// sensor value, format nicely
 					var formatted = parseFloat(state.value).toFixed(2)+" "+state.unit;
 					$scope.things[event['thing.id']].state = formatted;
 				}
