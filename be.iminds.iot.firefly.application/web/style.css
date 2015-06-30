@@ -149,7 +149,12 @@ body {
 	font-size: 200%;
 	font-style: bold;
 	align: center;
+	line-height: 1.5em;
+	height: 3em;
+	overflow: hidden;
+	word-break: keep-all;
 } 
+
 .state {
 	font-size: 130%;
 	text-transform: uppercase;
