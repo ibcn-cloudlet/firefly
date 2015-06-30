@@ -1,9 +1,16 @@
 package be.iminds.iot.things.repository.simple.provider;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -34,22 +41,40 @@ public class ThingsRepository implements Repository, EventHandler {
 	private Map<UUID, ThingDTO> things = new HashMap<>();
 	private Set<UUID> online = new HashSet<>();
 	
+	private Writer logger;
 	
 	@Activate
 	public void activate(BundleContext context){
+		// load thing dtos from file
 		try {
 			things = (Map<UUID, ThingDTO>) json.dec().from(new File("things.txt")).get(new TypeReference<Map<UUID,ThingDTO>>(){});
 		} catch(Exception e){
-			e.printStackTrace();
+			System.err.println("Failed to load thing descriptions from file");
+		}
+		
+		// open file output to log events
+		try {
+			logger = new PrintWriter(new BufferedWriter(new FileWriter(new File("log.txt"), true)));
+			logger.write(">> System online "+new Date()+"\n");
+			logger.flush();
+		} catch (IOException e) {
 		}
 	}
 	
 	@Deactivate
 	public void deactivate(){
+		// close event logging file
+		try {
+			logger.close();
+		} catch (IOException ioe) {
+			// ignore
+		}
+		
+		// write thing dtos to file
 		try {
 			json.enc().indent("\t").to(new File("things.txt")).put(things).close();
 		} catch(Exception e){
-			e.printStackTrace();
+			System.err.println("Failed to write thing descriptions to file");
 		}
 	}
 	
@@ -104,7 +129,47 @@ public class ThingsRepository implements Repository, EventHandler {
 			thing.state.put(name, val);
 		}
 
-		// TODO log all events
+		logEvent(event);
+	}
+	
+	private void logEvent(Event event){
+		String type = "change";
+		if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
+			type = "online";
+		} else if(event.getTopic().startsWith("be/iminds/iot/thing/offline/")){
+			type = "offline";
+		}
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append(event.getProperty("timestamp"));
+		builder.append("\t");
+		builder.append(event.getProperty(Thing.ID));
+		builder.append("\t");
+		builder.append(event.getProperty(Thing.GATEWAY));
+		builder.append("\t");
+		builder.append(type);
+
+		if(type.equals("online")){
+			builder.append("\t");
+			builder.append(event.getProperty(Thing.DEVICE));
+			builder.append("\t");
+			builder.append(event.getProperty(Thing.SERVICE));
+			builder.append("\t");
+			builder.append(event.getProperty(Thing.TYPE));
+		} else if(type.equals("change")){
+			builder.append("\t");
+			builder.append(event.getProperty(Thing.STATE_VAR));
+			builder.append("\t");
+			builder.append(event.getProperty(Thing.STATE_VAL));
+		}
+
+		try {
+			builder.append("\n");
+			logger.write(builder.toString());
+			logger.flush();
+		} catch(IOException e){
+			// ignore
+		}
 	}
 
 }
