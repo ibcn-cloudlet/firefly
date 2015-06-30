@@ -107,7 +107,7 @@
 				// initialize highlight
 				for(name in things[i].state){
 					if(name==='state' || Object.keys(things[i].state).length==1){
-						$scope.things[things[i].id].highlight = things[i].state[name];
+						$scope.things[things[i].id].highlight = $scope.formatState(things[i].state[name]);
 					}
 				}
 				
@@ -141,29 +141,13 @@
 					$scope.things[event['thing.id']].state = {};
 				}
 			
-				var val = event['state.value'];
 				var name = event['state.variable'];
-
-				if(angular.isString(val)){
-					$scope.things[event['thing.id']].state[name] = val;
-				} else if(angular.isNumber(val)) {
-					if(val !== (val|0)) {
-						// float, format nicely
-						var formatted = parseFloat(val).toFixed(2)+" "+val.unit;
-						$scope.things[event['thing.id']].state[name] = formatted;
-					} else {
-						// int
-						$scope.things[event['thing.id']].state[name] = val;
-					}
-				} else {
-					// sensor value, format nicely
-					var formatted = parseFloat(val.value).toFixed(2)+" "+val.unit;
-					$scope.things[event['thing.id']].state[name] = formatted;
-				}
+				var val = event['state.value'];
+				$scope.things[event['thing.id']].state[name] = val;
 				
 				// set highlight to "state" variabele, or anything in case only 1 state element
 				if(name==='state' || Object.keys($scope.things[event['thing.id']].state).length==1){
-					$scope.things[event['thing.id']].highlight = $scope.things[event['thing.id']].state[name];
+					$scope.things[event['thing.id']].highlight = $scope.formatState($scope.things[event['thing.id']].state[name]);
 				}
 				
 				$scope.$apply();
@@ -219,6 +203,26 @@
 				$scope.locations[thing.location] = thing.location;
 			});
 		};
+		
+		// format state value
+		$scope.formatState = function(val){
+			var formatted;
+			if(angular.isString(val)){
+				formatted = val;
+			} else if(angular.isNumber(val)) {
+				if(val !== (val|0)) {
+					// float, format nicely
+					formatted = parseFloat(val).toFixed(2)+" "+val.unit;
+				} else {
+					// int
+					formatted = val;
+				}
+			} else {
+				// sensor value, format nicely
+				formatted = parseFloat(val.value).toFixed(2)+" "+val.unit;
+			}
+			return formatted;
+		}
 	});
 
 })();
