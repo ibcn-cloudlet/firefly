@@ -48,8 +48,11 @@
 	          			 on-longclick="dialog(id)" on-click="action(id)" on-doubleclick="update(id)"
 	          			 id="{{thing.id}}" class="thing col-xs-12 col-sm-6 col-md-4 col-lg-2 {{thing.type}}">
 						<div class="row vertical-align">
-							<div class="col-xs-6 icon icon-{{thing.type}} {{thing.state | lowercase}}"></div>
-							<div class="col-xs-6 state">{{thing.state}}</div>
+							<div class="col-xs-6 icon icon-{{thing.type}} {{thing.highlight | lowercase}}"></div>
+							<div class="state">{{thing.highlight}}</div>
+<!-- 							<div class="col-xs-6"> -->
+<!-- 								<div ng-repeat="(name, val) in thing.state" class="state">{{val}}</div> -->
+<!-- 							</div> -->
 						</div>
 						<div class="name">{{thing.name}}</div>
 					</div>

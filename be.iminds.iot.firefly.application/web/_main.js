@@ -129,23 +129,35 @@
 		$scope.change = function(event) {
 			// TODO which state variable to show?
 			if( $scope.things[event['thing.id']] != undefined){
-				var state = event['state.value'];
-				if(angular.isString(state)){
-					$scope.things[event['thing.id']].state = state;
-				} else if(angular.isNumber(state)) {
-					if(state !== (state|0)) {
+				if($scope.things[event['thing.id']].state === undefined){
+					$scope.things[event['thing.id']].state = {};
+				}
+			
+				var val = event['state.value'];
+				var name = event['state.variable'];
+
+				if(angular.isString(val)){
+					$scope.things[event['thing.id']].state[name] = val;
+				} else if(angular.isNumber(val)) {
+					if(val !== (val|0)) {
 						// float, format nicely
-						var formatted = parseFloat(state).toFixed(2)+" "+state.unit;
-						$scope.things[event['thing.id']].state = formatted;
+						var formatted = parseFloat(val).toFixed(2)+" "+val.unit;
+						$scope.things[event['thing.id']].state[name] = formatted;
 					} else {
 						// int
-						$scope.things[event['thing.id']].state = state;
+						$scope.things[event['thing.id']].state[name] = val;
 					}
 				} else {
 					// sensor value, format nicely
-					var formatted = parseFloat(state.value).toFixed(2)+" "+state.unit;
-					$scope.things[event['thing.id']].state = formatted;
+					var formatted = parseFloat(val.value).toFixed(2)+" "+val.unit;
+					$scope.things[event['thing.id']].state[name] = formatted;
 				}
+				
+				// set highlight to "state" variabele, or anything in case only 1 state element
+				if(name==='state' || Object.keys($scope.things[event['thing.id']].state).length==1){
+					$scope.things[event['thing.id']].highlight = $scope.things[event['thing.id']].state[name];
+				}
+				
 				$scope.$apply();
 			}
 		};
