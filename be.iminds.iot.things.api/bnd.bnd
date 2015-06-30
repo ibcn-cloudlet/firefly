@@ -18,9 +18,6 @@ Export-Package: \
 	be.iminds.iot.things.api.sensor.temperature
 
 
-Require-Capability: \
-	compile-only
-
 -buildpath: \
 	osgi.enroute.base.api;version=1.0
 	
