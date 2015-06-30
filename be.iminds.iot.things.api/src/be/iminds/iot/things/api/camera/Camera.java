@@ -16,7 +16,7 @@ import be.iminds.iot.things.api.Thing;
  */
 public interface Camera extends Thing {
 
-    public final static String STATE = "be.iminds.iot.thing.camera.state";
+    public final static String STATE = "state";
 
     public static enum State {
     	OFF, RECORDING;

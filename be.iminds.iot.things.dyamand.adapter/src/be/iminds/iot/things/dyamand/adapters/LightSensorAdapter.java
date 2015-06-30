@@ -49,7 +49,7 @@ public class LightSensorAdapter implements ServiceAdapter {
 		if (variable.equals(LightSensorServiceType.LIGHT_LEVEL_STATE_VAR.toString())) {
 			final org.dyamand.sensors.environment.LightLevel l = (org.dyamand.sensors.environment.LightLevel) value;
 			final LightLevel translatedValue = new LightLevel(l.getLux());
-			translated = new StateVariable(LightSensor.LIGHT, translatedValue);
+			translated = new StateVariable(LightSensor.LIGHTLEVEL, translatedValue);
 		} else {
 			throw new Exception("Could not translate state variable!");
 		}

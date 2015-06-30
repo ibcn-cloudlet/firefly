@@ -108,12 +108,12 @@
 
 		// listeners for events
 		$scope.online = function(event) {
-			repository.get({ id: event['be.iminds.iot.thing.id'] }, function(thing) {
+			repository.get({ id: event['thing.id'] }, function(thing) {
 				if(angular.equals({}, thing)){
-					thing.id = event['be.iminds.iot.thing.id'];
-					thing.name = event['be.iminds.iot.thing.service'];
-					thing.type = event['be.iminds.iot.thing.type'];
-					thing.gateway = event['be.iminds.iot.thing.gateway'];
+					thing.id = event['thing.id'];
+					thing.name = event['thing.service'];
+					thing.type = event['thing.type'];
+					thing.gateway = event['thing.gateway'];
 				} 
 				$scope.things[thing.id] = thing;
 				$scope.locations[thing.location] = thing.location;
@@ -122,20 +122,20 @@
 		};	
 			
 		$scope.offline = function(event) {
-			delete $scope.things[event['be.iminds.iot.thing.id']];
+			delete $scope.things[event['thing.id']];
 			$scope.$apply();
 		};
 		  
 		$scope.change = function(event) {
 			// TODO which state variable to show?
-			if( $scope.things[event['be.iminds.iot.thing.id']] != undefined){
-				var state = event['be.iminds.iot.thing.state.value'];
+			if( $scope.things[event['thing.id']] != undefined){
+				var state = event['state.value'];
 				if(angular.isString(state)){
-					$scope.things[event['be.iminds.iot.thing.id']].state = state;
+					$scope.things[event['thing.id']].state = state;
 				} else {
 					// if not string, this is sensor value, auto format
 					var formatted = parseFloat(state.value).toFixed(2)+" "+state.unit;
-					$scope.things[event['be.iminds.iot.thing.id']].state = formatted;
+					$scope.things[event['thing.id']].state = formatted;
 				}
 				$scope.$apply();
 			}
@@ -176,7 +176,6 @@
 		  
 		// update thing dialog
 		$scope.updateThing = function(thing){
-			console.log("UPDATE THING "+JSON.stringify(thing));
 			var modalInstance = $modal.open({
 				templateUrl: 'updateThingContent.html',
 				controller: 'updateThingCtrl',
