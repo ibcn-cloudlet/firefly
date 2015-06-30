@@ -152,9 +152,9 @@
 			actions.action(id, $scope.things[id].type);
 		};
 		
-		$scope.change = function(id){
-			console.log("CHANGE "+id);
-			$scope.changeThing($scope.things[id]);
+		$scope.update = function(id){
+			console.log("UPDATE "+id);
+			$scope.updateThing($scope.things[id]);
 		};
 		  
 		// thing details dialog
@@ -174,12 +174,12 @@
 			});
 		};
 		  
-		// new thing dialog
-		$scope.changeThing = function(thing){
-			console.log("CHANGE THING "+JSON.stringify(thing));
+		// update thing dialog
+		$scope.updateThing = function(thing){
+			console.log("UPDATE THING "+JSON.stringify(thing));
 			var modalInstance = $modal.open({
-				templateUrl: 'changeThingContent.html',
-				controller: 'changeThingCtrl',
+				templateUrl: 'updateThingContent.html',
+				controller: 'updateThingCtrl',
 				resolve: {
 					thing: function(){
 						return thing;
