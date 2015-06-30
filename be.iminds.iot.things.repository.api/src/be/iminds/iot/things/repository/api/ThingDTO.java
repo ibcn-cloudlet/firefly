@@ -1,5 +1,6 @@
 package be.iminds.iot.things.repository.api;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class ThingDTO {
@@ -16,6 +17,8 @@ public class ThingDTO {
 	
 	// Type represents the functionality (interface) of this thing
 	public String type;		/* type of the device */
+	
+	public Map<String, Object> state; /* last known state variables */
 	
 	// TODO do we need to extend this further or have separate DTOs to
 	// - keep stuff about the state? online/offline/lastonline/...?

@@ -90,14 +90,22 @@ public class ThingsRepository implements Repository, EventHandler {
 			things.put(id, thing);
 		}
 		
-		// TODO implement more correct check
 		if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
 			online.add(thing);
 		} else if(event.getTopic().startsWith("be/iminds/iot/thing/offline/")){
 			online.remove(thing);
+		} else if(event.getTopic().startsWith("be/iminds/iot/thing/change/")){
+			
+			String name = (String) event.getProperty(Thing.STATE_VAR);
+			Object val = event.getProperty(Thing.STATE_VAL);
+			
+			if(thing.state == null){
+				thing.state = new HashMap<>();
+			}
+			thing.state.put(name, val);
 		}
 
-		// TODO keep all events
+		// TODO log all events
 	}
 
 }
