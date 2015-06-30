@@ -137,7 +137,7 @@
 		$scope.change = function(event) {
 			// TODO which state variable to show?
 			if( $scope.things[event['thing.id']] != undefined){
-				if($scope.things[event['thing.id']].state === undefined){
+				if($scope.things[event['thing.id']].state == null){
 					$scope.things[event['thing.id']].state = {};
 				}
 			
