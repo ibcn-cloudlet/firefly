@@ -50,7 +50,8 @@ public class LampAdapter implements ServiceAdapter {
 			translated = new StateVariable(Lamp.LEVEL, level);
 		} else if (variable.equals(LightServiceType.COLOR.toString())) {
 			final Color color = (Color) value;
-			translated = new StateVariable(Lamp.COLOR, color);
+			// convert to hex string instead of sending Color objects
+			translated = new StateVariable(Lamp.COLOR, "#"+Integer.toHexString(color.getRGB()).substring(2));
 		}
 		else {
 			throw new Exception("Could not translate state variable!");
