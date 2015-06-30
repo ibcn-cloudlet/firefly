@@ -32,7 +32,7 @@ public class ThingsRepository implements Repository, EventHandler {
 	private final static JSONCodec json = new JSONCodec();
 	
 	private Map<UUID, ThingDTO> things = new HashMap<>();
-	private Set<ThingDTO> online = new HashSet<>();
+	private Set<UUID> online = new HashSet<>();
 	
 	
 	@Activate
@@ -55,22 +55,21 @@ public class ThingsRepository implements Repository, EventHandler {
 	
 	@Override
 	public ThingDTO getThing(UUID id) {
-		System.out.println("GET "+id);
 		return things.get(id);
 	}
 
 	@Override
 	public Collection<ThingDTO> getThings() {
 		// only return online things
-		System.out.println("LIST "+things.values().size());
-		return Collections.unmodifiableCollection(new ArrayList(online));
-		//return Collections.unmodifiableCollection(new ArrayList(things.values()));
-		
+		ArrayList<ThingDTO> result = new ArrayList<>();
+		for(UUID id : online){
+			result.add(things.get(id));
+		}
+		return Collections.unmodifiableCollection(result);
 	}
 
 	@Override
 	public void putThing(ThingDTO thing) {
-		System.out.println("PUT");
 		things.put(thing.id, thing);
 	}
 
@@ -91,7 +90,7 @@ public class ThingsRepository implements Repository, EventHandler {
 		}
 		
 		if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
-			online.add(thing);
+			online.add(thing.id);
 		} else if(event.getTopic().startsWith("be/iminds/iot/thing/offline/")){
 			online.remove(thing);
 		} else if(event.getTopic().startsWith("be/iminds/iot/thing/change/")){
