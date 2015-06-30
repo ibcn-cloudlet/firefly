@@ -64,6 +64,8 @@ public class ThingsRepository implements Repository, EventHandler {
 		// only return online things
 		System.out.println("LIST "+things.values().size());
 		return Collections.unmodifiableCollection(new ArrayList(online));
+		//return Collections.unmodifiableCollection(new ArrayList(things.values()));
+		
 	}
 
 	@Override

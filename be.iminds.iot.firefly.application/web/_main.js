@@ -7,7 +7,14 @@
 		console.error(msg);
 	}
 	
-	var FIREFLY = angular.module('be.iminds.iot.firefly', ['ui.bootstrap','ngRoute','ngResource','enJsonrpc','enEasse','be.iminds.iot.repository','be.iminds.iot.firefly.actions']);
+	var FIREFLY = angular.module('be.iminds.iot.firefly', 
+			['ui.bootstrap',
+			 'ngRoute',
+			 'ngResource',
+			 'enJsonrpc',
+			 'enEasse',
+			 'be.iminds.iot.repository',
+			 'be.iminds.iot.firefly.actions']);
 	
 	FIREFLY.config(function($routeProvider, en$jsonrpcProvider) {
 		en$jsonrpcProvider.setNotification({

@@ -119,6 +119,7 @@ public class LampAdapter implements ServiceAdapter {
 
 		@Override
 		public void setColor(final Color c) {
+			System.out.println("SET COLOR "+c.toString());
 			this.source.setColor(c);
 		}
 

@@ -1,5 +1,6 @@
 package be.iminds.iot.firefly.application.actions;
 
+import java.awt.Color;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,16 @@ public class LampActions implements Actions {
 			if(params.length==0){
 				// default action - switch camera on/off
 				lamp.toggle();
+			} else {
+				switch(params[0]){
+				case "level":
+					lamp.setLevel(Integer.parseInt(params[1]));
+					break;
+				case "color":
+					Color c = Color.decode(params[1]);
+					lamp.setColor(c);
+					break;
+				}
 			}
 		}
 	}
