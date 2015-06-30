@@ -6,19 +6,25 @@
 	angular.module('be.iminds.iot.firefly').controller('lampCtrl', function ($scope, $modalInstance, actions, thing) {
 		  
 		  $scope.thing = thing;
-		  $scope.thing.color = "#0000FF";
-		 
+		  $scope.color = $scope.thing.state.color;
+		  $scope.level = $scope.thing.state.level;
 		  
-		  $scope.$watch('thing.color', function(newValue, oldValue) {
+		  // should not happen?
+		  if($scope.color === undefined)
+			  $scope.color = "#FFFFFF";
+		  if($scope.level === undefined)
+			  $scope.level = "100";
+		  
+		  $scope.$watch('color', function(newValue, oldValue) {
 			  console.log("COLOR! "+newValue);
 			  if(newValue!== undefined)
-				  actions.action($scope.thing.id, $scope.thing.type, "color", $scope.thing.color);
+				  actions.action($scope.thing.id, $scope.thing.type, "color", $scope.color);
 		  });
 		  
-		  $scope.$watch('thing.level', function(newValue, oldValue) {
+		  $scope.$watch('level', function(newValue, oldValue) {
 			  console.log("LEVEL!");
 			  if(newValue!== undefined)
-				  actions.action($scope.thing.id, $scope.thing.type, "level", $scope.thing.level);
+				  actions.action($scope.thing.id, $scope.thing.type, "level", $scope.level);
 		  });
 		  
 		  $scope.toggle = function(){
