@@ -36,6 +36,7 @@ import be.iminds.iot.things.api.Thing;
 public class DyamandAdapter implements EventListener {
 
 	// Hack to have bridge to Dyamand plugin system...
+	static Object sync = new Object();
 	static DyamandAdapter instance = null;
 	
 	private BundleContext context;
@@ -47,7 +48,10 @@ public class DyamandAdapter implements EventListener {
 	
 	@Activate
 	public void activate(BundleContext ctx){
-		instance = this;
+		synchronized(sync){
+			instance = this;
+			sync.notifyAll();
+		}
 		context = ctx;
 		gatewayId = UUID.fromString(context.getProperty(Constants.FRAMEWORK_UUID)); // get frameworkId
 	}

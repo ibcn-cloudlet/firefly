@@ -14,7 +14,16 @@ public class DyamandAdapterPlugin implements Plugin {
 	public void start(PluginContext context) throws DyamandException {
 		pluginContext = context;
 		// TODO what if DyamandAdapter not yet activated - can this happen?
-		context.register(DyamandAdapter.instance, Collections.EMPTY_LIST);
+		synchronized(DyamandAdapter.sync){
+			if(DyamandAdapter.instance==null){
+				try {
+					DyamandAdapter.sync.wait();
+				} catch (InterruptedException e) {
+				}
+			}
+			context.register(DyamandAdapter.instance, Collections.EMPTY_LIST);
+		}
+		
 	}
 
 	@Override
