@@ -2,7 +2,7 @@
 # FIREFLY APPLICATION DEBUG RUN SPECIFICATION
 #
 
--include: ~be.iminds.iot.firefly.bndrun
+-include: ~standalone.bndrun
 
 -runtrace: true
 	

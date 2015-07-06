@@ -1,0 +1,50 @@
+#
+#  FIREFLY GW RUN SPECIFICATION
+#
+#  This runs the DYAMAND plugins and DYAMAND adapter on a gateway.
+#  Connect to a server hosting the repository / UI with AIOLOS.
+#
+
+-runfw:						org.eclipse.concierge
+
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=org.dyamand.osgi)',\
+	osgi.identity;filter:='(osgi.identity=org.dyamand.plugins.support.sdp.enocean)',\
+	osgi.identity;filter:='(osgi.identity=org.dyamand.plugins.support.sdp.usb)',\
+	osgi.identity;filter:='(osgi.identity=org.dyamand.plugins.support.sdp.dyamand-hue)',\
+	osgi.identity;filter:='(osgi.identity=org.dyamand.plugins.support.sdp.v4l2)',\
+	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.dyamand.adapter)'
+
+-runbundles: \
+	org.apache.felix.gogo.command;version='[0.14.0,0.14.1)',\
+	org.apache.felix.gogo.runtime;version='[0.12.1,0.12.2)',\
+	org.apache.felix.gogo.shell;version='[0.10.0,0.10.1)',\
+	org.apache.felix.eventadmin;version='[1.3.2,1.3.3)',\
+	kxml;version='[2.2.2,2.2.3)',\
+	org.objenesis;version='[2.1,2.2)',\
+	com.esotericsoftware.kryo;version='[2.23,2.24)',\
+	de.javakaffee.kryo-serializers;version='[0.23,0.24)',\
+	be.iminds.aiolos.ds;version='[0.6,0.7)',\
+	be.iminds.aiolos.repository.api;version='[0.6,0.7)',\
+	be.iminds.aiolos.remoteserviceadmin;version='[0.6,0.7)',\
+	be.iminds.aiolos.deploymentmanager;version='[0.6,0.7)',\
+	be.iminds.aiolos.servicemonitor;version='[0.6,0.7)',\
+	be.iminds.aiolos.nodemonitor;version='[0.6,0.7)',\
+	be.iminds.aiolos.topologymanager;version='[0.6,0.7)',\
+	be.iminds.aiolos.proxymanager;version='[0.6,0.7)',\
+	be.iminds.aiolos.event.rs;version='[0.6,0.7)',\
+	com.sun.jna;version='[4.0.0,4.0.1)',\
+	jssc;version='[2.8.0,2.8.1)',\
+	org.philips.hue.sdkresources;version='[1.0.0,2.0.0)',\
+	org.philips.hue.huelocalsdk;version='[1.0.0,2.0.0)',\
+	org.dyamand.plugins.types.sensors;version='[0.2.0,0.2.1)',\
+	org.dyamand.plugins.support.sdp.v4l2;version='[0.2.0,0.2.1)',\
+	org.dyamand.plugins.support.sdp.enocean;version='[0.2.0,0.2.1)',\
+	org.dyamand.plugins.support.sdp.usb;version='[0.2.0,0.2.1)',\
+	org.dyamand.plugins.support.sdp.dyamand-hue;version='[0.1.0,0.2.0)',\
+	org.dyamand.osgi;version='[0.7.1,0.7.2)',\
+	be.iminds.iot.things.dyamand.adapter;version='[1.0.0,1.0.1)'
+
+-runproperties:\
+	aiolos.event.rs.buffer="be/iminds/iot/thing/*",\
+	org.apache.felix.eventadmin.Timeout=0

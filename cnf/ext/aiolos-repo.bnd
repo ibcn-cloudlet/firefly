@@ -1,0 +1,18 @@
+#
+# -AIOLOS REPO-
+# 
+# This file contains the setup for the AIOLOS repository
+#
+
+# must be removed before release
+bnd-release	=	https://bndtools.ci.cloudbees.com/job/bnd.master/lastSuccessfulBuild/artifact/dist/bundles
+ 
+-pluginpath:\
+        ${build}/cache/biz.aQute.repository.jar;url=${bnd-release}/biz.aQute.repository/biz.aQute.repository-latest.jar
+
+
+-plugin.aiolos.repo= \
+	aQute.bnd.deployer.repository.FixedIndexedRepo; \
+		name=AIOLOS; \
+		locations=http://aiolos.intec.ugent.be/repositories/be.iminds.aiolos/index.xml;
+
