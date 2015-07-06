@@ -65,7 +65,14 @@ public interface Camera extends Thing {
      * @return frame format
      */
     public Format getFormat();
-
+    
+    /**
+     * Return the framerate (frames per second) that is aimed for when having a CameraListener
+     * 
+     * @return framerate
+     */
+    public float getFramerate();
+    
     /**
      * Return the latest camera frame when the camera is turned on
      * @return byte array in the camera's current format

@@ -165,6 +165,11 @@ public class V4L2CameraAdapter implements ServiceAdapter {
 				return pojo.getFrame();
 			}
 
+			@Override
+			public float getFramerate() {
+				return pojo.getFramerate();
+			}
+
 		};
 	}
 
@@ -178,7 +183,7 @@ public class V4L2CameraAdapter implements ServiceAdapter {
 					: Camera.State.OFF;
 			translated = new StateVariable(Camera.STATE, translatedValue);
 		} else {
-			// TODO also translate width/height state changes
+			// TODO also translate width/height/fps state changes
 			throw new Exception("Could not translate state variable!");
 		}
 		return translated;
