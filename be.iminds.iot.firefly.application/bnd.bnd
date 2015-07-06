@@ -34,3 +34,4 @@ Private-Package: \
 Bundle-Vendor: iMinds IoT Lab
 Export-Package: osgi.enroute.jsonrpc.api
 Conditional-Package: aQute.lib*
+Bundle-Name: IoT Firefly Dashboard

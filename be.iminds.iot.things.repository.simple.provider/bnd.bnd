@@ -29,5 +29,5 @@ Conditional-Package: aQute.lib*
 Export-Package: \
 	be.iminds.iot.things.repository.api,\
 	osgi.enroute.rest.api
-Bundle-Name: IoT Things - Repository
+Bundle-Name: IoT Things Repository
 -dsannotations: *
