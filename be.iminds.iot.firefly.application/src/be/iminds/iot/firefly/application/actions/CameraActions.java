@@ -9,8 +9,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.AsyncContext;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +39,9 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 
 	private Map<UUID, Camera> cameras = Collections.synchronizedMap(new HashMap<UUID, Camera>());
 	
-	private MultiMap<UUID, CameraStream> streams = new MultiMap<>();
+	private MultiMap<UUID, CameraStream> streamsByCameraId = new MultiMap<>();
+	private Map<String, CameraStream> streamsByClient = new HashMap<>();
+
 	private Map<UUID, ServiceRegistration> listenerRegistrations = new HashMap<>();
 	
 	private BundleContext context;
@@ -77,7 +81,14 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 			return;
 		}
 		
-		UUID id = UUID.fromString(targetId);
+		UUID id = null;
+		try {
+			id = UUID.fromString(targetId);
+		} catch(IllegalArgumentException e){
+			System.out.println("No valid id "+targetId);
+			return;
+		}
+		
 		if(!cameras.containsKey(id)){
 			System.out.println("Camera "+id+" not available");
 			return;
@@ -88,17 +99,28 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 		response.addHeader("Connection", "keep-alive");
 		response.setContentType("multipart/x-mixed-replace;boundary=next");
 
-		CameraStream stream = new CameraStream(id, request.startAsync().getResponse());
-		// if not yet a stream for this id, register CameraListener service
-		
-		Dictionary<String, Object> properties = new Hashtable<>();
-		properties.put("be.iminds.iot.thing.camera.id", id.toString());
-		ServiceRegistration r = context.registerService(CameraListener.class, this, properties);
-		listenerRegistrations.put(id, r);
-		
-		synchronized(streams){
-			streams.add(id, stream);
+		// check if there is already a stream for this client
+		String client = request.getRemoteHost()+":"+request.getRemotePort();
+		CameraStream stream = streamsByClient.get(client);
+		if(stream==null){
+			stream = new CameraStream(id, client);
+			synchronized(streamsByCameraId){
+				streamsByCameraId.add(id, stream);
+				streamsByClient.put(client, stream);
+			}
 		}
+		
+		stream.updateRequest(request);
+
+		// if not yet a stream for this id, register CameraListener service
+		if(!listenerRegistrations.containsKey(id)){
+			Dictionary<String, Object> properties = new Hashtable<>();
+			properties.put("be.iminds.iot.thing.camera.id", id.toString());
+			ServiceRegistration r = context.registerService(CameraListener.class, this, properties);
+			listenerRegistrations.put(id, r);
+		}
+		
+
 	}
 	
 	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
@@ -119,19 +141,25 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 			// only send MJPEG frames
 			return;
 		}
-		synchronized(streams){
-			Iterator<CameraStream> it = streams.get(id).iterator();
+		synchronized(streamsByCameraId){
+			Iterator<CameraStream> it = streamsByCameraId.get(id).iterator();
+			int i = 0;
 			while(it.hasNext()){
 				CameraStream s = it.next();
 				try {
+					//System.out.println("Send frame "+i++);
 					s.sendFrame(data);
 				} catch(IOException e){
+					streamsByClient.remove(s.getClient());
 					it.remove();
+					s.close();
 				}
 			}
-			if(streams.get(id)==null || streams.get(id).isEmpty()){
+			if(streamsByCameraId.get(id)==null || streamsByCameraId.get(id).isEmpty()){
 				ServiceRegistration r = listenerRegistrations.remove(id);
-				r.unregister();
+				if(r!=null){
+					r.unregister();
+				}
 			}
 		}
 	}
@@ -141,14 +169,18 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 	private class CameraStream {
 		
 		private final UUID target;
-		private final ServletResponse response; 
+		private final String client;
 		
-		public CameraStream(UUID id, ServletResponse r){
+		private AsyncContext async;
+		private ServletResponse response; 
+
+		
+		public CameraStream(UUID id, String client){
 			this.target = id;
-			this.response = r;
+			this.client = client;
 		}
 		
-		private void sendFrame(byte[] data) throws IOException {
+		protected void sendFrame(byte[] data) throws IOException {
 			response.getOutputStream().println("--next");
 			response.getOutputStream().println("Content-Type: image/jpeg");
 			response.getOutputStream().println("Content-Length: "+data.length);
@@ -156,6 +188,19 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 			response.getOutputStream().write(data, 0, data.length);
 			response.getOutputStream().println("");
 			response.flushBuffer();
+		}
+		
+		protected String getClient(){
+			return client;
+		}
+		
+		protected void updateRequest(ServletRequest request){
+			this.async = request.startAsync();
+			this.response = async.getResponse();
+		}
+		
+		protected void close(){
+			this.async.complete();
 		}
 	}
 }
