@@ -2,7 +2,6 @@ package be.iminds.iot.things.repository.simple.provider;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -112,13 +111,18 @@ public class ThingsRepository implements Repository, EventHandler {
 			thing.name = thing.service;
 			
 			things.put(id, thing);
+		} else {
+			// update gateway - could be changed
+			thing.gateway = (UUID) event.getProperty(Thing.GATEWAY);
 		}
+		
 		
 		if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
 			online.add(thing.id);
 		} else if(event.getTopic().startsWith("be/iminds/iot/thing/offline/")){
 			online.remove(thing);
 		} else if(event.getTopic().startsWith("be/iminds/iot/thing/change/")){
+			online.add(thing.id);
 			
 			String name = (String) event.getProperty(Thing.STATE_VAR);
 			Object val = event.getProperty(Thing.STATE_VAL);
@@ -171,5 +175,4 @@ public class ThingsRepository implements Repository, EventHandler {
 			// ignore
 		}
 	}
-
 }
