@@ -3,7 +3,7 @@
 
 	'use strict';
 
-	angular.module('be.iminds.iot.firefly').controller('lampCtrl', function ($scope, $modalInstance, actions, thing) {
+	angular.module('be.iminds.iot.firefly.dashboard').controller('lampCtrl', function ($scope, $modalInstance, actions, thing) {
 		  
 		  $scope.thing = thing;
 		  $scope.color = $scope.thing.state.color;

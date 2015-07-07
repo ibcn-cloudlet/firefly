@@ -1,4 +1,4 @@
-package be.iminds.iot.firefly.application;
+package be.iminds.iot.firefly.dashboard;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,8 +28,8 @@ import osgi.enroute.jsonrpc.api.JSONRPC;
 @JsonrpcWebResource(resource={"jsonrpc.js"})
 @WebServerExtender
 @ConfigurerExtender
-@Component(name="be.iminds.iot.firefly",property=JSONRPC.ENDPOINT+"=be.iminds.iot.firefly")
-public class FireflyApplication implements JSONRPC {
+@Component(name="be.iminds.iot.firefly.dashboard",property=JSONRPC.ENDPOINT+"=be.iminds.iot.firefly.dashboard")
+public class Dashboard implements JSONRPC {
 
 	private Map<String, Actions> dispatchers = Collections.synchronizedMap(new HashMap<String, Actions>());
 	

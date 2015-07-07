@@ -1,4 +1,4 @@
-package be.iminds.iot.firefly.application;
+package be.iminds.iot.firefly.dashboard;
 
 import java.util.UUID;
 

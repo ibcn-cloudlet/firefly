@@ -3,7 +3,7 @@
 
 	'use strict';
 
-	angular.module('be.iminds.iot.firefly').controller('cameraCtrl', function ($scope, $modalInstance, actions, thing) {
+	angular.module('be.iminds.iot.firefly.dashboard').controller('cameraCtrl', function ($scope, $modalInstance, actions, thing) {
 		  
 		  $scope.thing = thing;
 	

@@ -1,4 +1,4 @@
-package be.iminds.iot.firefly.application.actions;
+package be.iminds.iot.firefly.dashboard.actions;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -27,7 +27,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 
 import aQute.lib.collections.MultiMap;
-import be.iminds.iot.firefly.application.Actions;
+import be.iminds.iot.firefly.dashboard.Actions;
 import be.iminds.iot.things.api.Thing;
 import be.iminds.iot.things.api.camera.Camera;
 import be.iminds.iot.things.api.camera.Camera.Format;

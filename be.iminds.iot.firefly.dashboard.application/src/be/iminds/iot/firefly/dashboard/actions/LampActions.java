@@ -1,4 +1,4 @@
-package be.iminds.iot.firefly.application.actions;
+package be.iminds.iot.firefly.dashboard.actions;
 
 import java.awt.Color;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 
-import be.iminds.iot.firefly.application.Actions;
+import be.iminds.iot.firefly.dashboard.Actions;
 import be.iminds.iot.things.api.Thing;
 import be.iminds.iot.things.api.lamp.Lamp;
 

@@ -4,7 +4,7 @@
 
 Bundle-Version: 1.0.0.${tstamp}
 Bundle-Description: \
-	This bundle provides the Firefly web UI showing a dashboard of your available devices.
+	This bundle provides a web UI showing a dashboard of your available devices.
 
 # These capabilities should be added using the webresource annotations
 #Require-Capability: \
@@ -13,8 +13,8 @@ Bundle-Description: \
 
 
 Private-Package: \
-	be.iminds.iot.firefly.application,\
-	be.iminds.iot.firefly.application.actions
+	be.iminds.iot.firefly.dashboard,\
+	be.iminds.iot.firefly.dashboard.actions
 	
 	
 -includeresource: \

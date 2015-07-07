@@ -7,23 +7,23 @@
 		console.error(msg);
 	}
 	
-	var FIREFLY = angular.module('be.iminds.iot.firefly', 
+	var MODULE = angular.module('be.iminds.iot.firefly.dashboard', 
 			['ui.bootstrap',
 			 'ngRoute',
 			 'ngResource',
 			 'enJsonrpc',
 			 'enEasse',
 			 'be.iminds.iot.repository',
-			 'be.iminds.iot.firefly.actions']);
+			 'be.iminds.iot.firefly.dashboard.actions']);
 	
-	FIREFLY.config(function($routeProvider, en$jsonrpcProvider) {
+	MODULE.config(function($routeProvider, en$jsonrpcProvider) {
 		en$jsonrpcProvider.setNotification({
 			error : error
 		});
 	});
 	
 	// this allows filtering on map values in ng-repeat
-	FIREFLY.filter('mapFilter', function($filter) {
+	MODULE.filter('mapFilter', function($filter) {
 		  var filter = $filter('filter');
 
 		  return function(map, expression, comparator) {
@@ -40,7 +40,7 @@
 	});
 	
 	// introduce onLongclick directive, also offers onDoubleclick
-	FIREFLY.directive('onLongclick', function($timeout) {
+	MODULE.directive('onLongclick', function($timeout) {
 		return {
 			restrict: 'A',
 			link: function($scope, $elm, $attrs) {
@@ -92,7 +92,7 @@
 	});
 	
 	
-	FIREFLY.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc, repository, actions) {
+	MODULE.controller('ThingsCtrl', function ($rootScope, $scope, $modal, en$easse, en$jsonrpc, repository, actions) {
 		// fill things map using repository REST endpoint
 		$scope.things = {};
 		$scope.locations = {};
