@@ -20,7 +20,11 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.event.Event;
+import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.EventHandler;
 
 import aQute.lib.converter.TypeReference;
@@ -37,8 +41,8 @@ public class ThingsRepository implements Repository, EventHandler {
 	
 	private final static JSONCodec json = new JSONCodec();
 	
-	private Map<UUID, ThingDTO> things = new HashMap<>();
-	private Set<UUID> online = new HashSet<>();
+	private Map<UUID, ThingDTO> things = Collections.synchronizedMap(new HashMap<>());
+	private Set<UUID> online = Collections.synchronizedSet(new HashSet<>());
 	
 	private Writer logger;
 	
@@ -86,8 +90,10 @@ public class ThingsRepository implements Repository, EventHandler {
 	public Collection<ThingDTO> getThings() {
 		// only return online things
 		ArrayList<ThingDTO> result = new ArrayList<>();
-		for(UUID id : online){
-			result.add(things.get(id));
+		synchronized(online){
+			for(UUID id : online){
+				result.add(things.get(id));
+			}
 		}
 		return Collections.unmodifiableCollection(result);
 	}
@@ -100,20 +106,23 @@ public class ThingsRepository implements Repository, EventHandler {
 	@Override
 	public void handleEvent(Event event) {
 		UUID id = (UUID) event.getProperty(Thing.ID);
-		ThingDTO thing = things.get(id);
-		if(thing==null){
-			thing = new ThingDTO();
-			thing.id = id;
-			thing.gateway = (UUID) event.getProperty(Thing.GATEWAY);
-			thing.device = (String) event.getProperty(Thing.DEVICE);
-			thing.service = (String) event.getProperty(Thing.SERVICE);
-			thing.type = (String) event.getProperty(Thing.TYPE);
-			thing.name = thing.service;
-			
-			things.put(id, thing);
-		} else {
-			// update gateway - could be changed
-			thing.gateway = (UUID) event.getProperty(Thing.GATEWAY);
+		ThingDTO thing;
+		synchronized(things){
+			thing = things.get(id);
+			if(thing==null){
+				thing = new ThingDTO();
+				thing.id = id;
+				thing.gateway = (UUID) event.getProperty(Thing.GATEWAY);
+				thing.device = (String) event.getProperty(Thing.DEVICE);
+				thing.service = (String) event.getProperty(Thing.SERVICE);
+				thing.type = (String) event.getProperty(Thing.TYPE);
+				thing.name = thing.service;
+				
+				things.put(id, thing);
+			} else {
+				// update gateway - could be changed
+				thing.gateway = (UUID) event.getProperty(Thing.GATEWAY);
+			}
 		}
 		
 		
@@ -134,6 +143,54 @@ public class ThingsRepository implements Repository, EventHandler {
 		}
 
 		logEvent(event);
+	}
+	
+	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
+			policy=ReferencePolicy.DYNAMIC)
+	public void addThing(Thing t, Map<String, Object> properties){
+		// mark online
+		UUID id = (UUID) properties.get(Thing.ID);
+		
+		// also init here in case of missed online event
+		ThingDTO thing;
+		synchronized(things){
+			thing = things.get(id);
+			if(thing==null){
+				thing.gateway = (UUID) properties.get(Thing.GATEWAY);
+				thing.device = (String) properties.get(Thing.DEVICE);
+				thing.service = (String) properties.get(Thing.SERVICE);
+				thing.type = (String) properties.get(Thing.TYPE);
+				thing.name = thing.service;
+
+				things.put(id, thing);
+			} else {
+				// update gateway - could be changed
+				thing.gateway = (UUID) properties.get(Thing.GATEWAY);
+			}
+		}
+
+		online.add(id);
+		
+		// This does not update UI, also send service online thing event?
+		// FIXME ? This could lead to many duplicates though 
+		ea.postEvent(new Event("be/iminds/iot/thing/online/"+id, properties));
+	}
+	
+	public void removeThing(Thing t, Map<String, Object> properties){
+		// mark offline
+		UUID id = (UUID) properties.get(Thing.ID);
+		online.remove(id);
+		
+		// This does not update UI - as no event will be sent when the gateway
+		// is just stopped, we send an event of this service on our own...
+		ea.postEvent(new Event("be/iminds/iot/thing/offline/"+id, properties));
+	}
+	
+	private EventAdmin ea;
+	
+	@Reference
+	public void setEventAdmin(EventAdmin ea){
+		this.ea = ea;
 	}
 	
 	private void logEvent(Event event){
