@@ -16,22 +16,22 @@ public class ThingsRepositoryRestEndpoint implements REST{
 
 	private Repository repository;
 
-	@Reference()
-	public void setRepository(Repository r){
-		this.repository = r;
-	}
-	
-	public ThingDTO getThing(RESTRequest rq, UUID id) {
+	public ThingDTO getThing(UUID id) {
 		return repository.getThing(id);
 	}
 
-	public Collection<ThingDTO> getThing(RESTRequest rq) {
+	public Collection<ThingDTO> getThing() {
 		return repository.getThings();
 	}
 
-	public void putThing(RESTRequest rq, ThingDTO thing) {
+	public void putThing(ThingDTO thing, UUID id) {
 		// TODO only works with our patched rest provider 
 		repository.putThing(thing);
+	}
+	
+	@Reference()
+	void setRepository(Repository r){
+		this.repository = r;
 	}
 	
 }
