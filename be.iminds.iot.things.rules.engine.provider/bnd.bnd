@@ -1,0 +1,23 @@
+#
+#  BUNDLE 
+#
+
+
+Bundle-Version:					1.0.0.${tstamp}
+
+Private-Package:  \
+	be.iminds.iot.things.rules.engine.provider
+	
+-buildpath:  \
+	osgi.enroute.base.api;version=1.0,\
+	biz.aQute.junit
+
+-includeresource: {readme.md}
+
+
+-runrequires:  \
+	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.rules.engine.provider)'
+	
+-runbundles: \
+	${error;Resolve first}
+Bundle-Name: IoT Things Rules Engine
