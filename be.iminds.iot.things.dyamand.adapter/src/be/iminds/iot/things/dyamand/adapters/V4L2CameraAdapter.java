@@ -169,6 +169,11 @@ public class V4L2CameraAdapter implements ServiceAdapter {
 			public float getFramerate() {
 				return pojo.getFramerate();
 			}
+			
+			@Override
+			public void setFramerate(float f) {
+				pojo.setFramerate(f);
+			}
 
 		};
 	}

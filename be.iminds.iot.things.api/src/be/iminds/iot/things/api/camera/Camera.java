@@ -74,6 +74,13 @@ public interface Camera extends Thing {
     public float getFramerate();
     
     /**
+     * Set framerate
+     * 
+     * @param f framerate to set
+     */
+    public void setFramerate(float f);
+    
+    /**
      * Return the latest camera frame when the camera is turned on
      * @return byte array in the camera's current format
      */
