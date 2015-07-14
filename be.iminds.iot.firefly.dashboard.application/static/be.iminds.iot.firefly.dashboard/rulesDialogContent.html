@@ -1,0 +1,16 @@
+ 		<div class="modal-header">
+       		<button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+ 
+			<h4 class="modal-title">IoT Rules Engine</h4>
+		</div>
+				  
+		<div class="modal-body">
+			  <p>Here you see an overview of all available rules</p>
+			  <ul class="list-group">
+			  	<li ng-repeat="(id, rule) in rules" class='list-group-item'><a href="#" ng-click="configure(id)">{{rule.description}}</a><button type='button' class='close' ng-click='remove(id)'><span aria-hidden='true'>&times;</span><span class='sr-only'>Delete</span></button></li>
+			  </ul>
+		</div>
+				  
+		<div class="modal-footer">
+            <button class="btn btn-primary" ng-click="create()">New Rule</button>
+		</div>

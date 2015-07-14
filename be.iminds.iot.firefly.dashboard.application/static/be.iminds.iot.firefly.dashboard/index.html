@@ -32,9 +32,16 @@
             <div class="inner">
               <h3 class="masthead-brand">Your Internet of Things</h3>
             </div>
+           
+            <nav class='menu'>
+                <ul class="menu-nav">
+                	<!--  <li><a href="#filter"><span class="icon-small icon-filter" onclick="showFilterDialog()"></span></a></li>-->
+              		<li><a href="#rules"><span class="icon-small icon-menu" ng-click="showRulesDialog()"></span></a></li>
+                </ul>
+           </nav> 
             
            <nav class='controls'>
-                <ul id="locations" class="nav masthead-nav control-group">
+                <ul class="nav masthead-nav control-group">
                 	<li><a ng-click="filters.location = ''" ng-class="{active: filters.location === ''}" >All</a></li>
                 	<li ng-repeat="(l, location) in locations"><a ng-click="filters.location = location" ng-class="{active: filters.location === location}">{{location}}</a></li>
                 </ul>

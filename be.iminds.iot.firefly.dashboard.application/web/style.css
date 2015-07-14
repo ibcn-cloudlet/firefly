@@ -64,13 +64,10 @@ body {
 	margin-top: -20px;
 }
 
-/*
- * Icon menu
- */
- .menu-nav {
- 	margin-top: 25px;
- 	padding: 0;
- }
+.menu {
+ 	padding-left: 300px;
+}
+ 
 .menu-nav > li {
   display: inline-block;
   margin: 0 10px;

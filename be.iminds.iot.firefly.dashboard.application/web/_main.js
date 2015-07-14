@@ -223,6 +223,14 @@
 			}
 			return formatted;
 		}
+		
+		$scope.showRulesDialog = function(){
+			var modalInstance = $modal.open({
+				templateUrl: 'rulesDialogContent.html',
+				controller: 'rulesDialogCtrl',
+				size: 'lg'
+			});
+		}
 	});
 
 })();
