@@ -57,7 +57,11 @@ body {
  }
  
 .masthead-brand {
-  margin: auto 0;
+  	margin: auto 0;
+}
+
+.controls {
+	margin-top: -20px;
 }
 
 /*
@@ -138,7 +142,7 @@ body {
 } 
 
 .icon {
-	font-size: 800%;
+	font-size: 700%;
 }
 
 .icon-small {
@@ -207,5 +211,9 @@ footer {
 @media (min-width: 1600px) {
 	.container {
 		width: 1600px;
+	}
+	
+	.thing {
+		width: 16.6667%;
 	}
 }

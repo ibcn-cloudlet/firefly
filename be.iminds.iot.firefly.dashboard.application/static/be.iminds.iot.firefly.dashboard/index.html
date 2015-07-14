@@ -46,7 +46,7 @@
 	          <div id="things" class="row">
 	          		<div ng-repeat="(id, thing) in things | mapFilter:filters"	       	
 	          			 on-longclick="dialog(id)" on-click="action(id)" on-doubleclick="update(id)"
-	          			 id="{{thing.id}}" class="thing col-xs-12 col-sm-6 col-md-4 col-lg-2 {{thing.type}}">
+	          			 id="{{thing.id}}" class="thing col-xs-12 col-sm-6 col-md-4 col-lg-3 {{thing.type}}">
 						<div class="row vertical-align">
 							<div class="col-xs-6 icon icon-{{thing.type}} {{thing.highlight | lowercase}}"></div>
 							<div class="col-xs-6 state">{{thing.highlight}}</div>
