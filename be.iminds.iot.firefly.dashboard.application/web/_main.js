@@ -228,7 +228,12 @@
 			var modalInstance = $modal.open({
 				templateUrl: 'rulesDialogContent.html',
 				controller: 'rulesDialogCtrl',
-				size: 'lg'
+				size: 'lg',
+				resolve: {
+					things: function(){
+						return $scope.things;
+					}
+				}
 			});
 		}
 	});
