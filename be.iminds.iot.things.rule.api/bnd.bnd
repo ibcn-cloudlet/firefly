@@ -1,0 +1,19 @@
+#
+# 
+#
+
+Bundle-Version:1.0.0.${tstamp}
+
+	
+Export-Package:  \
+	be.iminds.iot.things.rule.api;provide:=true
+
+
+Require-Capability: \
+	compile-only
+
+-buildpath: \
+	osgi.enroute.base.api;version=1.0,\
+	be.iminds.iot.things.api;version=latest
+	
+Bundle-Name: IoT Things - Rules API

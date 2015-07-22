@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>be.iminds.iot.things.rules.api</name>
+	<name>be.iminds.iot.things.rule.engine.provider</name>
 	<comment></comment>
 	<projects>
 	</projects>
