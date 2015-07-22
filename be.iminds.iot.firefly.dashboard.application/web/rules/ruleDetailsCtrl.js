@@ -13,7 +13,7 @@
 			};
 	});
 	
-	angular.module('be.iminds.iot.firefly.dashboard').controller('ruleDetailsCtrl', function ($scope, $modalInstance, rule, things, templates) {
+	angular.module('be.iminds.iot.firefly.dashboard').controller('ruleDetailsCtrl', function ($scope, $modal, $modalInstance, rule, things, templates) {
 		
 		$scope.things = things;
 		$scope.rule = rule;
@@ -42,6 +42,25 @@
 		$scope.cancel = function () {
 			$modalInstance.dismiss('cancel');
 		};
+		
+		$scope.advanced = function () {
+			var advancedRuleModal = $modal.open({
+					templateUrl: 'rules/advancedRuleDetails.html',
+					controller: 'advancedRuleDetailsCtrl',
+					size: 'lg',
+					resolve: {
+						rule: function(){
+							return $scope.rule ===undefined? {} : $scope.rule;
+						},
+						things: function(){
+							return $scope.things;
+						}
+					}
+			});
+			advancedRuleModal.result.then(function(rule){
+				$modalInstance.close(rule);
+			});
+		}
 	});
 
 })();

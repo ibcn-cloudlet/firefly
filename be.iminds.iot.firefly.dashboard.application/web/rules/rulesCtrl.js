@@ -20,7 +20,7 @@
 		  };
 		  
 		  $scope.configure = function(id){
-			  var configureRuleModal = $modal.open({
+			  var ruleModal = $modal.open({
 					templateUrl: 'rules/ruleDetails.html',
 					controller: 'ruleDetailsCtrl',
 					size: 'lg',
@@ -33,7 +33,7 @@
 						}
 					}
 			  });
-			  configureRuleModal.result.then(function(rule){
+			  ruleModal.result.then(function(rule){
 				  // for now only addition is supported, no reconfiguration
 					
 				  var ruleDTO = {};
