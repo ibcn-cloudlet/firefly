@@ -4,7 +4,7 @@
 
 	'use strict';
 
-	angular.module('be.iminds.iot.firefly.dashboard').controller('rulesDialogCtrl', function ($scope, $modal, $modalInstance, things, rules) {
+	angular.module('be.iminds.iot.firefly.dashboard').controller('rulesCtrl', function ($scope, $modal, $modalInstance, things, rules) {
 		  $scope.rules = [];
 		
 		  rules.query(function(rules){
@@ -21,8 +21,8 @@
 		  
 		  $scope.configure = function(id){
 			  var configureRuleModal = $modal.open({
-					templateUrl: 'configureRuleDialogContent.html',
-					controller: 'configureRuleDialogCtrl',
+					templateUrl: 'rules/ruleDetails.html',
+					controller: 'ruleDetailsCtrl',
 					size: 'lg',
 					resolve: {
 						rule: function(){

@@ -13,7 +13,7 @@
 			};
 	});
 	
-	angular.module('be.iminds.iot.firefly.dashboard').controller('configureRuleDialogCtrl', function ($scope, $modalInstance, rule, things, templates) {
+	angular.module('be.iminds.iot.firefly.dashboard').controller('ruleDetailsCtrl', function ($scope, $modalInstance, rule, things, templates) {
 		
 		$scope.things = things;
 		$scope.rule = rule;

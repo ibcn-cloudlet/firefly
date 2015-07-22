@@ -192,8 +192,8 @@
 		// update thing dialog
 		$scope.updateThing = function(thing){
 			var modalInstance = $modal.open({
-				templateUrl: 'updateThingContent.html',
-				controller: 'updateThingCtrl',
+				templateUrl: 'thingDetails.html',
+				controller: 'thingDetailsCtrl',
 				resolve: {
 					thing: function(){
 						return thing;
@@ -228,8 +228,8 @@
 		
 		$scope.showRulesDialog = function(){
 			var modalInstance = $modal.open({
-				templateUrl: 'rulesDialogContent.html',
-				controller: 'rulesDialogCtrl',
+				templateUrl: 'rules/rules.html',
+				controller: 'rulesCtrl',
 				size: 'lg',
 				resolve: {
 					things: function(){
