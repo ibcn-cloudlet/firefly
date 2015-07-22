@@ -9,7 +9,6 @@ Private-Package: \
 	be.iminds.iot.things.rule.engine,\
 	be.iminds.iot.thing.rule.factory,\
 	be.iminds.iot.thing.rule.endpoint,\
-	be.iminds.iot.things.rule.example,\
 	be.iminds.iot.thing.rule.command
 	
 -buildpath: \

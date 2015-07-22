@@ -13,14 +13,14 @@ import be.iminds.iot.things.api.Thing;
  */
 public class ConditionActionRule implements Rule {
 
-	private final String type;
-	private final String description;
-	private final List<Condition> conditions;
-	private final List<Action> actions;
+	protected final String type;
+	protected final String description;
+	protected final List<? extends Condition> conditions;
+	protected final List<? extends Action> actions;
 	
 	public ConditionActionRule(String type, String description, 
-			List<Condition> conditions,
-			List<Action> actions){
+			List<? extends Condition> conditions,
+			List<? extends Action> actions){
 		
 		this.type = type;
 		this.description = description;
