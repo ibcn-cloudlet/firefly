@@ -53,6 +53,7 @@ JPMCommand:					firefly
 	org.dyamand.plugins.types.sensors;version='[0.2.0,0.2.1)',\
 	be.iminds.iot.things.dyamand.adapter;version='[1.0.0,1.0.1)',\
 	be.iminds.iot.things.repository.simple.provider;version='[1.0.0,1.0.1)',\
+	be.iminds.iot.things.rule.engine.provider;version='[1.0.0,1.0.1)',\
 	be.iminds.iot.firefly.dashboard.application;version='[1.0.0,1.0.1)',\
 
 	

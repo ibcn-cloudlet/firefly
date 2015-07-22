@@ -7,13 +7,13 @@
 	angular.module('be.iminds.iot.firefly.dashboard').filter('ruleFilter', function() {
 			return function(templates, source, destination) {
 			    return templates.filter(function(template){
-			    	return template.sourceType.indexOf(source.type) > -1 
-			    			&& template.destinationType.indexOf(destination.type) > -1;
+			    	return template.sourceTypes.indexOf(source.type) > -1 
+			    			&& template.destinationTypes.indexOf(destination.type) > -1;
 			    });
 			};
 	});
 	
-	angular.module('be.iminds.iot.firefly.dashboard').controller('configureRuleDialogCtrl', function ($scope, $modalInstance, rule, things) {
+	angular.module('be.iminds.iot.firefly.dashboard').controller('configureRuleDialogCtrl', function ($scope, $modalInstance, rule, things, templates) {
 		
 		$scope.things = things;
 		$scope.rule = rule;
@@ -24,18 +24,18 @@
 		$scope.template = {};
 		
 		
-		$scope.templates = [
-		     {'description':'this is a test rule button->lamp','sourceType':['button'],'destinationType':['lamp'],'type':'toggleLampOnButton'},
-		     {'description':'this is a second rule button->camera','sourceType':['button'],'destinationType':['camera'],'type':'toggleCameraOnButton'},
-		     {'description':'this is a third rule camera->camera','sourceType':['camera'],'destinationType':['camera'],'type':'toggleCameraOnCamera'}
-		];
+		$scope.templates;
+		
+		// this raises errors in the console lot ... but does work :-/
+		templates.query(function(templates){
+			$scope.templates = templates;
+		});
 			
 		$scope.ok = function () {
 			$scope.rule.description = $scope.description;
-			$scope.rule.sourceType = $scope.template[0].sourceType;
-			$scope.rule.destinationType = $scope.template[0].destinationType;
 			$scope.rule.source = $scope.source;
 			$scope.rule.destination = $scope.destination;
+			$scope.rule.type = $scope.template[0].type;
 			$modalInstance.close($scope.rule);
 		};
 	
