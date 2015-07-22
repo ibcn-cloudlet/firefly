@@ -18,6 +18,7 @@
 		$scope.things = things;
 		$scope.rule = rule;
 		
+		$scope.description;
 		$scope.source = {};
 		$scope.destination = {};
 		$scope.template = {};
@@ -31,7 +32,7 @@
 			
 		$scope.ok = function () {
 			console.log("rule updated!");
-			$scope.rule.description = $scope.template[0].description;
+			$scope.rule.description = $scope.description;
 			$scope.rule.sourceType = $scope.template[0].sourceType;
 			$scope.rule.destinationType = $scope.template[0].destinationType;
 			$scope.rule.source = $scope.source;
