@@ -25,13 +25,12 @@
 		
 		
 		$scope.templates = [
-		     {'description':'this is a test rule button->lamp','sourceType':['button'],'destinationType':['lamp']},
-		     {'description':'this is a second rule button->camera','sourceType':['button'],'destinationType':['camera']},
-		     {'description':'this is a third rule camera->camera','sourceType':['camera'],'destinationType':['camera']}
+		     {'description':'this is a test rule button->lamp','sourceType':['button'],'destinationType':['lamp'],'type':'toggleLampOnButton'},
+		     {'description':'this is a second rule button->camera','sourceType':['button'],'destinationType':['camera'],'type':'toggleCameraOnButton'},
+		     {'description':'this is a third rule camera->camera','sourceType':['camera'],'destinationType':['camera'],'type':'toggleCameraOnCamera'}
 		];
 			
 		$scope.ok = function () {
-			console.log("rule updated!");
 			$scope.rule.description = $scope.description;
 			$scope.rule.sourceType = $scope.template[0].sourceType;
 			$scope.rule.destinationType = $scope.template[0].destinationType;

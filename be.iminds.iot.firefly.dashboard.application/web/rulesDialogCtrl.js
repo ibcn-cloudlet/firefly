@@ -5,10 +5,10 @@
 	'use strict';
 
 	angular.module('be.iminds.iot.firefly.dashboard').controller('rulesDialogCtrl', function ($scope, $modal, $modalInstance, things) {
-		  $scope.rules = {};
+		  $scope.rules = [];
 		
-		  $scope.rules["0"] = {'description':'this is a test rule','source':['button1'],'destination':['lamp1']};
-		  $scope.rules["1"] = {'description':'this is a second rule','source':['button2'],'destination':['camera']};
+		  $scope.rules.push({'description':'this is a test rule','source':['button1'],'destination':['lamp1']});
+		  $scope.rules.push({'description':'this is a second rule','source':['button2'],'destination':['camera']});
 		  
 		  $scope.create = function () {
 			  $scope.configure();
@@ -33,17 +33,26 @@
 					}
 			  });
 			  configureRuleModal.result.then(function(rule){
-					$scope.rules[Object.keys($scope.rules).length] = rule;
+				  // for now only addition is supported, no reconfiguration
+					$scope.rules.push(rule);
 					
+					var ruleDTO = {};
+					ruleDTO.sourceTypes = [rule.sourceType];
+					ruleDTO.destinationTypes = [rule.destinationType];
+					ruleDTO.sources = [rule.source.id];
+					ruleDTO.destinations = [rule.destination.id];
+					ruleDTO.description = rule.description;
+					ruleDTO.type = rule.type;
 					// TODO send new rule to server
+					console.log("Send rule to server "+JSON.stringify(ruleDTO));
 			  });
 		  }
 		  
-		  $scope.remove = function(id){
-			  delete $scope.rules[id];
-			  
+		  $scope.remove = function(index){
 			  // TODO send delete to server
+			  console.log("Delete rule "+index+" on server");
 			  
+			  $scope.rules.splice(index, 1);
 		  }
 	});
 
