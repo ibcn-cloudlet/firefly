@@ -20,7 +20,6 @@ public class RulesRestEndpoint implements REST {
 	private RuleFactory factory;
 	
 	public List<RuleDTO> getRules(){
-		System.out.println("GET RULES");
 		List<Rule> rules = engine.getRules();
 		List<RuleDTO> dtos = new ArrayList<RuleDTO>(rules.size());
 		for(Rule r : rules){
@@ -34,12 +33,11 @@ public class RulesRestEndpoint implements REST {
 			Rule r = factory.createRule(template);
 			engine.addRule(r);
 		} catch(Exception e){
-			System.out.println("Failed to create rule "+template);
+			System.err.println("Failed to create rule "+template);
 		}
 	}
 	
 	public void deleteRules(int index){
-		System.out.println("DELETE "+index);
 		engine.removeRule(index);
 	}
 	

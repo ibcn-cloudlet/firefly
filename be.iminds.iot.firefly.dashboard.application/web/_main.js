@@ -103,7 +103,6 @@
 		
 		repository.query(function(things){
 			for(var i in things){
-				console.log(JSON.stringify(things[i]));
 				$scope.things[things[i].id] = things[i];
 				$scope.locations[things[i].location] = things[i].location;
 				
@@ -164,18 +163,15 @@
 
 		// action callback
 		$scope.action = function(id){
-			console.log("ACTION "+id)
 			actions.action(id, $scope.things[id].type);
 		};
 		
 		$scope.update = function(id){
-			console.log("UPDATE "+id);
 			$scope.updateThing($scope.things[id]);
 		};
 		  
 		// thing details dialog
 		$scope.dialog = function(id){
-			console.log("DIALOG "+id);
 			var thing = $scope.things[id];
 		
 			var modalInstance = $modal.open({

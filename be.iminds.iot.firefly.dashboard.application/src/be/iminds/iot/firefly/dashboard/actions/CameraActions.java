@@ -77,7 +77,7 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 		String targetId = request.getParameter("id");
 		
 		if(targetId==null){
-			System.out.println("No id provided");
+			System.err.println("No id provided");
 			return;
 		}
 		
@@ -85,12 +85,12 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 		try {
 			id = UUID.fromString(targetId);
 		} catch(IllegalArgumentException e){
-			System.out.println("No valid id "+targetId);
+			System.err.println("No valid id "+targetId);
 			return;
 		}
 		
 		if(!cameras.containsKey(id)){
-			System.out.println("Camera "+id+" not available");
+			System.err.println("Camera "+id+" not available");
 			return;
 		}
 		
@@ -143,11 +143,9 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 		}
 		synchronized(streamsByCameraId){
 			Iterator<CameraStream> it = streamsByCameraId.get(id).iterator();
-			int i = 0;
 			while(it.hasNext()){
 				CameraStream s = it.next();
 				try {
-					//System.out.println("Send frame "+i++);
 					s.sendFrame(data);
 				} catch(IOException e){
 					streamsByClient.remove(s.getClient());

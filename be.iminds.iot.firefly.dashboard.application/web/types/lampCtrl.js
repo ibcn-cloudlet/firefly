@@ -16,19 +16,16 @@
 			  $scope.level = "100";
 		  
 		  $scope.$watch('color', function(newValue, oldValue) {
-			  console.log("COLOR! "+newValue);
 			  if(newValue!== undefined)
 				  actions.action($scope.thing.id, $scope.thing.type, "color", $scope.color);
 		  });
 		  
 		  $scope.$watch('level', function(newValue, oldValue) {
-			  console.log("LEVEL!");
 			  if(newValue!== undefined)
 				  actions.action($scope.thing.id, $scope.thing.type, "level", $scope.level);
 		  });
 		  
 		  $scope.toggle = function(){
-			  console.log("TOGGLE!");
 			  actions.action($scope.thing.id, $scope.thing.type);
 		  };
 		  

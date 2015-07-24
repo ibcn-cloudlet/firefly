@@ -20,7 +20,6 @@
 		
 		
 		$scope.ok = function () {
-			console.log("create new simplerule");
 			var simpleRuleDTO = {};
 			simpleRuleDTO.type = "simple";
 			simpleRuleDTO.description = $scope.description;

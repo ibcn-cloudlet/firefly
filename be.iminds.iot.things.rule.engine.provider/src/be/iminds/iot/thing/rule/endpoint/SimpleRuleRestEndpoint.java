@@ -25,17 +25,14 @@ public class SimpleRuleRestEndpoint implements REST {
 	}
 	
 	public Collection<String> getMethods(String type){
-		System.out.println("GET METHODS");
 		return things.getMethods(type);
 	}
 	
 	public Collection<String> getVariables(String type){
-		System.out.println("GET VARIABLES");
 		return things.getStateVariables(type);
 	}
 
 	public void putSimpleRule(SimpleRuleDTO dto){
-		System.out.println("ADD NEW SIMPLE RULE!");
 		List<SimpleCondition> conditions = new ArrayList<SimpleCondition>();
 		for(SimpleConditionDTO c : dto.conditions){
 			conditions.add(new SimpleCondition(c.thingId, c.type, c.variable, c.operator, c.value));
