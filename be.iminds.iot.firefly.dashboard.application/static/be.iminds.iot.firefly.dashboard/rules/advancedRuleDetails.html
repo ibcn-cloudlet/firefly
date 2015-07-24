@@ -1,7 +1,7 @@
  		<div class="modal-header">
        		<button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
  
-			<h4 class="modal-title">Configure rule</h4>
+			<h4 class="modal-title">Create a new rule</h4>
 		</div>
 				  
 		<div class="modal-body">
@@ -10,7 +10,8 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label" for="description">Description</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="description" ng-model="description"/>
+						<input type="text" class="form-control" id="description" ng-model="description"
+							   ng-init="description ='<Write a custom description for your rule here>'"/>
 					</div>
 				</div>
 				
@@ -30,7 +31,9 @@
 	          				<div class="col-sm-10">	
 	          					<select class="form-control" ng-model="condition.thing" 
 	          						ng-options="thing.name for (id, thing) in things"
-	          						ng-change="conditionThingChange(condition)"></select>
+	          						ng-change="conditionThingChange(condition)">
+	          						<option value="">&lt;Select a Thing&gt;</option>
+	          					</select>
 	          				</div>
           				</div>
           				
@@ -38,7 +41,9 @@
 	          				<label class="col-sm-2 control-label">Variable</label>
 	          				<div class="col-sm-10">
 	          					<select class="form-control" ng-model="condition.variable" 
-	          						ng-options="variable for variable in condition.variables"></select>
+	          						ng-options="variable for variable in condition.variables">
+	          						<option value="">&lt;Select a state variable&gt;</option>
+	          					</select>
 	          				</div>
           				</div>
           			
@@ -46,6 +51,7 @@
           					<label class="col-sm-2 control-label">Operator</label>
 	          				<div class="col-sm-10">
 		          				<select class="form-control" ng-model="condition.operator">
+		          					 <option value="">&lt;Select an operator&gt;</option>
 		          					 <option value="BECOMES">BECOMES</option>
 		          					 <option value="IS">IS</option>
 		          					 <option value="IS_NOT">IS NOT</option>
@@ -90,7 +96,9 @@
 	          				<div class="col-sm-10">	
 	          					<select class="form-control" ng-model="action.thing" 
 	          						ng-options="thing.name for (id, thing) in things"
-	          						ng-change="actionThingChange(action)"></select>
+	          						ng-change="actionThingChange(action)">
+	          						<option value="">&lt;Select a Thing&gt;</option>
+	          					</select>
 	          				</div>
           				</div>
           				
@@ -98,7 +106,9 @@
 	          				<label class="col-sm-2 control-label">Method</label>
 	          				<div class="col-sm-10">
 	          					<select class="form-control" ng-model="action.method" 
-	          						ng-options="method for method in action.methods"></select>
+	          						ng-options="method for method in action.methods">
+	          						<option value="">&lt;Select a method&gt;</option>
+	          					</select>
 	          				</div>
           				</div>
           				

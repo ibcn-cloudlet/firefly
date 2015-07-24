@@ -25,7 +25,7 @@
 			simpleRuleDTO.description = $scope.description;
 			
 			simpleRuleDTO.conditions = [];
-			for(var c in $scope.conditions){
+			for(var c=0; c<$scope.conditions.length;c++){
 				var conditionDTO = {};
 				conditionDTO.thingId = $scope.conditions[c].thing.id;
 				conditionDTO.type = $scope.conditions[c].thing.type;
@@ -37,7 +37,7 @@
 			}
 			
 			simpleRuleDTO.actions = [];
-			for(var a in $scope.actions){
+			for(var a=0; a<$scope.actions.length;a++){
 				var actionDTO = {};
 				actionDTO.thingId = $scope.actions[a].thing.id;
 				actionDTO.type = $scope.actions[a].thing.type;

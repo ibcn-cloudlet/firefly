@@ -6,28 +6,35 @@
 
 	angular.module('be.iminds.iot.firefly.dashboard').filter('ruleFilter', function() {
 			return function(templates, source, destination) {
-			    return templates.filter(function(template){
+			    var filtered =  templates.filter(function(template){
 			    	return template.sourceTypes.indexOf(source.type) > -1 
 			    			&& template.destinationTypes.indexOf(destination.type) > -1;
 			    });
+			    // manually replace the source.name and destination.name in description
+			    // requires to refresh $scope.templates everytime a new thing is selected though
+			    for(var i=0;i<filtered.length;i++){
+			    	filtered[i].description = filtered[i].description
+			    								.replace('{{source.name}}',source.name)
+			    								.replace('{{destination.name}}',destination.name);
+			    }
+			    return filtered;
 			};
 	});
 	
-	angular.module('be.iminds.iot.firefly.dashboard').controller('ruleDetailsCtrl', function ($scope, $modal, $modalInstance, rules, things, templates) {
+	angular.module('be.iminds.iot.firefly.dashboard').controller('ruleDetailsCtrl', function ($scope, $compile, $modal, $modalInstance, rules, things, templates) {
 		
 		$scope.things = things;
 
-		$scope.description;
 		$scope.source = {};
 		$scope.destination = {};
 		$scope.template = {};
 		
+		$scope.origTemplates = [];
+		$scope.templates = [];
 		
-		$scope.templates;
-		
-		// this raises errors in the console lot ... but does work :-/
-		templates.query(function(templates){
-			$scope.templates = templates;
+		templates.query(function(t){
+			$scope.origTemplates = t;
+			$scope.refresh();
 		});
 			
 		$scope.ok = function () {
@@ -36,7 +43,7 @@
 			ruleDTO.destinationTypes = $scope.template[0].destinationTypes;
 			ruleDTO.sources = [$scope.source.id];
 			ruleDTO.destinations = [$scope.destination.id];
-			ruleDTO.description = $scope.description;
+			ruleDTO.description = $scope.template[0].description;
 			ruleDTO.type = $scope.template[0].type;
 				
 			rules.add(ruleDTO, function success(){
@@ -64,6 +71,13 @@
 			advancedRuleModal.result.then(function(rule){
 				$modalInstance.close(rule);
 			});
+		}
+		
+		$scope.refresh = function(){
+			// called when another thing is selected, use this to 
+			// refresh the templates after replacements in filter
+			$scope.templates = [];
+			angular.copy($scope.origTemplates, $scope.templates);
 		}
 	});
 

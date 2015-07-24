@@ -26,15 +26,10 @@ public class SimpleRuleFactory implements RuleFactory {
 	public void activate(){
 		// create SimpleRule instances with null ids to act as templates
 		createTemplate(new SimpleRule("ToggleLampFromButton", 
-								"This rule toggles a Lamp on Button press", 
+								"Toggle {{destination.name}} when {{source.name}} is pressed", 
 								Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.BECOMES, Button.State.PRESSED)), 
 								Collections.singletonList(new SimpleAction(null, "lamp", "toggle"))));
 		
-		createTemplate(new SimpleRule("BlockCameraOn", 
-				"This is a stupid rule for testing the rules with only a Camera present", 
-				Collections.singletonList(new SimpleCondition(null, "camera", Camera.STATE, Operator.BECOMES, Camera.State.RECORDING)), 
-				Collections.singletonList(new SimpleAction(null, "camera", "stop"))));
-
 	}
 	
 	@Override

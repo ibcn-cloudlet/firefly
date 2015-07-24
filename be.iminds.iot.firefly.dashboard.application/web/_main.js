@@ -102,7 +102,7 @@
 		$scope.filters = { location : ''};
 		
 		repository.query(function(things){
-			for(var i in things){
+			for(var i=0; i<things.length; i++){
 				$scope.things[things[i].id] = things[i];
 				$scope.locations[things[i].location] = things[i].location;
 				

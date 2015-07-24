@@ -1,24 +1,22 @@
  		<div class="modal-header">
        		<button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
  
-			<h4 class="modal-title">Configure rule</h4>
+			<h4 class="modal-title">Create a new rule</h4>
 		</div>
 				  
 		<div class="modal-body">
 		  	<form class="form-horizontal" role="form">
-		  		<!-- Rule Description -->
-				<div class="form-group">
-					<label class="col-sm-2 control-label" for="description">Description</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="description" ng-model="description"/>
-					</div>
-				</div>
+		  		<p>Select a source Thing that should trigger an action on a destination Thing.</p> <br/>
+		  	
 				<!-- Source/Destination Thing -->
 				<div class="form-group"><!-- Source Thing -->
           			<label class="col-sm-2 control-label" for="sourceSelect">Source</label>
           			<div class="col-sm-4">	
-          				<select class="form-control" id="sourceSelect" ng-model="source" 
-          					ng-options="thing.name for (id, thing) in things"></select>
+          				<select class="form-control" id="sourceSelect" ng-model="source"
+          					ng-options="thing.name for (id, thing) in things"
+          					ng-change="refresh()">
+          					<option value="">&lt;Select a source Thing&gt;</option>
+          				</select>
           			
           				<div class="icon icon-{{source.type}}"></div>
           				<div class="name">{{source.name}}</div>
@@ -27,7 +25,10 @@
 					<label class="col-sm-2 control-label" for="destinationSelect">Destination</label>
 					<div class="col-sm-4">
           				<select class="form-control" id="destinationSelect" ng-model="destination" 
-          					ng-options="thing.name for (id, thing) in things"></select>
+          					ng-options="thing.name for (id, thing) in things"
+          					ng-change="refresh()">
+          					<option value="">&lt;Select a destination Thing&gt;</option>	
+          				</select>
           			
           				<div class="icon icon-{{destination.type}}"></div>
           				<div class="name">{{destination.name}}</div>
@@ -37,8 +38,10 @@
           		<div class="form-group">
 					<label class="col-sm-2 control-label" for="ruleSelect">Rule:</label>
 					<div class="col-sm-10">
+						<p>Select a rule to apply - only rules matching your source and destination thing type will show up:</p>
 						<select class="form-control" id="ruleSelect" multiple ng-multiple="false" 
-							ng-model="template" ng-options="rule.description for rule in templates | ruleFilter:source:destination"></select>
+							ng-model="template" ng-options="rule.description for rule in templates | ruleFilter:source:destination">
+						</select>
 					</div>
           		</div>	
           	</form>
