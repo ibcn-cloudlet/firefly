@@ -2,6 +2,7 @@ package be.iminds.iot.thing.rule.factory;
 
 import java.util.UUID;
 
+import aQute.lib.converter.Converter;
 import be.iminds.iot.things.api.Thing;
 import be.iminds.iot.things.rule.api.Change;
 import be.iminds.iot.things.rule.api.Condition;
@@ -13,8 +14,8 @@ public class SimpleCondition implements Condition {
 	private final UUID id;
 	private final String type;
 	private final String variable;
-	private final Operator operator;
-	private final Object value;
+	private Operator operator;
+	private Object value; 
 	
 	private Object currentValue;
 	
@@ -53,6 +54,17 @@ public class SimpleCondition implements Condition {
 			&& change.stateVariable.equals(variable)){
 			currentValue = change.value;
 			changed = true;
+		}
+		
+		// Try to convert in case of non matching classes
+		// This is to attempt to handle any String values coming from web interface
+		if(!currentValue.getClass().equals(value.getClass())){
+			System.out.println("TRY TO CONVERT!");
+			try {
+				value = Converter.cnv(currentValue.getClass(), value);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		switch(operator) {

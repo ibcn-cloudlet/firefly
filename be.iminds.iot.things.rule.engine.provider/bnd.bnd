@@ -15,7 +15,8 @@ Private-Package: \
 	osgi.enroute.base.api;version=1.0,\
 	biz.aQute.junit,\
 	be.iminds.iot.things.api;version=latest,\
-	be.iminds.iot.things.rule.api;version=latest
+	be.iminds.iot.things.rule.api;version=latest,\
+	biz.aQute.bndlib;version=3.0
 
 -includeresource: {readme.md}
 
@@ -27,4 +28,5 @@ Private-Package: \
 	${error;Resolve first}
 Bundle-Name: IoT Things Rule Engine
 Export-Package: be.iminds.iot.things.rule.api
+Conditional-Package: aQute.lib*
 
