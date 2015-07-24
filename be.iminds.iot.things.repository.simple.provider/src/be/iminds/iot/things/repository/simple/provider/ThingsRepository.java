@@ -110,36 +110,40 @@ public class ThingsRepository implements Repository, EventHandler {
 		synchronized(things){
 			thing = things.get(id);
 			if(thing==null){
-				thing = new ThingDTO();
-				thing.id = id;
-				thing.gateway = (UUID) event.getProperty(Thing.GATEWAY);
-				thing.device = (String) event.getProperty(Thing.DEVICE);
-				thing.service = (String) event.getProperty(Thing.SERVICE);
-				thing.type = (String) event.getProperty(Thing.TYPE);
-				thing.name = thing.service;
-				
-				things.put(id, thing);
+				if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
+					thing = new ThingDTO();
+					thing.id = id;
+					thing.gateway = (UUID) event.getProperty(Thing.GATEWAY);
+					thing.device = (String) event.getProperty(Thing.DEVICE);
+					thing.service = (String) event.getProperty(Thing.SERVICE);
+					thing.type = (String) event.getProperty(Thing.TYPE);
+					thing.name = thing.service;
+					
+					
+					things.put(id, thing);
+				}
 			} else {
 				// update gateway - could be changed
 				thing.gateway = (UUID) event.getProperty(Thing.GATEWAY);
 			}
 		}
 		
-		
-		if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
-			online.add(thing.id);
-		} else if(event.getTopic().startsWith("be/iminds/iot/thing/offline/")){
-			online.remove(thing);
-		} else if(event.getTopic().startsWith("be/iminds/iot/thing/change/")){
-			online.add(thing.id);
-			
-			String name = (String) event.getProperty(Thing.STATE_VAR);
-			Object val = event.getProperty(Thing.STATE_VAL);
-			
-			if(thing.state == null){
-				thing.state = new HashMap<>();
+		if(thing!=null){
+			if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
+				online.add(thing.id);
+			} else if(event.getTopic().startsWith("be/iminds/iot/thing/offline/")){
+				online.remove(thing);
+			} else if(event.getTopic().startsWith("be/iminds/iot/thing/change/")){
+				online.add(thing.id);
+				
+				String name = (String) event.getProperty(Thing.STATE_VAR);
+				Object val = event.getProperty(Thing.STATE_VAL);
+				
+				if(thing.state == null){
+					thing.state = new HashMap<>();
+				}
+				thing.state.put(name, val);
 			}
-			thing.state.put(name, val);
 		}
 
 		logEvent(event);
