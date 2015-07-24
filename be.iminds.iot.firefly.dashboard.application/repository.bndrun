@@ -61,6 +61,7 @@ JPMCommand:					firefly
 	be.iminds.aiolos.event.rs;version='[0.6,0.7)',\
 	be.iminds.iot.things.api;version='[1.0.0,1.0.1)',\
 	be.iminds.iot.things.repository.simple.provider;version='[1.0.0,1.0.1)',\
+	be.iminds.iot.things.rule.engine.provider;version='[1.0.0,1.0.1)',\
 	be.iminds.iot.firefly.dashboard.application;version='[1.0.0,1.0.1)'
 	
 -runproperties:\
