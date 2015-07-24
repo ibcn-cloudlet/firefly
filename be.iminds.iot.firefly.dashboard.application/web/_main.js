@@ -16,6 +16,7 @@
 			 'be.iminds.iot.repository',
 			 'be.iminds.iot.rule.engine',
 			 'be.iminds.iot.rule.templates',
+			 'be.iminds.iot.rule.simple',
 			 'be.iminds.iot.firefly.dashboard.actions']);
 	
 	MODULE.config(function($routeProvider, en$jsonrpcProvider) {

@@ -13,11 +13,10 @@
 			};
 	});
 	
-	angular.module('be.iminds.iot.firefly.dashboard').controller('ruleDetailsCtrl', function ($scope, $modal, $modalInstance, rule, things, templates) {
+	angular.module('be.iminds.iot.firefly.dashboard').controller('ruleDetailsCtrl', function ($scope, $modal, $modalInstance, rules, things, templates) {
 		
 		$scope.things = things;
-		$scope.rule = rule;
-		
+
 		$scope.description;
 		$scope.source = {};
 		$scope.destination = {};
@@ -32,11 +31,19 @@
 		});
 			
 		$scope.ok = function () {
-			$scope.rule.description = $scope.description;
-			$scope.rule.source = $scope.source;
-			$scope.rule.destination = $scope.destination;
-			$scope.rule.type = $scope.template[0].type;
-			$modalInstance.close($scope.rule);
+			var ruleDTO = {};
+			ruleDTO.sourceTypes = $scope.template[0].sourceTypes;
+			ruleDTO.destinationTypes = $scope.template[0].destinationTypes;
+			ruleDTO.sources = [$scope.source.id];
+			ruleDTO.destinations = [$scope.destination.id];
+			ruleDTO.description = $scope.description;
+			ruleDTO.type = $scope.template[0].type;
+				
+			rules.add(ruleDTO, function success(){
+				$modalInstance.close(ruleDTO);
+			}, function error(){
+				$modalInstance.dismiss('cancel');
+			});
 		};
 	
 		$scope.cancel = function () {
@@ -49,9 +56,6 @@
 					controller: 'advancedRuleDetailsCtrl',
 					size: 'lg',
 					resolve: {
-						rule: function(){
-							return $scope.rule ===undefined? {} : $scope.rule;
-						},
 						things: function(){
 							return $scope.things;
 						}
