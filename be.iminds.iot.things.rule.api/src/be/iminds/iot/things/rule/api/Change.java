@@ -18,4 +18,5 @@ public class Change {
 	public UUID thingId;
 	public String stateVariable;
 	public Object value;
+
 }

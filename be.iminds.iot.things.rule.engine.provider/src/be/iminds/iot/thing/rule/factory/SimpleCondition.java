@@ -8,7 +8,7 @@ import be.iminds.iot.things.rule.api.Condition;
 
 public class SimpleCondition implements Condition {
 
-	public enum Operator {IS,IS_NOT,IS_GREATER,IS_LESS};
+	public enum Operator {BECOMES,IS,IS_NOT,IS_GREATER,IS_LESS};
 	
 	private final UUID id;
 	private final String type;
@@ -48,12 +48,16 @@ public class SimpleCondition implements Condition {
 
 	@Override
 	public boolean trigger(Change change) {
+		boolean changed = false;
 		if(change.thingId.equals(id)
 			&& change.stateVariable.equals(variable)){
 			currentValue = change.value;
+			changed = true;
 		}
 		
 		switch(operator) {
+		case BECOMES:
+			return changed && currentValue.equals(value);
 		case IS:
 			return currentValue.equals(value);
 		case IS_NOT:

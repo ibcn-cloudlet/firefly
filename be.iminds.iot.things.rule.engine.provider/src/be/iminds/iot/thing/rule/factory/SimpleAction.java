@@ -12,17 +12,17 @@ public class SimpleAction implements Action {
 	private Object thing = null;
 	
 	private final String type;
-	private final String action;
+	private final String method;
 	private final Object[] args;
 	
 	public SimpleAction(
 			UUID id,
 			String type, 
-			String action,  
+			String method,  
 			Object... args){
 		this.id = id;
 		this.type = type;
-		this.action = action;
+		this.method = method;
 		this.args = args;
 	}
 	
@@ -49,17 +49,17 @@ public class SimpleAction implements Action {
 				parameterTypes[i] = args[i].getClass();
 			}
 			try {
-				Method m = thing.getClass().getMethod(action, parameterTypes);
+				Method m = thing.getClass().getMethod(method, parameterTypes);
 				m.setAccessible(true);
 				m.invoke(thing, args);
 			} catch(Exception e){
-				System.err.println("Error invoking "+action+" on thing "+id);
+				System.err.println("Error invoking "+method+" on thing "+id);
 				e.printStackTrace();
 			}
 		}
 	}
 
 	public SimpleAction clone(UUID id){
-		return new SimpleAction(id, type, action, args);
+		return new SimpleAction(id, type, method, args);
 	}
 }
