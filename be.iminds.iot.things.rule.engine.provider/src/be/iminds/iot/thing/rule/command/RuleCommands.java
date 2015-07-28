@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import be.iminds.iot.thing.rule.factory.SimpleAction;
 import be.iminds.iot.things.rule.api.Rule;
 import be.iminds.iot.things.rule.api.RuleDTO;
 import be.iminds.iot.things.rule.api.RuleEngine;
@@ -16,7 +17,8 @@ import be.iminds.iot.things.rule.api.RuleFactory;
 				  "osgi.command.function=rules",
 				  "osgi.command.function=templates",
 				  "osgi.command.function=add",
-				  "osgi.command.function=remove"},
+				  "osgi.command.function=remove",
+				  "osgi.command.function=trigger"},
 		immediate=true)
 public class RuleCommands {
 
@@ -49,6 +51,11 @@ public class RuleCommands {
 	
 	public void remove(int index){
 		engine.removeRule(index);
+	}
+	
+	public void trigger(String id, String type, String method, String... args){
+		SimpleAction a = new SimpleAction(UUID.fromString(id), type, method, args);
+		a.execute();
 	}
 	
 	@Reference
