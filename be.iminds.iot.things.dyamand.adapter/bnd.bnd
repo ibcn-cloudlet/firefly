@@ -50,6 +50,7 @@ Import-Package: \
 	org.dyamand.sensors.*;resolution:=optional,\
 	org.dyamand.v4l2;resolution:=optional,\
 	org.osgi.framework;version='[1.7.0,2.0)',\
+	org.osgi.framework.wiring;version='[1.1.0,2.0)',\
 	*
 	
 Conditional-Package: aQute.lib*
