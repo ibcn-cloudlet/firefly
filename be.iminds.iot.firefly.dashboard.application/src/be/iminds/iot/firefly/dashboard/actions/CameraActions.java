@@ -115,6 +115,7 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 		// if not yet a stream for this id, register CameraListener service
 		if(!listenerRegistrations.containsKey(id)){
 			Dictionary<String, Object> properties = new Hashtable<>();
+			properties.put("aiolos.unique", true);
 			properties.put("be.iminds.iot.thing.camera.id", id.toString());
 			ServiceRegistration r = context.registerService(CameraListener.class, this, properties);
 			listenerRegistrations.put(id, r);
