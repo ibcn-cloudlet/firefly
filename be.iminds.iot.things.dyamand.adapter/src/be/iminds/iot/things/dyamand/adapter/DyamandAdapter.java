@@ -76,7 +76,7 @@ public class DyamandAdapter implements EventListener {
 			final org.dyamand.service.StateChange stateChange = ((StateChangedEvent) event)
 					.getStateChange();
 			this.processStateChange(stateChange);
-		}
+		} 
 	}
 
     private void servicePojoOnline(final ServicePOJO servicePOJO) {
@@ -96,6 +96,8 @@ public class DyamandAdapter implements EventListener {
 					properties.put(Thing.DEVICE, device);
 					properties.put(Thing.SERVICE, service);
 					properties.put(Thing.GATEWAY, gatewayId);
+					properties.put(Thing.TYPE, adapter.getType());
+
 				    // Add some AIOLOS stuff
 				    properties.put("aiolos.instance.id", servicePOJO
 					    .getService().getId().toString());
@@ -193,7 +195,8 @@ public class DyamandAdapter implements EventListener {
 	private void notifyListeners(final String topic, final Map<String, Object> properties){
 		properties.put("timestamp", System.currentTimeMillis());
 		final EventProperties e = new EventProperties(properties);
-		ea.postEvent(new org.osgi.service.event.Event(topic, properties));
+		// use synchrounous delivery in order not to hang before sending an event on single threaded device like Pi B+
+		ea.sendEvent(new org.osgi.service.event.Event(topic, properties));
 	}
 
 	@Reference
