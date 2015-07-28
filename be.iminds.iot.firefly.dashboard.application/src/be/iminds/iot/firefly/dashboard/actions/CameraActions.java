@@ -65,7 +65,7 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 				if(camera.isOn()){
 					camera.stop();
 				} else {
-					camera.start(320, 240, Format.MJPEG);
+					camera.start();
 				}
 			}
 		}
