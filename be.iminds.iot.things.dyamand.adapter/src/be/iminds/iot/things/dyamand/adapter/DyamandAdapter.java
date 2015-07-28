@@ -99,8 +99,7 @@ public class DyamandAdapter implements EventListener {
 					properties.put(Thing.TYPE, adapter.getType());
 
 				    // Add some AIOLOS stuff
-				    properties.put("aiolos.instance.id", servicePOJO
-					    .getService().getId().toString());
+				    properties.put("aiolos.instance.id", thingId.toString());
 				    properties.put("aiolos.combine", "*");
 	
 				    final ServiceRegistration registration = this.context
