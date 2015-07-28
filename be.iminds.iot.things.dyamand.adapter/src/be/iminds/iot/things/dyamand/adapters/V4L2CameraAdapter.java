@@ -126,7 +126,7 @@ public class V4L2CameraAdapter implements ServiceAdapter {
 
 			@Override
 			public void start() {
-				pojo.start(800, 600, V4L2CameraFormat.RGB);
+				start(320, 240, Camera.Format.MJPEG);
 			}
 
 			@Override
