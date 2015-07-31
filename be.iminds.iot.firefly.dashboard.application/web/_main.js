@@ -107,7 +107,7 @@
 				$scope.locations[things[i].location] = things[i].location;
 				
 				// initialize highlight
-				for(name in things[i].state){
+				for(var name in things[i].state){
 					if(name==='state' || Object.keys(things[i].state).length==1){
 						$scope.things[things[i].id].highlight = $scope.formatState(things[i].state[name]);
 					}
