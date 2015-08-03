@@ -92,7 +92,8 @@ public class ThingsRepository implements Repository, EventHandler {
 		ArrayList<ThingDTO> result = new ArrayList<>();
 		synchronized(online){
 			for(UUID id : online){
-				result.add(things.get(id));
+				ThingDTO t = things.get(id);
+				result.add(t);
 			}
 		}
 		return Collections.unmodifiableCollection(result);
@@ -154,12 +155,12 @@ public class ThingsRepository implements Repository, EventHandler {
 	public void addThing(Thing t, Map<String, Object> properties){
 		// mark online
 		UUID id = (UUID) properties.get(Thing.ID);
-		
 		// also init here in case of missed online event
 		ThingDTO thing;
 		synchronized(things){
 			thing = things.get(id);
 			if(thing==null){
+				thing = new ThingDTO();
 				thing.gateway = (UUID) properties.get(Thing.GATEWAY);
 				thing.device = (String) properties.get(Thing.DEVICE);
 				thing.service = (String) properties.get(Thing.SERVICE);
