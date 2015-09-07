@@ -7,10 +7,11 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import osgi.enroute.rest.api.REST;
-import osgi.enroute.rest.api.RESTRequest;
+import osgi.enroute.rest.api.RequireRestImplementation;
 import be.iminds.iot.things.repository.api.Repository;
 import be.iminds.iot.things.repository.api.ThingDTO;
 
+@RequireRestImplementation
 @Component()
 public class ThingsRepositoryRestEndpoint implements REST{
 

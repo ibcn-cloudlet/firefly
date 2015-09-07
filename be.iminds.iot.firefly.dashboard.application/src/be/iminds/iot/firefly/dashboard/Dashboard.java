@@ -10,24 +10,22 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 
-import osgi.enroute.capabilities.AngularUIWebResource;
-import osgi.enroute.capabilities.AngularWebResource;
-import osgi.enroute.capabilities.BootstrapWebResource;
-import osgi.enroute.capabilities.ConfigurerExtender;
-import osgi.enroute.capabilities.EasseWebResource;
-import osgi.enroute.capabilities.EventAdminSSEEndpoint;
-import osgi.enroute.capabilities.JsonrpcWebResource;
-import osgi.enroute.capabilities.WebServerExtender;
+import osgi.enroute.configurer.api.RequireConfigurerExtender;
+import osgi.enroute.eventadminserversentevents.capabilities.RequireEventAdminServerSentEventsWebResource;
+import osgi.enroute.github.angular_ui.capabilities.RequireAngularUIWebResource;
+import osgi.enroute.google.angular.capabilities.RequireAngularWebResource;
 import osgi.enroute.jsonrpc.api.JSONRPC;
+import osgi.enroute.jsonrpc.api.RequireJsonrpcWebResource;
+import osgi.enroute.twitter.bootstrap.capabilities.RequireBootstrapWebResource;
+import osgi.enroute.webserver.capabilities.RequireWebServerExtender;
 
-@AngularWebResource(resource={"angular.js","angular-resource.js", "angular-route.js"}, priority=1000)
-@AngularUIWebResource(resource="ui-bootstrap-tpls.js")
-@BootstrapWebResource(resource="css/bootstrap.css")
-@EasseWebResource(resource={"easse.js","polyfill/eventsource.js"})
-@EventAdminSSEEndpoint
-@JsonrpcWebResource(resource={"jsonrpc.js"})
-@WebServerExtender
-@ConfigurerExtender
+@RequireAngularWebResource(resource={"angular.js","angular-resource.js", "angular-route.js"}, priority=1000)
+@RequireAngularUIWebResource(resource="ui-bootstrap-tpls.js")
+@RequireBootstrapWebResource(resource="css/bootstrap.css")
+@RequireEventAdminServerSentEventsWebResource(resource={"easse.js","polyfill/eventsource.js"})
+@RequireJsonrpcWebResource(resource={"jsonrpc.js"})
+@RequireWebServerExtender
+@RequireConfigurerExtender
 @Component(name="be.iminds.iot.firefly.dashboard",property=JSONRPC.ENDPOINT+"=be.iminds.iot.firefly.dashboard")
 public class Dashboard implements JSONRPC {
 

@@ -4,8 +4,8 @@
 # This file contains the setup for the AIOLOS repository
 #
 
--plugin.aiolos.repo= \
+-plugin.felix.repo= \
 	aQute.bnd.deployer.repository.FixedIndexedRepo; \
-		name=AIOLOS; \
-		locations=http://aiolos.intec.ugent.be/repositories/be.iminds.aiolos/index.xml;
+		name=Felix; \
+		locations=http://aiolos.intec.ugent.be/repositories/org.apache.felix/index.xml;
 

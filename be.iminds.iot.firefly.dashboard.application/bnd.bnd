@@ -26,10 +26,10 @@ Private-Package: \
 
 -buildpath: \
 	osgi.enroute.logger.simple.provider,\
-	osgi.enroute.web.simple.provider;version=1.2,\
-	osgi.enroute.base.api;version=1.4,\
-	biz.aQute.bndlib;version=3.0,\
-	be.iminds.iot.things.api;version=latest
+	osgi.enroute.web.simple.provider,\
+	osgi.enroute.base.api,\
+	be.iminds.iot.things.api;version=latest,\
+
 	
 Bundle-Vendor: iMinds IoT Lab
 Export-Package: osgi.enroute.jsonrpc.api
