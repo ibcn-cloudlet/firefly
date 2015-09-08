@@ -25,7 +25,9 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 
+import osgi.enroute.http.capabilities.RequireHttpImplementation;
 import aQute.lib.collections.MultiMap;
 import be.iminds.iot.firefly.dashboard.Actions;
 import be.iminds.iot.things.api.Thing;
@@ -33,8 +35,11 @@ import be.iminds.iot.things.api.camera.Camera;
 import be.iminds.iot.things.api.camera.Camera.Format;
 import be.iminds.iot.things.api.camera.CameraListener;
 
+@RequireHttpImplementation
 @Component(service={Servlet.class,Actions.class},
-		property={"aiolos.proxy=false","alias=/be.iminds.iot.firefly/camera.mjpeg"})
+		property={"aiolos.proxy=false",
+		HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN + "=" + "/be.iminds.iot.firefly/camera.mjpeg",
+		HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_ASYNC_SUPPORTED+":Boolean="+true})
 public class CameraActions extends HttpServlet implements Actions, CameraListener {
 
 	private Map<UUID, Camera> cameras = Collections.synchronizedMap(new HashMap<UUID, Camera>());
