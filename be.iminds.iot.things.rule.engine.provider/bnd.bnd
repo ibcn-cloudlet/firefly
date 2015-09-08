@@ -7,9 +7,9 @@ Bundle-Version:					1.0.0.${tstamp}
 
 Private-Package: \
 	be.iminds.iot.things.rule.engine,\
-	be.iminds.iot.thing.rule.factory,\
-	be.iminds.iot.thing.rule.endpoint,\
-	be.iminds.iot.thing.rule.command
+	be.iminds.iot.things.rule.factory,\
+	be.iminds.iot.things.rule.endpoint,\
+	be.iminds.iot.things.rule.command
 	
 -buildpath: \
 	osgi.enroute.base.api;version=1.0,\

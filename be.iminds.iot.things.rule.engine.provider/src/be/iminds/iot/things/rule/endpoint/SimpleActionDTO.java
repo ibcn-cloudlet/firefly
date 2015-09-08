@@ -1,4 +1,4 @@
-package be.iminds.iot.thing.rule.endpoint;
+package be.iminds.iot.things.rule.endpoint;
 
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package be.iminds.iot.thing.rule.factory;
+package be.iminds.iot.things.rule.factory;
 
 import java.util.UUID;
 

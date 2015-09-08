@@ -1,4 +1,4 @@
-package be.iminds.iot.thing.rule.factory;
+package be.iminds.iot.things.rule.factory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,12 +10,12 @@ import java.util.Map;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
-import be.iminds.iot.thing.rule.factory.SimpleCondition.Operator;
 import be.iminds.iot.things.api.button.Button;
 import be.iminds.iot.things.api.camera.Camera;
 import be.iminds.iot.things.rule.api.Rule;
 import be.iminds.iot.things.rule.api.RuleDTO;
 import be.iminds.iot.things.rule.api.RuleFactory;
+import be.iminds.iot.things.rule.factory.SimpleCondition.Operator;
 
 @Component
 public class SimpleRuleFactory implements RuleFactory {

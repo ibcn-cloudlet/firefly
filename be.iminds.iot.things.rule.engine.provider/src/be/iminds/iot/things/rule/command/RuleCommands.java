@@ -1,15 +1,15 @@
-package be.iminds.iot.thing.rule.command;
+package be.iminds.iot.things.rule.command;
 
 import java.util.UUID;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import be.iminds.iot.thing.rule.factory.SimpleAction;
 import be.iminds.iot.things.rule.api.Rule;
 import be.iminds.iot.things.rule.api.RuleDTO;
 import be.iminds.iot.things.rule.api.RuleEngine;
 import be.iminds.iot.things.rule.api.RuleFactory;
+import be.iminds.iot.things.rule.factory.SimpleAction;
 
 @Component(
 		service=Object.class,

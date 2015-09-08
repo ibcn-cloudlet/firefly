@@ -1,4 +1,4 @@
-package be.iminds.iot.thing.rule.endpoint;
+package be.iminds.iot.things.rule.endpoint;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,11 +8,11 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import osgi.enroute.rest.api.REST;
-import be.iminds.iot.thing.rule.factory.SimpleAction;
-import be.iminds.iot.thing.rule.factory.SimpleCondition;
-import be.iminds.iot.thing.rule.factory.SimpleRule;
 import be.iminds.iot.things.api.Things;
 import be.iminds.iot.things.rule.api.RuleEngine;
+import be.iminds.iot.things.rule.factory.SimpleAction;
+import be.iminds.iot.things.rule.factory.SimpleCondition;
+import be.iminds.iot.things.rule.factory.SimpleRule;
 
 @Component()
 public class SimpleRuleRestEndpoint implements REST {

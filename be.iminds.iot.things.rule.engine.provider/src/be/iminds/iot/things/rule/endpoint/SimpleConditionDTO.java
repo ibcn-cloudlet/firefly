@@ -1,8 +1,8 @@
-package be.iminds.iot.thing.rule.endpoint;
+package be.iminds.iot.things.rule.endpoint;
 
 import java.util.UUID;
 
-import be.iminds.iot.thing.rule.factory.SimpleCondition.Operator;
+import be.iminds.iot.things.rule.factory.SimpleCondition.Operator;
 
 public class SimpleConditionDTO {
 
