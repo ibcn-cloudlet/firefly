@@ -104,4 +104,8 @@ public interface Camera extends Thing {
      */
     public void stop();
     
+    /**
+     * Toggle
+     */
+    public void toggle();
 }

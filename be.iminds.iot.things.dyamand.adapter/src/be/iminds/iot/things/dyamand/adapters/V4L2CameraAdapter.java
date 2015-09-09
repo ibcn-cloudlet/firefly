@@ -114,6 +114,9 @@ public class V4L2CameraAdapter implements ServiceAdapter {
 		
 		return new Camera() {
 
+			private int width = 320;
+			private int height = 240;
+			
 			@Override
 			public void stop() {
 				pojo.stop();
@@ -122,13 +125,26 @@ public class V4L2CameraAdapter implements ServiceAdapter {
 			@Override
 			public void start(final int width, final int height, Camera.Format format) {
 				pojo.start(width, height, format.ordinal());
+				this.width = pojo.getWidth();
+				this.height = pojo.getHeight();
 			}
 
 			@Override
 			public void start() {
-				start(320, 240, Camera.Format.MJPEG);
+				start(width, height, Camera.Format.MJPEG);
+				this.width = pojo.getWidth();
+				this.height = pojo.getHeight();
 			}
 
+			@Override
+			public void toggle(){
+				if(isOn()){
+					stop();
+				} else {
+					start();
+				}
+			}
+			
 			@Override
 			public int getWidth() {
 				return pojo.getWidth();
