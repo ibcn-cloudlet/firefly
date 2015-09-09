@@ -69,7 +69,9 @@ public class SimpleRuleEngine implements RuleEngine, EventHandler {
 			synchronized(rules){
 				// TODO only notify rules that actually wait for events of this Thing?
 				for(Rule r : rules){
-					r.evaluate(change);
+					if(r.evaluate(change)){
+						System.out.println("TRIGGERED RULE "+r.getDescription());
+					}
 					// TODO notify event when rule is fired?
 				}
 			}

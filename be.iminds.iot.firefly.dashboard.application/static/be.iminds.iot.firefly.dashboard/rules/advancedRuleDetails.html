@@ -57,11 +57,12 @@
 		          					 <option value="IS_NOT">IS NOT</option>
 		          					 <option value="IS_GREATER">IS GREATER THAN</option>
 		          					 <option value="IS_LESS">IS LESS THAN</option>
+		          					 <option value="CHANGES">CHANGES</option>
 		          				</select>
 	          				</div>
           				</div>
           				
-          				<div class="form-group">
+          				<div class="form-group" ng-hide="condition.operator=='CHANGES'">
 	          				<label class="col-sm-2 control-label">Value</label>
 	          				<div class="col-sm-10">
 	          					<input type="text" class="form-control" ng-model="condition.value"/>

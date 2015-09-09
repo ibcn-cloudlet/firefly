@@ -9,7 +9,7 @@ import be.iminds.iot.things.rule.api.Condition;
 
 public class SimpleCondition implements Condition {
 
-	public enum Operator {BECOMES,IS,IS_NOT,IS_GREATER,IS_LESS};
+	public enum Operator {BECOMES,IS,IS_NOT,IS_GREATER,IS_LESS,CHANGES};
 	
 	private final UUID id;
 	private final String type;
@@ -58,7 +58,7 @@ public class SimpleCondition implements Condition {
 		
 		// Try to convert in case of non matching classes
 		// This is to attempt to handle any String values coming from web interface
-		if(!currentValue.getClass().equals(value.getClass())){
+		if(operator!=Operator.CHANGES && !currentValue.getClass().equals(value.getClass())){
 			try {
 				value = Converter.cnv(currentValue.getClass(), value);
 			} catch (Exception e) {
@@ -77,6 +77,8 @@ public class SimpleCondition implements Condition {
 			return ((Comparable)currentValue).compareTo(value) > 0;
 		case IS_LESS:
 			return ((Comparable)currentValue).compareTo(value) < 0;
+		case CHANGES:
+			return changed;
 		}
 		return false;
 	}
