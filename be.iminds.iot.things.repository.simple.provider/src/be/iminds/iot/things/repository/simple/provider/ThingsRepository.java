@@ -73,6 +73,10 @@ public class ThingsRepository implements Repository, EventHandler {
 			// ignore
 		}
 		
+		export();
+	}
+	
+	void export(){
 		// write thing dtos to file
 		try {
 			json.enc().indent("\t").to(new File("things.txt")).put(things).close();

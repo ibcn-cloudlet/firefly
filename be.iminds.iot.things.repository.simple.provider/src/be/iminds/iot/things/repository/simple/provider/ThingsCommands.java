@@ -10,9 +10,10 @@ import be.iminds.iot.things.repository.api.ThingDTO;
 
 @Component(
 		service=Object.class,
-		property={"osgi.command.scope=thing",
+		property={"osgi.command.scope=things",
 				  "osgi.command.function=things",
-				  "osgi.command.function=thing"},
+				  "osgi.command.function=thing",
+				  "osgi.command.function=export"},
 		immediate=true)
 public class ThingsCommands {
 
@@ -41,6 +42,10 @@ public class ThingsCommands {
 				System.out.println("   "+s+": "+t.state.get(s));
 			}
 		}
+	}
+	
+	public void export(){
+		((ThingsRepository)repository).export();
 	}
 	
 	@Reference()
