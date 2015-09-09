@@ -5,6 +5,14 @@
 	'use strict';
 
 	angular.module('be.iminds.iot.firefly.dashboard').controller('advancedRuleDetailsCtrl', function ($scope, $modalInstance, simplerules, things) {
+		// for now hard coded - should check whether actions are available
+		$scope.destinationFilter = function(thing, index, array ){
+			if(thing.type === 'camera' || thing.type==='lamp'){
+				return true;
+			}
+			return false;
+		};
+		
 		$scope.simplerules = simplerules;
 		
 		$scope.things = things;

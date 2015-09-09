@@ -25,7 +25,7 @@
 					<label class="col-sm-2 control-label" for="destinationSelect">Destination</label>
 					<div class="col-sm-4">
           				<select class="form-control" id="destinationSelect" ng-model="destination" 
-          					ng-options="thing.name for (id, thing) in things"
+          					ng-options="thing.name for (id, thing) in things | mapFilter:destinationFilter"
           					ng-change="refresh()">
           					<option value="">&lt;Select a destination Thing&gt;</option>	
           				</select>
