@@ -13,7 +13,8 @@ import be.iminds.iot.things.repository.api.ThingDTO;
 		property={"osgi.command.scope=things",
 				  "osgi.command.function=things",
 				  "osgi.command.function=thing",
-				  "osgi.command.function=export"},
+				  "osgi.command.function=save",
+				  "osgi.command.function=load"},
 		immediate=true)
 public class ThingsCommands {
 
@@ -44,9 +45,22 @@ public class ThingsCommands {
 		}
 	}
 	
-	public void export(){
-		((ThingsRepository)repository).export();
+	public void save(){
+		save("things.txt");
 	}
+	
+	public void load(){
+		load("things.txt");
+	}
+	
+	public void save(String f){
+		((ThingsRepository)repository).save(f);
+	}
+	
+	public void load(String f){
+		((ThingsRepository)repository).load(f);
+	}
+	
 	
 	@Reference()
 	void setRepository(Repository r){

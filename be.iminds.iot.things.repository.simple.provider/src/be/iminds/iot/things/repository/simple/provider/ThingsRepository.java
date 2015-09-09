@@ -49,11 +49,7 @@ public class ThingsRepository implements Repository, EventHandler {
 	@Activate
 	public void activate(BundleContext context){
 		// load thing dtos from file
-		try {
-			things = (Map<UUID, ThingDTO>) json.dec().from(new File("things.txt")).get(new TypeReference<Map<UUID,ThingDTO>>(){});
-		} catch(Exception e){
-			System.err.println("Failed to load thing descriptions from file");
-		}
+		load("things.txt");
 		
 		// open file output to log events
 		try {
@@ -73,13 +69,21 @@ public class ThingsRepository implements Repository, EventHandler {
 			// ignore
 		}
 		
-		export();
+		save("things.txt");
 	}
 	
-	void export(){
+	void load(String file){
+		try {
+			things = (Map<UUID, ThingDTO>) json.dec().from(new File(file)).get(new TypeReference<Map<UUID,ThingDTO>>(){});
+		} catch(Exception e){
+			System.err.println("Failed to load thing descriptions from file");
+		}
+	}
+	
+	void save(String file){
 		// write thing dtos to file
 		try {
-			json.enc().indent("\t").to(new File("things.txt")).put(things).close();
+			json.enc().indent("\t").to(new File(file)).put(things).close();
 		} catch(Exception e){
 			System.err.println("Failed to write thing descriptions to file");
 		}
