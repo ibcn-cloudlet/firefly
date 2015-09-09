@@ -80,6 +80,11 @@ public class DyamandAdapter implements EventListener {
 	}
 
     private void servicePojoOnline(final ServicePOJO servicePOJO) {
+    	if(this.services.get(servicePOJO)!=null){
+    		System.err.println("ServicePOJO "+servicePOJO+" already online?!");
+    		return;
+    	}
+    	
     	// translate sensor to IoT types
     	synchronized(adapters){
 			for(ServiceAdapter adapter : adapters){
