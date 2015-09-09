@@ -1,5 +1,6 @@
 package be.iminds.iot.things.rule.api;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import be.iminds.iot.things.api.Thing;
@@ -10,7 +11,7 @@ import be.iminds.iot.things.api.Thing;
  * @author tverbele
  *
  */
-public interface Rule {
+public interface Rule extends Serializable {
 
 	/**
 	 * Evaluates the rule, returns whether it is triggered or not

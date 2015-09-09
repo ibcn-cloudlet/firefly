@@ -1,10 +1,11 @@
 package be.iminds.iot.things.rule.api;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import be.iminds.iot.things.api.Thing;
 
-public interface Action {
+public interface Action extends Serializable {
 
 	public UUID getId();
 	

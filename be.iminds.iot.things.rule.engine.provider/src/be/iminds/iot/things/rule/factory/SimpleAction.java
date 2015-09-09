@@ -12,8 +12,8 @@ import be.iminds.iot.things.rule.api.Action;
 public class SimpleAction implements Action {
 
 	private final UUID id;
-	private Object thing = null;
-	private Method m;
+	private transient Object thing = null;
+	private transient Method m;
 	
 	private final String type;
 	private final String method;

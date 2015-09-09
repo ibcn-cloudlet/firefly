@@ -1,17 +1,17 @@
 package be.iminds.iot.things.rule.factory;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 import be.iminds.iot.things.api.button.Button;
-import be.iminds.iot.things.api.camera.Camera;
+import be.iminds.iot.things.api.sensor.contact.ContactSensor;
+import be.iminds.iot.things.api.sensor.motion.MotionSensor;
 import be.iminds.iot.things.rule.api.Rule;
 import be.iminds.iot.things.rule.api.RuleDTO;
 import be.iminds.iot.things.rule.api.RuleFactory;
@@ -25,10 +25,50 @@ public class SimpleRuleFactory implements RuleFactory {
 	@Activate
 	public void activate(){
 		// create SimpleRule instances with null ids to act as templates
-		createTemplate(new SimpleRule("ToggleLampFromButton", 
-								"Toggle {{destination.name}} when {{source.name}} is pressed", 
+		
+		// toggle lamp on button
+		createTemplate(new SimpleRule("ToggleLampFromButtonPress", 
+								"Toggle {{destination.name}} when {{source.name}} becomes pressed", 
 								Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.BECOMES, Button.State.PRESSED)), 
 								Collections.singletonList(new SimpleAction(null, "lamp", "toggle"))));
+		createTemplate(new SimpleRule("ToggleLampFromButtonChange", 
+				"Toggle {{destination.name}} when {{source.name}} state changes", 
+				Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.CHANGES, null)), 
+				Collections.singletonList(new SimpleAction(null, "lamp", "toggle"))));
+		
+		// toggle camera on button
+		createTemplate(new SimpleRule("ToggleCameraFromButtonPress", 
+				"Toggle {{destination.name}} when {{source.name}} becomes pressed", 
+				Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.BECOMES, Button.State.PRESSED)), 
+				Collections.singletonList(new SimpleAction(null, "camera", "toggle"))));
+		createTemplate(new SimpleRule("ToggleCameraFromButtonChange", 
+				"Toggle {{destination.name}} when {{source.name}} state changes", 
+				Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.CHANGES, null)), 
+				Collections.singletonList(new SimpleAction(null, "camera", "toggle"))));
+		
+		// toggle lamp on door
+		createTemplate(new SimpleRule("ToggleLampFromDoorChange", 
+				"Toggle {{destination.name}} when {{source.name}} state changes", 
+				Collections.singletonList(new SimpleCondition(null, "contact", ContactSensor.STATE, Operator.CHANGES, null)), 
+				Collections.singletonList(new SimpleAction(null, "lamp", "toggle"))));
+		
+		// toggle camera on door
+		createTemplate(new SimpleRule("ToggleCameraFromDoorChange", 
+				"Toggle {{destination.name}} when {{source.name}} state changes", 
+				Collections.singletonList(new SimpleCondition(null, "contact", ContactSensor.STATE, Operator.CHANGES, null)), 
+				Collections.singletonList(new SimpleAction(null, "camera", "toggle"))));
+		
+		// toggle lamp on motion
+		createTemplate(new SimpleRule("ToggleLampFromDoorChange", 
+				"Toggle {{destination.name}} when {{source.name}} state changes", 
+				Collections.singletonList(new SimpleCondition(null, "motion", MotionSensor.STATE, Operator.CHANGES, null)), 
+				Collections.singletonList(new SimpleAction(null, "lamp", "toggle"))));
+		
+		// toggle camera on motion
+		createTemplate(new SimpleRule("ToggleCameraFromDoorChange", 
+				"Toggle {{destination.name}} when {{source.name}} state changes", 
+				Collections.singletonList(new SimpleCondition(null, "contact", MotionSensor.STATE, Operator.CHANGES, null)), 
+				Collections.singletonList(new SimpleAction(null, "camera", "toggle"))));
 		
 	}
 	
@@ -47,14 +87,12 @@ public class SimpleRuleFactory implements RuleFactory {
 
 	@Override
 	public Collection<RuleDTO> getTemplates() {
-		List<RuleDTO> t = new ArrayList<RuleDTO>();
-		for(SimpleRule r : templates.values()){
-			t.add(r.getDTO());
-		}
-		return Collections.unmodifiableCollection(t);
+		return Collections.unmodifiableCollection(
+				templates.values().stream().map(r -> r.getDTO()).collect(Collectors.toList()));
 	}
 
-	private void createTemplate(SimpleRule rule){
+	public void createTemplate(SimpleRule rule){
 		templates.put(rule.getType(), rule);
 	}
+	
 }

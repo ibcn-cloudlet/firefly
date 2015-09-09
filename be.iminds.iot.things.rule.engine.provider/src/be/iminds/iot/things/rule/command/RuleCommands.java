@@ -1,24 +1,32 @@
 package be.iminds.iot.things.rule.command;
 
+import java.io.File;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import aQute.lib.converter.TypeReference;
+import aQute.lib.json.JSONCodec;
 import be.iminds.iot.things.rule.api.Rule;
 import be.iminds.iot.things.rule.api.RuleDTO;
 import be.iminds.iot.things.rule.api.RuleEngine;
 import be.iminds.iot.things.rule.api.RuleFactory;
+import be.iminds.iot.things.rule.engine.SimpleRuleEngine;
 import be.iminds.iot.things.rule.factory.SimpleAction;
 
 @Component(
 		service=Object.class,
-		property={"osgi.command.scope=rule",
+		property={"osgi.command.scope=rules",
 				  "osgi.command.function=rules",
 				  "osgi.command.function=templates",
 				  "osgi.command.function=add",
 				  "osgi.command.function=remove",
-				  "osgi.command.function=trigger"},
+				  "osgi.command.function=trigger",
+				  "osgi.command.function=load",
+				  "osgi.command.function=save"},
 		immediate=true)
 public class RuleCommands {
 
@@ -56,6 +64,23 @@ public class RuleCommands {
 	public void trigger(String id, String type, String method, String... args){
 		SimpleAction a = new SimpleAction(UUID.fromString(id), type, method, args);
 		a.execute();
+	}
+	
+	
+	public void load(){
+		load("rules.data");
+	}
+	
+	public void load(String file){
+		((SimpleRuleEngine)engine).load(file);
+	}
+	
+	public void save(){
+		save("rules.data");
+	}
+	
+	public void save(String file){
+		((SimpleRuleEngine)engine).save(file);
 	}
 	
 	@Reference

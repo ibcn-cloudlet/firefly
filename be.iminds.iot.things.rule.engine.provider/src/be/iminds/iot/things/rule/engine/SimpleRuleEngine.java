@@ -1,5 +1,11 @@
 package be.iminds.iot.things.rule.engine;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +15,9 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
@@ -25,10 +33,44 @@ import be.iminds.iot.things.rule.api.RuleEngine;
 @Component(property={"event.topics=be/iminds/iot/thing/change/*"})
 public class SimpleRuleEngine implements RuleEngine, EventHandler {
 
+	// keep rules and things
 	private List<Rule> rules = Collections.synchronizedList(new ArrayList<Rule>());
 	private Map<UUID, Thing> things = Collections.synchronizedMap(new HashMap<UUID, Thing>());
 	
+	// execute on separate thread
 	private ExecutorService executor = Executors.newSingleThreadExecutor();
+	
+	@Activate
+	public void activate(){
+		load("rules.data");
+	}
+	
+	@Deactivate
+	public void deactivate(){
+		save("rules.data");
+	}
+	
+	public void load(String file){
+		try {
+			ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(new FileInputStream(new File(file))));
+			rules = (List<Rule>)input.readObject();
+			input.close();
+		} catch(Exception e){
+			System.err.println("Failed to load rules from file");
+		}
+	}
+	
+	public void save(String file){
+		try {
+			ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(new File(file)));
+			output.writeObject(rules);
+			output.flush();
+			output.close();
+		} catch(Exception e){
+			e.printStackTrace();
+			System.err.println("Failed to write rules to file");
+		}
+	}
 	
 	@Override
 	public void addRule(Rule rule) {
@@ -70,9 +112,8 @@ public class SimpleRuleEngine implements RuleEngine, EventHandler {
 				// TODO only notify rules that actually wait for events of this Thing?
 				for(Rule r : rules){
 					if(r.evaluate(change)){
-						System.out.println("TRIGGERED RULE "+r.getDescription());
+						// TODO notify event when rule is fired?
 					}
-					// TODO notify event when rule is fired?
 				}
 			}
 		});
@@ -103,5 +144,4 @@ public class SimpleRuleEngine implements RuleEngine, EventHandler {
 			}
 		}
 	}
-
 }
