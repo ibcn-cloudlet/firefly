@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -24,8 +26,9 @@ import be.iminds.iot.things.rule.api.RuleEngine;
 public class SimpleRuleEngine implements RuleEngine, EventHandler {
 
 	private List<Rule> rules = Collections.synchronizedList(new ArrayList<Rule>());
-	
 	private Map<UUID, Thing> things = Collections.synchronizedMap(new HashMap<UUID, Thing>());
+	
+	private ExecutorService executor = Executors.newSingleThreadExecutor();
 	
 	@Override
 	public void addRule(Rule rule) {
@@ -62,13 +65,15 @@ public class SimpleRuleEngine implements RuleEngine, EventHandler {
 		Object val = event.getProperty(Thing.STATE_VAL);
 		
 		Change change = new Change(id, name, val);
-		synchronized(rules){
-			// TODO only notify rules that actually wait for events of this Thing?
-			for(Rule r : rules){
-				r.evaluate(change);
-				// TODO notify event when rule is fired?
+		executor.execute(() -> {
+			synchronized(rules){
+				// TODO only notify rules that actually wait for events of this Thing?
+				for(Rule r : rules){
+					r.evaluate(change);
+					// TODO notify event when rule is fired?
+				}
 			}
-		}
+		});
 	}
 	
 	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
