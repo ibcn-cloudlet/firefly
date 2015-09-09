@@ -46,7 +46,7 @@
             
            <nav class='controls'>
                 <ul class="nav masthead-nav control-group">
-                	<li><a ng-click="filters.location = ''" ng-class="{active: filters.location === ''}" >All</a></li>
+                	<li><a ng-click="filters.location = undefined" ng-class="{active: filters.location === undefined}" >All</a></li>
                 	<li ng-repeat="(l, location) in locations"><a ng-click="filters.location = location" ng-class="{active: filters.location === location}">{{location}}</a></li>
                 </ul>
             </nav>

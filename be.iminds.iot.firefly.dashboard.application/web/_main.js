@@ -99,7 +99,7 @@
 		// fill things map using repository REST endpoint
 		$scope.things = {};
 		$scope.locations = {};
-		$scope.filters = { location : ''};
+		$scope.filters = {};
 		
 		repository.query(function(things){
 			for(var i=0; i<things.length; i++){
@@ -112,7 +112,6 @@
 						$scope.things[things[i].id].highlight = $scope.formatState(things[i].state[name]);
 					}
 				}
-				
 			}
 		});
 
