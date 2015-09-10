@@ -35,6 +35,10 @@ public class SimpleRuleFactory implements RuleFactory {
 				"Toggle {{destination.name}} when {{source.name}} state changes", 
 				Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.CHANGES, null)), 
 				Collections.singletonList(new SimpleAction(null, "lamp", "toggle"))));
+		createTemplate(new SimpleRule("ToggleLampFromButtonDown", 
+				"Toggle {{destination.name}} when {{source.name}} state becomes down", 
+				Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.BECOMES, Button.State.DOWN)), 
+				Collections.singletonList(new SimpleAction(null, "lamp", "toggle"))));
 		
 		// toggle camera on button
 		createTemplate(new SimpleRule("ToggleCameraFromButtonPress", 
@@ -45,6 +49,10 @@ public class SimpleRuleFactory implements RuleFactory {
 				"Toggle {{destination.name}} when {{source.name}} state changes", 
 				Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.CHANGES, null)), 
 				Collections.singletonList(new SimpleAction(null, "camera", "toggle"))));
+		createTemplate(new SimpleRule("ToggleCameraFromButtonDown", 
+				"Toggle {{destination.name}} when {{source.name}} state becomes down", 
+				Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.BECOMES, Button.State.DOWN)), 
+				Collections.singletonList(new SimpleAction(null, "camera", "toggle"))));	
 		
 		// toggle lamp on door
 		createTemplate(new SimpleRule("ToggleLampFromDoorChange", 
@@ -59,13 +67,13 @@ public class SimpleRuleFactory implements RuleFactory {
 				Collections.singletonList(new SimpleAction(null, "camera", "toggle"))));
 		
 		// toggle lamp on motion
-		createTemplate(new SimpleRule("ToggleLampFromDoorChange", 
+		createTemplate(new SimpleRule("ToggleLampFromMotionChange", 
 				"Toggle {{destination.name}} when {{source.name}} state changes", 
 				Collections.singletonList(new SimpleCondition(null, "motion", MotionSensor.STATE, Operator.CHANGES, null)), 
 				Collections.singletonList(new SimpleAction(null, "lamp", "toggle"))));
 		
 		// toggle camera on motion
-		createTemplate(new SimpleRule("ToggleCameraFromDoorChange", 
+		createTemplate(new SimpleRule("ToggleCameraFromMotionChange", 
 				"Toggle {{destination.name}} when {{source.name}} state changes", 
 				Collections.singletonList(new SimpleCondition(null, "contact", MotionSensor.STATE, Operator.CHANGES, null)), 
 				Collections.singletonList(new SimpleAction(null, "camera", "toggle"))));
