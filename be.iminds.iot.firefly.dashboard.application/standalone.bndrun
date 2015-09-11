@@ -24,6 +24,9 @@ JPMCommand:					firefly
 	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.rule.engine.provider)'
 
 -runbundles: \
+	org.apache.felix.gogo.command;version='[0.14.0,0.14.1)',\
+	org.apache.felix.gogo.runtime;version='[0.16.2,0.17)',\
+	org.apache.felix.gogo.shell;version='[0.10.0,0.10.1)',\
 	be.iminds.iot.firefly.dashboard.application;version=snapshot,\
 	be.iminds.iot.things.dyamand.adapter;version=snapshot,\
 	be.iminds.iot.things.repository.simple.provider;version=snapshot,\
