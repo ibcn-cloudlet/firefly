@@ -41,7 +41,7 @@
 	org.dyamand.plugins.support.sdp.v4l2;version='[0.2.0,0.2.1)',\
 	org.dyamand.plugins.support.sdp.enocean;version='[0.2.0,0.2.1)',\
 	org.dyamand.plugins.support.sdp.usb;version='[0.2.0,0.2.1)',\
-	org.dyamand.plugins.support.sdp.dyamand-hue;version='[0.1.0,0.2.0)',\
+	org.dyamand.plugins.support.sdp.dyamand-hue;version='[0.1.2,0.2.0)',\
 	org.dyamand.osgi;version='[0.7.1,0.7.2)',\
 	be.iminds.iot.things.dyamand.adapter;version='[1.0.0,1.0.1)'
 
