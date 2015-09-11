@@ -58,7 +58,7 @@ public class SimpleCondition implements Condition {
 			
 			// Try to convert in case of non matching classes
 			// This is to attempt to handle any String values coming from web interface
-			if(!currentValue.getClass().equals(value.getClass())){
+			if(value!=null && !currentValue.getClass().equals(value.getClass())){
 				try {
 					value = Converter.cnv(currentValue.getClass(), value);
 				} catch (Exception e) {
