@@ -30,7 +30,7 @@ public class LampActions implements Actions {
 		Lamp lamp = lamps.get(id);
 		if(lamp!=null){
 			if(params.length==0){
-				// default action - switch camera on/off
+				// default action - switch on/off
 				lamp.toggle();
 			} else {
 				switch(params[0]){

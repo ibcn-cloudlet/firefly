@@ -66,12 +66,8 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 		Camera camera = cameras.get(id);
 		if(camera!=null){
 			if(params.length==0){
-				// default action - switch camera on/off
-				if(camera.isOn()){
-					camera.stop();
-				} else {
-					camera.start();
-				}
+				// default action - switch on/off
+				camera.toggle();
 			}
 		}
 	}
