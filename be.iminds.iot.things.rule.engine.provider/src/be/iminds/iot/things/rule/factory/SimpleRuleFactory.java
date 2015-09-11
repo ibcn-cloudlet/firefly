@@ -10,6 +10,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 import be.iminds.iot.things.api.button.Button;
+import be.iminds.iot.things.api.lamp.Lamp;
 import be.iminds.iot.things.api.sensor.contact.ContactSensor;
 import be.iminds.iot.things.api.sensor.motion.MotionSensor;
 import be.iminds.iot.things.rule.api.Rule;
@@ -39,6 +40,23 @@ public class SimpleRuleFactory implements RuleFactory {
 				"Toggle {{destination.name}} when {{source.name}} state becomes down", 
 				Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.BECOMES, Button.State.DOWN)), 
 				Collections.singletonList(new SimpleAction(null, "lamp", "toggle"))));
+		
+		// toggle lamp on lamp
+		createTemplate(new SimpleRule("ToggleLampFromLamp", 
+				"Toggle {{destination.name}} when {{source.name}} state changes", 
+				Collections.singletonList(new SimpleCondition(null, "lamp", Lamp.STATE, Operator.CHANGES, null)), 
+				Collections.singletonList(new SimpleAction(null, "lamp", "toggle"))));
+		
+		// turn brightness up or down on press
+		createTemplate(new SimpleRule("DimLampFromButtonPress", 
+				"Decrease {{destination.name}} brightness when {{source.name}} becomes pressed", 
+				Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.BECOMES, Button.State.PRESSED)), 
+				Collections.singletonList(new SimpleAction(null, "lamp", "decrementLevel", 20))));
+		
+		createTemplate(new SimpleRule("BrightenLampFromButtonPress", 
+				"Increase {{destination.name}} brightness when {{source.name}} becomes pressed", 
+				Collections.singletonList(new SimpleCondition(null, "button", Button.STATE, Operator.BECOMES, Button.State.PRESSED)), 
+				Collections.singletonList(new SimpleAction(null, "lamp", "incrementLevel", 20))));
 		
 		// toggle camera on button
 		createTemplate(new SimpleRule("ToggleCameraFromButtonPress", 
