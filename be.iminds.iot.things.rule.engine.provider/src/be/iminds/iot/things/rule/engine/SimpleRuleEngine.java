@@ -113,6 +113,7 @@ public class SimpleRuleEngine implements RuleEngine, EventHandler {
 				for(Rule r : rules){
 					if(r.evaluate(change)){
 						// TODO notify event when rule is fired?
+						System.out.println("Triggered rule: "+r.getDescription());
 					}
 				}
 			}
