@@ -1,5 +1,6 @@
 package be.iminds.iot.things.rule.factory;
 
+import java.awt.Color;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +105,12 @@ public class SimpleAction implements Action {
 		for(Method m : candidates){
 			try {
 				for(int i=0;i<args.length;i++){
-					newArgs[i] = Converter.cnv(m.getParameterTypes()[i], args[i]);
+					// hard coded check for Color class for Lamps
+					if(m.getParameterTypes()[i].equals(Color.class)){
+						newArgs[i] = Color.decode(args[i].toString());
+					} else {
+						newArgs[i] = Converter.cnv(m.getParameterTypes()[i], args[i]);
+					}
 				}
 				args = newArgs;
 				return m;
