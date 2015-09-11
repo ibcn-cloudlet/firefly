@@ -55,13 +55,13 @@ public class SimpleRuleFactory implements RuleFactory {
 				Collections.singletonList(new SimpleAction(null, "camera", "toggle"))));	
 		
 		// toggle lamp on door
-		createTemplate(new SimpleRule("ToggleLampFromDoorChange", 
+		createTemplate(new SimpleRule("ToggleLampFromContactChange", 
 				"Toggle {{destination.name}} when {{source.name}} state changes", 
 				Collections.singletonList(new SimpleCondition(null, "contact", ContactSensor.STATE, Operator.CHANGES, null)), 
 				Collections.singletonList(new SimpleAction(null, "lamp", "toggle"))));
 		
 		// toggle camera on door
-		createTemplate(new SimpleRule("ToggleCameraFromDoorChange", 
+		createTemplate(new SimpleRule("ToggleCameraFromContactChange", 
 				"Toggle {{destination.name}} when {{source.name}} state changes", 
 				Collections.singletonList(new SimpleCondition(null, "contact", ContactSensor.STATE, Operator.CHANGES, null)), 
 				Collections.singletonList(new SimpleAction(null, "camera", "toggle"))));
@@ -75,7 +75,7 @@ public class SimpleRuleFactory implements RuleFactory {
 		// toggle camera on motion
 		createTemplate(new SimpleRule("ToggleCameraFromMotionChange", 
 				"Toggle {{destination.name}} when {{source.name}} state changes", 
-				Collections.singletonList(new SimpleCondition(null, "contact", MotionSensor.STATE, Operator.CHANGES, null)), 
+				Collections.singletonList(new SimpleCondition(null, "motion", MotionSensor.STATE, Operator.CHANGES, null)), 
 				Collections.singletonList(new SimpleAction(null, "camera", "toggle"))));
 		
 	}
