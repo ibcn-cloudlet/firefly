@@ -51,7 +51,8 @@ public class SimpleCondition implements Condition {
 	public boolean trigger(Change change) {
 		boolean changed = false;
 		if(change.thingId.equals(id)
-			&& change.stateVariable.equals(variable)){
+			&& change.stateVariable.equals(variable)
+			&& (currentValue==null || !change.value.equals(currentValue))){
 			currentValue = change.value;
 			changed = true;
 		}
