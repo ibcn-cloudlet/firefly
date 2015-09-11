@@ -55,17 +55,18 @@ public class SimpleCondition implements Condition {
 			&& (currentValue==null || !change.value.equals(currentValue))){
 			currentValue = change.value;
 			changed = true;
-		}
-		
-		// Try to convert in case of non matching classes
-		// This is to attempt to handle any String values coming from web interface
-		if(operator!=Operator.CHANGES && !currentValue.getClass().equals(value.getClass())){
-			try {
-				value = Converter.cnv(currentValue.getClass(), value);
-			} catch (Exception e) {
-				e.printStackTrace();
+			
+			// Try to convert in case of non matching classes
+			// This is to attempt to handle any String values coming from web interface
+			if(!currentValue.getClass().equals(value.getClass())){
+				try {
+					value = Converter.cnv(currentValue.getClass(), value);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
+		
 		
 		switch(operator) {
 		case BECOMES:
