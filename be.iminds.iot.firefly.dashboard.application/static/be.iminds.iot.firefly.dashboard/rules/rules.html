@@ -5,7 +5,7 @@
 		</div>
 				  
 		<div class="modal-body">
-			  <p>Here you see an overview of all available rules</p>
+			  <p>Here you see an overview of all enabled rules</p>
 			  <ul class="list-group" style="min-height:15em">
 			  	<li ng-repeat="rule in rules" class='list-group-item'>{{rule.description}}<button type='button' class='close' ng-click='remove($index)'><span aria-hidden='true'>&times;</span><span class='sr-only'>Delete</span></button></li>
 			  </ul>
