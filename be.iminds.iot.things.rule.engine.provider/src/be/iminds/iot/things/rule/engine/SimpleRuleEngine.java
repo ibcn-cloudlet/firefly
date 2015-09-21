@@ -57,6 +57,7 @@ public class SimpleRuleEngine implements RuleEngine, EventHandler {
 			input.close();
 		} catch(Exception e){
 			System.err.println("Failed to load rules from file");
+			e.printStackTrace();
 		}
 	}
 	
@@ -67,8 +68,8 @@ public class SimpleRuleEngine implements RuleEngine, EventHandler {
 			output.flush();
 			output.close();
 		} catch(Exception e){
-			e.printStackTrace();
 			System.err.println("Failed to write rules to file");
+			e.printStackTrace();
 		}
 	}
 	
