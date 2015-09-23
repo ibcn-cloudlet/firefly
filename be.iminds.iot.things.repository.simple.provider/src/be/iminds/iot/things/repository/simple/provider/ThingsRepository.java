@@ -2,6 +2,8 @@ package be.iminds.iot.things.repository.simple.provider;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,8 +29,8 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.EventHandler;
 
-import aQute.lib.converter.TypeReference;
-import aQute.lib.json.JSONCodec;
+import osgi.enroute.dto.api.DTOs;
+import osgi.enroute.dto.api.TypeReference;
 import be.iminds.iot.things.api.Thing;
 import be.iminds.iot.things.repository.api.Repository;
 import be.iminds.iot.things.repository.api.ThingDTO;
@@ -39,7 +41,7 @@ import be.iminds.iot.things.repository.api.ThingDTO;
 @Component(property={"event.topics=be/iminds/iot/thing/*"})
 public class ThingsRepository implements Repository, EventHandler {
 	
-	private final static JSONCodec json = new JSONCodec();
+	private DTOs dtos;
 	
 	private Map<UUID, ThingDTO> things = Collections.synchronizedMap(new HashMap<>());
 	private Set<UUID> online = Collections.synchronizedSet(new HashSet<>());
@@ -74,7 +76,7 @@ public class ThingsRepository implements Repository, EventHandler {
 	
 	void load(String file){
 		try {
-			things = (Map<UUID, ThingDTO>) json.dec().from(new File(file)).get(new TypeReference<Map<UUID,ThingDTO>>(){});
+			dtos.decoder(new TypeReference<Map<UUID,ThingDTO>>(){}).get(new FileInputStream(file));
 		} catch(Exception e){
 			System.err.println("Failed to load thing descriptions from file");
 		}
@@ -83,7 +85,7 @@ public class ThingsRepository implements Repository, EventHandler {
 	void save(String file){
 		// write thing dtos to file
 		try {
-			json.enc().indent("\t").to(new File(file)).put(things).close();
+			dtos.encoder(things).put(new FileOutputStream(file));
 		} catch(Exception e){
 			System.err.println("Failed to write thing descriptions to file");
 		}
@@ -251,5 +253,10 @@ public class ThingsRepository implements Repository, EventHandler {
 		} catch(IOException e){
 			// ignore
 		}
+	}
+	
+	@Reference
+	public void setDTOs(DTOs dtos){
+		this.dtos = dtos;
 	}
 }

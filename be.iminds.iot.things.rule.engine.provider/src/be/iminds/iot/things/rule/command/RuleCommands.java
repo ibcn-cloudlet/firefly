@@ -1,15 +1,10 @@
 package be.iminds.iot.things.rule.command;
 
-import java.io.File;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import aQute.lib.converter.TypeReference;
-import aQute.lib.json.JSONCodec;
 import be.iminds.iot.things.rule.api.Rule;
 import be.iminds.iot.things.rule.api.RuleDTO;
 import be.iminds.iot.things.rule.api.RuleEngine;

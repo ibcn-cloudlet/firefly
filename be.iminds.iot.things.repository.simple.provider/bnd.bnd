@@ -15,9 +15,8 @@ Conditional-Package: aQute.lib*
 	osgi.enroute.base.api;version=1.0,\
 	biz.aQute.junit,\
 	be.iminds.iot.things.repository.api;version=latest,\
-	be.iminds.iot.things.api;version=latest,\
-	biz.aQute.bndlib;version=3.0
-
+	be.iminds.iot.things.api;version=latest
+	
 -includeresource: {readme.md}
 
 
