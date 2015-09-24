@@ -1,4 +1,4 @@
-package be.iminds.iot.things.repository.simple.provider;
+package be.iminds.iot.things.repository.provider;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -8,14 +8,14 @@ import org.osgi.service.component.annotations.Reference;
 
 import osgi.enroute.rest.api.REST;
 import osgi.enroute.rest.api.RequireRestImplementation;
-import be.iminds.iot.things.repository.api.Repository;
+import be.iminds.iot.things.repository.api.ThingsRepository;
 import be.iminds.iot.things.repository.api.ThingDTO;
 
 @RequireRestImplementation
 @Component()
 public class ThingsRepositoryRestEndpoint implements REST{
 
-	private Repository repository;
+	private ThingsRepository repository;
 
 	public ThingDTO getThing(UUID id) {
 		return repository.getThing(id);
@@ -31,7 +31,7 @@ public class ThingsRepositoryRestEndpoint implements REST{
 	}
 	
 	@Reference()
-	void setRepository(Repository r){
+	void setRepository(ThingsRepository r){
 		this.repository = r;
 	}
 	

@@ -30,7 +30,7 @@ To build and run Firefly, import the Firefly projects into your Eclipse workspac
 
 * `standalone.bndrun` : a standalone run configuration deploying all features on a single runtime
 * `gw.bndrun` : a gateway run configuration to deploy on a headless gateway; can connect to a repository configuration using AIOLOS
-* `repository.bndrun` : a server run configuration that can connect to one or more gateways running the gateway configuration providing a thing repository, UI and rule engine
+* `server.bndrun` : a server run configuration that can connect to one or more gateways running the gateway configuration providing a thing repository, UI and rule engine
 * `debug.bndrun` : an extension of the standalone configuration with extra bundles for debugging (i.e. a gogo and web console, additional logging, etc.)
 
 Right-click on the `debug.bndrun` file, select `Run as > Bnd OSGi Run Launcher` and the project should launch. Point your browser to `http://localhost:8080/be.iminds.iot.firefly.dashboard` and the web UI should show up.

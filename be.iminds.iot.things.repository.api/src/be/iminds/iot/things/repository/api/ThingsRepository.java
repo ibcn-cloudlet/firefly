@@ -6,7 +6,7 @@ import java.util.UUID;
 /**
  * Things repository - persists all info about things
  */
-public interface Repository {
+public interface ThingsRepository {
 	
 	public ThingDTO getThing(UUID id);
 	

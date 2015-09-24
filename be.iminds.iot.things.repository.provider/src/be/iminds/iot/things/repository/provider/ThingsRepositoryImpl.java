@@ -1,4 +1,4 @@
-package be.iminds.iot.things.repository.simple.provider;
+package be.iminds.iot.things.repository.provider;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,14 +32,14 @@ import org.osgi.service.event.EventHandler;
 import osgi.enroute.dto.api.DTOs;
 import osgi.enroute.dto.api.TypeReference;
 import be.iminds.iot.things.api.Thing;
-import be.iminds.iot.things.repository.api.Repository;
+import be.iminds.iot.things.repository.api.ThingsRepository;
 import be.iminds.iot.things.repository.api.ThingDTO;
 
 /**
  * 
  */
 @Component(property={"event.topics=be/iminds/iot/thing/*"})
-public class ThingsRepository implements Repository, EventHandler {
+public class ThingsRepositoryImpl implements ThingsRepository, EventHandler {
 	
 	private DTOs dtos;
 	

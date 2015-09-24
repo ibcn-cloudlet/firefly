@@ -13,7 +13,7 @@ JPMCommand:					firefly
 -runfw: org.eclipse.osgi
 
 -runrequires: \
-	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.repository.simple.provider)',\
+	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.repository.provider)',\
 	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.rule.engine.provider)',\
 	osgi.identity;filter:='(osgi.identity=be.iminds.iot.firefly.dashboard.application)'
 
@@ -59,7 +59,7 @@ JPMCommand:					firefly
 	be.iminds.aiolos.event.rs;version='[0.6,0.7)',\
 	be.iminds.iot.firefly.dashboard.application;version=snapshot,\
 	be.iminds.iot.things.api;version=snapshot,\
-	be.iminds.iot.things.repository.simple.provider;version=snapshot,\
+	be.iminds.iot.things.repository.provider;version=snapshot,\
 	be.iminds.iot.things.rule.engine.provider;version=snapshot
 	
 -runproperties:\

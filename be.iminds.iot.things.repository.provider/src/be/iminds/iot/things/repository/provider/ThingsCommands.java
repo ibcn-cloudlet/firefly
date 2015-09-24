@@ -1,11 +1,11 @@
-package be.iminds.iot.things.repository.simple.provider;
+package be.iminds.iot.things.repository.provider;
 
 import java.util.UUID;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import be.iminds.iot.things.repository.api.Repository;
+import be.iminds.iot.things.repository.api.ThingsRepository;
 import be.iminds.iot.things.repository.api.ThingDTO;
 
 @Component(
@@ -18,7 +18,7 @@ import be.iminds.iot.things.repository.api.ThingDTO;
 		immediate=true)
 public class ThingsCommands {
 
-	private Repository repository;
+	private ThingsRepository repository;
 	
 	public void things(){
 		for(ThingDTO t : repository.getThings()){
@@ -54,16 +54,16 @@ public class ThingsCommands {
 	}
 	
 	public void save(String f){
-		((ThingsRepository)repository).save(f);
+		((ThingsRepositoryImpl)repository).save(f);
 	}
 	
 	public void load(String f){
-		((ThingsRepository)repository).load(f);
+		((ThingsRepositoryImpl)repository).load(f);
 	}
 	
 	
 	@Reference()
-	void setRepository(Repository r){
+	void setRepository(ThingsRepository r){
 		this.repository = r;
 	}
 	

@@ -19,7 +19,7 @@ JPMCommand:					firefly
 	osgi.identity;filter:='(osgi.identity=org.dyamand.plugins.support.sdp.dyamand-hue)',\
 	osgi.identity;filter:='(osgi.identity=org.dyamand.plugins.support.sdp.v4l2)',\
 	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.dyamand.adapter)',\
-	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.repository.simple.provider)',\
+	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.repository.provider)',\
 	osgi.identity;filter:='(osgi.identity=be.iminds.iot.firefly.dashboard.application)',\
 	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.rule.engine.provider)'
 
@@ -29,7 +29,7 @@ JPMCommand:					firefly
 	org.apache.felix.gogo.shell;version='[0.10.0,0.10.1)',\
 	be.iminds.iot.firefly.dashboard.application;version=snapshot,\
 	be.iminds.iot.things.dyamand.adapter;version=snapshot,\
-	be.iminds.iot.things.repository.simple.provider;version=snapshot,\
+	be.iminds.iot.things.repository.provider;version=snapshot,\
 	be.iminds.iot.things.rule.engine.provider;version=snapshot,\
 	biz.aQute.bndlib;version='[3.0.0,3.0.1)',\
 	com.sun.jna;version='[4.0.0,4.0.1)',\

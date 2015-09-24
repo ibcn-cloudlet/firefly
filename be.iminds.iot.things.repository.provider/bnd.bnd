@@ -6,7 +6,7 @@
 Bundle-Version:					1.0.0.${tstamp}
 Bundle-Description: Simple Things Repository provider
 
-Private-Package: be.iminds.iot.things.repository.simple.provider
+Private-Package: be.iminds.iot.things.repository.provider
 
 Conditional-Package: aQute.lib*
 	
