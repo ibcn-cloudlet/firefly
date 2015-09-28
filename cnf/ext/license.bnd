@@ -1,0 +1,6 @@
+
+Bundle-Copyright: Copyright Ghent University - iMinds (c) 2015
+Bundle-License: BSD New (http://opensource.org/licenses/BSD-3-Clause)
+Bundle-Vendor: iMinds IoT Lab
+
+-includeresource.license: ../LICENSE.txt
