@@ -53,7 +53,10 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
+import osgi.enroute.dto.api.DTOs;
 import be.iminds.iot.things.api.Thing;
+import be.iminds.iot.things.api.event.ChangeEvent;
+import be.iminds.iot.things.api.event.EventUtil;
 import be.iminds.iot.things.rule.api.Change;
 import be.iminds.iot.things.rule.api.Rule;
 import be.iminds.iot.things.rule.api.RuleDTO;
@@ -62,6 +65,8 @@ import be.iminds.iot.things.rule.api.RuleEngine;
 @Component(property={"event.topics=be/iminds/iot/thing/change/*"})
 public class SimpleRuleEngine implements RuleEngine, EventHandler {
 
+	private DTOs dtos;
+	
 	// keep rules and things
 	private List<Rule> rules = Collections.synchronizedList(new ArrayList<Rule>());
 	private Map<UUID, Thing> things = Collections.synchronizedMap(new HashMap<UUID, Thing>());
@@ -132,22 +137,24 @@ public class SimpleRuleEngine implements RuleEngine, EventHandler {
 
 	@Override
 	public void handleEvent(Event event) {
-		UUID id = (UUID) event.getProperty(Thing.ID);
-		String name = (String) event.getProperty(Thing.STATE_VAR);
-		Object val = event.getProperty(Thing.STATE_VAL);
-		
-		Change change = new Change(id, name, val);
-		executor.execute(() -> {
-			synchronized(rules){
-				// TODO only notify rules that actually wait for events of this Thing?
-				for(Rule r : rules){
-					if(r.evaluate(change)){
-						// TODO notify event when rule is fired?
-						System.out.println("Triggered rule: "+r.getDescription());
+		try {
+			ChangeEvent e = EventUtil.toChangeEvent(event, dtos);
+			
+			Change change = new Change(e.thingId, e.stateVariable, e.stateValue);
+			executor.execute(() -> {
+				synchronized(rules){
+					// TODO only notify rules that actually wait for events of this Thing?
+					for(Rule r : rules){
+						if(r.evaluate(change)){
+							// TODO notify event when rule is fired?
+							System.out.println("Triggered rule: "+r.getDescription());
+						}
 					}
 				}
-			}
-		});
+			});
+		} catch(Exception e){
+			System.err.println("Error handling event "+event);
+		}
 	}
 	
 	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
@@ -174,5 +181,10 @@ public class SimpleRuleEngine implements RuleEngine, EventHandler {
 				r.setThing(id, null);
 			}
 		}
+	}
+	
+	@Reference
+	void setDTOs(DTOs dtos){
+		this.dtos = dtos;
 	}
 }

@@ -8,6 +8,7 @@ Bundle-Description: API project for selected supported IoT Things.
 	
 Export-Package: \
 	be.iminds.iot.things.api;provide:=true,\
+	be.iminds.iot.things.api.event,\
 	be.iminds.iot.things.api.button,\
 	be.iminds.iot.things.api.camera,\
 	be.iminds.iot.things.api.lamp,\

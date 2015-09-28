@@ -55,7 +55,6 @@ public class ThingsRepositoryRestEndpoint implements REST{
 	}
 
 	public void putThing(ThingDTO thing, UUID id) {
-		// TODO only works with our patched rest provider 
 		repository.putThing(thing);
 	}
 	

@@ -36,7 +36,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -61,8 +60,12 @@ import org.osgi.service.event.EventHandler;
 import osgi.enroute.dto.api.DTOs;
 import osgi.enroute.dto.api.TypeReference;
 import be.iminds.iot.things.api.Thing;
-import be.iminds.iot.things.repository.api.ThingsRepository;
+import be.iminds.iot.things.api.event.ChangeEvent;
+import be.iminds.iot.things.api.event.EventUtil;
+import be.iminds.iot.things.api.event.OfflineEvent;
+import be.iminds.iot.things.api.event.OnlineEvent;
 import be.iminds.iot.things.repository.api.ThingDTO;
+import be.iminds.iot.things.repository.api.ThingsRepository;
 
 /**
  * 
@@ -75,7 +78,7 @@ public class ThingsRepositoryImpl implements ThingsRepository, EventHandler {
 	private Map<UUID, ThingDTO> things = Collections.synchronizedMap(new HashMap<>());
 	private Set<UUID> online = Collections.synchronizedSet(new HashSet<>());
 	
-	private Writer logger;
+	private PrintWriter logger;
 	
 	@Activate
 	public void activate(BundleContext context){
@@ -94,11 +97,8 @@ public class ThingsRepositoryImpl implements ThingsRepository, EventHandler {
 	@Deactivate
 	public void deactivate(){
 		// close event logging file
-		try {
-			logger.close();
-		} catch (IOException ioe) {
-			// ignore
-		}
+		logger.close();
+	
 		
 		save("things.txt");
 	}
@@ -150,56 +150,71 @@ public class ThingsRepositoryImpl implements ThingsRepository, EventHandler {
 
 	@Override
 	public void handleEvent(Event event) {
-		UUID id = (UUID) event.getProperty(Thing.ID);
+		try {
+			if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
+				OnlineEvent e = EventUtil.toOnlineEvent(event, dtos);
+				handleOnlineEvent(e);
+				logEvent(e);
+			} else if(event.getTopic().startsWith("be/iminds/iot/thing/offline/")){
+				OfflineEvent e = EventUtil.toOfflineEvent(event, dtos);
+				handleOfflineEvent(e);
+				logEvent(e);
+			} else if(event.getTopic().startsWith("be/iminds/iot/thing/change/")){
+				ChangeEvent e = EventUtil.toChangeEvent(event, dtos);
+				handleChangeEvent(e);
+				logEvent(e);
+			}
+		} catch(Exception e){
+			System.err.println("Error handling event "+event);
+		}
+	}
+	
+	private void handleOnlineEvent(OnlineEvent e){
+		// add thing to repository
 		ThingDTO thing;
 		synchronized(things){
-			thing = things.get(id);
+			thing = things.get(e.thingId);
 			if(thing==null){
-				if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
-					thing = new ThingDTO();
-					thing.id = id;
-					thing.gateway = (UUID) event.getProperty(Thing.GATEWAY);
-					thing.device = (String) event.getProperty(Thing.DEVICE);
-					thing.service = (String) event.getProperty(Thing.SERVICE);
-					thing.type = (String) event.getProperty(Thing.TYPE);
-					thing.name = thing.service;
-					
-					
-					things.put(id, thing);
-				}
-			} else {
-				// update gateway - could be changed
-				thing.gateway = (UUID) event.getProperty(Thing.GATEWAY);
-			}
+				thing = new ThingDTO();
+				thing.id = e.thingId;
+				thing.gateway = e.gatewayId;
+				thing.device = e.device;
+				thing.service = e.service;
+				thing.type = e.type;
+				thing.name = thing.service;
+
+				things.put(thing.id, thing);
+			} 
 		}
 		
-		if(thing!=null){
-			if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
-				online.add(thing.id);
-			} else if(event.getTopic().startsWith("be/iminds/iot/thing/offline/")){
-				online.remove(thing);
-			} else if(event.getTopic().startsWith("be/iminds/iot/thing/change/")){
-				online.add(thing.id);
-				
-				String name = (String) event.getProperty(Thing.STATE_VAR);
-				Object val = event.getProperty(Thing.STATE_VAL);
-				
-				if(thing.state == null){
-					thing.state = new HashMap<>();
-				}
-				thing.state.put(name, val);
-			}
-		}
-
-		logEvent(event);
+		// mark online
+		online.add(thing.id);
 	}
+	
+	private void handleOfflineEvent(OfflineEvent e){
+		// mark offline
+		online.remove(e.thingId);
+	}
+	
+	private void handleChangeEvent(ChangeEvent e){
+		ThingDTO thing = things.get(e.thingId);
+		if(thing!=null){
+			// update state
+			if(thing.state == null){
+				thing.state = new HashMap<>();
+			}
+			thing.state.put(e.stateVariable, e.stateValue);
+			
+			// mark online
+			online.add(thing.id);
+		}
+	}
+	
 	
 	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
 			policy=ReferencePolicy.DYNAMIC)
 	public void addThing(Thing t, Map<String, Object> properties){
-		// mark online
 		UUID id = (UUID) properties.get(Thing.ID);
-		
 		// also init here in case of missed online event
 		ThingDTO thing;
 		synchronized(things){
@@ -219,22 +234,30 @@ public class ThingsRepositoryImpl implements ThingsRepository, EventHandler {
 				thing.gateway = (UUID) properties.get(Thing.GATEWAY);
 			}
 		}
-
+	
+		// mark online
 		online.add(id);
-		
-		// This does not update UI, also send service online thing event?
-		// FIXME ? This could lead to many duplicates though 
-		ea.postEvent(new Event("be/iminds/iot/thing/online/"+id, properties));
 	}
 	
 	public void removeThing(Thing t, Map<String, Object> properties){
 		// mark offline
 		UUID id = (UUID) properties.get(Thing.ID);
-		online.remove(id);
+		UUID gateway = (UUID) properties.get(Thing.GATEWAY);
 		
-		// This does not update UI - as no event will be sent when the gateway
-		// is just stopped, we send an event of this service on our own...
-		ea.postEvent(new Event("be/iminds/iot/thing/offline/"+id, properties));
+		if(online.remove(id)){
+			// When this is caused by the gateway losing connectivity, the (remote) service
+			// goes offline but no OfflineEvent was sent by the gateway.
+			// Send an event through eventadmin to update the UI.
+			try {
+				OfflineEvent e = new OfflineEvent();
+				e.thingId = id;
+				e.gatewayId = gateway;
+				e.timestamp = System.currentTimeMillis();
+				ea.postEvent(new Event("be/iminds/iot/thing/offline/"+id, dtos.asMap(e)));
+			} catch(Exception e){
+				System.err.println("Error sending online event "+e);
+			}
+		}
 	}
 	
 	private EventAdmin ea;
@@ -244,45 +267,56 @@ public class ThingsRepositoryImpl implements ThingsRepository, EventHandler {
 		this.ea = ea;
 	}
 	
-	private void logEvent(Event event){
-		String type = "change";
-		if(event.getTopic().startsWith("be/iminds/iot/thing/online/")){
-			type = "online";
-		} else if(event.getTopic().startsWith("be/iminds/iot/thing/offline/")){
-			type = "offline";
-		}
-		
+	private void logEvent(OnlineEvent event){
 		StringBuilder builder = new StringBuilder();
-		builder.append(event.getProperty("timestamp"));
+		builder.append("ONLINE");
 		builder.append("\t");
-		builder.append(event.getProperty(Thing.ID));
+		builder.append(event.timestamp);
 		builder.append("\t");
-		builder.append(event.getProperty(Thing.GATEWAY));
+		builder.append(event.thingId);
 		builder.append("\t");
-		builder.append(type);
-
-		if(type.equals("online")){
-			builder.append("\t");
-			builder.append(event.getProperty(Thing.DEVICE));
-			builder.append("\t");
-			builder.append(event.getProperty(Thing.SERVICE));
-			builder.append("\t");
-			builder.append(event.getProperty(Thing.TYPE));
-		} else if(type.equals("change")){
-			builder.append("\t");
-			builder.append(event.getProperty(Thing.STATE_VAR));
-			builder.append("\t");
-			builder.append(event.getProperty(Thing.STATE_VAL));
-		}
-
-		try {
-			builder.append("\n");
-			logger.write(builder.toString());
-			logger.flush();
-		} catch(IOException e){
-			// ignore
-		}
+		builder.append(event.gatewayId);
+		builder.append("\t");
+		builder.append(event.device);
+		builder.append("\t");
+		builder.append(event.service);
+		builder.append("\t");
+		builder.append(event.type);
+		logger.println(builder.toString());
+		logger.flush();
 	}
+	
+	private void logEvent(OfflineEvent event){
+		StringBuilder builder = new StringBuilder();
+		builder.append("OFFLINE");
+		builder.append("\t");
+		builder.append(event.timestamp);
+		builder.append("\t");
+		builder.append(event.thingId);
+		builder.append("\t");
+		builder.append(event.gatewayId);
+		logger.println(builder.toString());
+		logger.flush();
+	}
+	
+	
+	private void logEvent(ChangeEvent event){
+		StringBuilder builder = new StringBuilder();
+		builder.append("CHANGE");
+		builder.append("\t");
+		builder.append(event.timestamp);
+		builder.append("\t");
+		builder.append(event.thingId);
+		builder.append("\t");
+		builder.append(event.gatewayId);
+		builder.append("\t");
+		builder.append(event.stateVariable);
+		builder.append("\t");
+		builder.append(event.stateValue);
+		logger.println(builder.toString());
+		logger.flush();
+	}
+	
 	
 	@Reference
 	public void setDTOs(DTOs dtos){

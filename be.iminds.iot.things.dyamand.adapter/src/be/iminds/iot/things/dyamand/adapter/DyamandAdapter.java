@@ -56,7 +56,11 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.EventProperties;
 
+import osgi.enroute.dto.api.DTOs;
 import be.iminds.iot.things.api.Thing;
+import be.iminds.iot.things.api.event.ChangeEvent;
+import be.iminds.iot.things.api.event.OfflineEvent;
+import be.iminds.iot.things.api.event.OnlineEvent;
 
 /**
  * 
@@ -70,6 +74,7 @@ public class DyamandAdapter implements EventListener {
 	
 	private BundleContext context;
 	private UUID gatewayId;
+	private DTOs dtos;
 	private EventAdmin ea;
 	
     private final Map<Object, ServiceRegistration> services = new HashMap<>();
@@ -152,13 +157,13 @@ public class DyamandAdapter implements EventListener {
 		final ServiceRegistration registration = this.services
 				.remove(servicePOJO);
 		if (registration != null) {
-			registration.unregister();
-			
 			final String device = servicePOJO.getService().getOriginalDevice().getName().toString();
 			final String service = servicePOJO.getService().getName().toString();
-			final UUID thingId = UUID.nameUUIDFromBytes((device+service).getBytes());
 			
+			final UUID thingId = UUID.nameUUIDFromBytes((device+service).getBytes());
 		    this.notifyOffline(thingId);
+			
+			registration.unregister();
 		}
 	}
 
@@ -190,48 +195,61 @@ public class DyamandAdapter implements EventListener {
 			final String device,
 			final String service,
 			final String type){
-		final HashMap<String, Object> p = new HashMap<>();
-		p.put(Thing.ID, thingId);
-		p.put(Thing.GATEWAY, gatewayId);		
-		p.put(Thing.SERVICE, service);
-		p.put(Thing.DEVICE, device);
-		p.put(Thing.TYPE, type);
-		
-		final String topic = "be/iminds/iot/thing/online/"+thingId;
-		notifyListeners(topic, p);
+		try {
+			OnlineEvent e = new OnlineEvent();
+			e.thingId = thingId;
+			e.gatewayId = gatewayId;
+			e.service = service;
+			e.device = device;
+			e.type = type;
+			e.timestamp = System.currentTimeMillis();
+	
+			final String topic = "be/iminds/iot/thing/online/"+thingId;
+			ea.sendEvent(new org.osgi.service.event.Event(topic, dtos.asMap(e)));
+		} catch(Exception e){
+			System.err.println("Error sending online event "+e);
+		}
 	}
 	
 	private void notifyOffline(
-			final UUID thingId){
-		final HashMap<String, Object> p = new HashMap<>();
-		p.put(Thing.ID, thingId);
-		p.put(Thing.GATEWAY, gatewayId);
-		
-	    final String topic = "be/iminds/iot/thing/offline/"+thingId;
-	    notifyListeners(topic, p);
+			final UUID thingId){	    
+		try {
+			OfflineEvent e = new OfflineEvent();
+			e.thingId = thingId;
+			e.gatewayId = gatewayId;
+			e.timestamp = System.currentTimeMillis();
+	
+		    final String topic = "be/iminds/iot/thing/offline/"+thingId;
+			ea.sendEvent(new org.osgi.service.event.Event(topic, dtos.asMap(e)));
+		} catch(Exception e){
+			System.err.println("Error sending offline event "+e);
+		}
 	}
 	
 	private void notifiyStateChange(
 			final UUID thingId, 
 			final String stateVariable, 
 			final Object stateValue){
-		final HashMap<String, Object> p = new HashMap<>();
-		p.put(Thing.ID, thingId);
-		p.put(Thing.GATEWAY, gatewayId);
-		p.put(Thing.STATE_VAR, stateVariable);
-		p.put(Thing.STATE_VAL, stateValue);
-		
-		final String topic = "be/iminds/iot/thing/change/"+thingId;
-		notifyListeners(topic, p);
+		try {
+			ChangeEvent e = new ChangeEvent();
+			e.thingId = thingId;
+			e.gatewayId = gatewayId;
+			e.stateVariable = stateVariable;
+			e.stateValue = stateValue;
+			e.timestamp = System.currentTimeMillis();
+	
+			final String topic = "be/iminds/iot/thing/change/"+thingId;
+			ea.postEvent(new org.osgi.service.event.Event(topic, dtos.asMap(e)));
+		} catch(Exception e){
+			System.err.println("Error sending change event "+e);
+		}
 	}
 	
-	private void notifyListeners(final String topic, final Map<String, Object> properties){
-		properties.put("timestamp", System.currentTimeMillis());
-		final EventProperties e = new EventProperties(properties);
-		// use synchrounous delivery in order not to hang before sending an event on single threaded device like Pi B+
-		ea.sendEvent(new org.osgi.service.event.Event(topic, properties));
+	@Reference
+	void setDTOs(DTOs dtos){
+		this.dtos = dtos;
 	}
-
+	
 	@Reference
 	void setEventAdmin(EventAdmin ea){
 		this.ea = ea;

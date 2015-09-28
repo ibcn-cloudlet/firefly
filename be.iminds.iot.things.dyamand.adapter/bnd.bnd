@@ -38,6 +38,7 @@ Implementation-BuildNumber: 0
 Bundle-Name: IoT Things - DYAMAND adapters
 Export-Package: \
 	be.iminds.iot.things.api,\
+	be.iminds.iot.things.api.event,\
 	be.iminds.iot.things.api.button,\
 	be.iminds.iot.things.api.lamp,\
 	be.iminds.iot.things.api.camera,\

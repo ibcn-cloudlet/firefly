@@ -27,6 +27,7 @@ Conditional-Package: aQute.lib*
 	${error;Resolve first}
 Export-Package: \
 	be.iminds.iot.things.repository.api,\
-	osgi.enroute.rest.api
+	osgi.enroute.rest.api,\
+	be.iminds.iot.things.api.event
 Bundle-Name: IoT Things Repository
 -dsannotations: *

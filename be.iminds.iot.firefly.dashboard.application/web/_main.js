@@ -146,12 +146,12 @@
 
 		// listeners for events
 		$scope.online = function(event) {
-			repository.get({ id: event['thing.id'] }, function(thing) {
+			repository.get({ id: event['thingId'] }, function(thing) {
 				if(angular.equals({}, thing)){
-					thing.id = event['thing.id'];
-					thing.name = event['thing.service'];
-					thing.type = event['thing.type'];
-					thing.gateway = event['thing.gateway'];
+					thing.id = event['thingId'];
+					thing.name = event['service'];
+					thing.type = event['type'];
+					thing.gateway = event['gatewayId'];
 				} 
 				$scope.things[thing.id] = thing;
 				$scope.locations[thing.location] = thing.location;
@@ -160,24 +160,24 @@
 		};	
 			
 		$scope.offline = function(event) {
-			delete $scope.things[event['thing.id']];
+			delete $scope.things[event['thingId']];
 			$scope.$apply();
 		};
 		  
 		$scope.change = function(event) {
 			// TODO which state variable to show?
-			if( $scope.things[event['thing.id']] != undefined){
-				if($scope.things[event['thing.id']].state == null){
-					$scope.things[event['thing.id']].state = {};
+			if( $scope.things[event['thingId']] != undefined){
+				if($scope.things[event['thingId']].state == null){
+					$scope.things[event['thingId']].state = {};
 				}
 			
-				var name = event['state.variable'];
-				var val = event['state.value'];
-				$scope.things[event['thing.id']].state[name] = val;
+				var name = event['stateVariable'];
+				var val = event['stateValue'];
+				$scope.things[event['thingId']].state[name] = val;
 				
 				// set highlight to "state" variabele, or anything in case only 1 state element
-				if(name==='state' || Object.keys($scope.things[event['thing.id']].state).length==1){
-					$scope.things[event['thing.id']].highlight = $scope.formatState($scope.things[event['thing.id']].state[name]);
+				if(name==='state' || Object.keys($scope.things[event['thingId']].state).length==1){
+					$scope.things[event['thingId']].highlight = $scope.formatState($scope.things[event['thingId']].state[name]);
 				}
 				
 				$scope.$apply();
