@@ -5,7 +5,7 @@
 #  Connect to a server hosting the repository / UI with AIOLOS.
 #
 
--runfw:						org.eclipse.concierge
+-runfw:						org.eclipse.concierge;version='[1.1.0,2.0)'
 
 -runrequires: \
 	osgi.identity;filter:='(osgi.identity=org.dyamand.osgi)',\
@@ -16,6 +16,7 @@
 	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.dyamand.adapter)'
 
 -runbundles: \
+	osgi.enroute.dto.bndlib.provider;version='[1.0.0,1.0.1)',\
 	org.apache.felix.gogo.command;version='[0.14.0,0.14.1)',\
 	org.apache.felix.gogo.runtime;version='[0.16.2,0.16.3)',\
 	org.apache.felix.gogo.shell;version='[0.10.0,0.10.1)',\
