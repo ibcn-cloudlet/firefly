@@ -43,7 +43,8 @@
 	org.dyamand.plugins.support.sdp.usb;version='[0.2.0,0.2.1)',\
 	org.dyamand.plugins.support.sdp.dyamand-hue;version='[0.1.2,0.2.0)',\
 	org.dyamand.osgi;version='[0.7.1,0.7.2)',\
-	be.iminds.iot.things.dyamand.adapter;version='[1.0.0,1.0.1)'
+	be.iminds.iot.things.api;version=snapshot,\
+	be.iminds.iot.things.dyamand.adapter;version=snapshot
 
 -runproperties:\
 	aiolos.event.rs.buffer="be/iminds/iot/thing/*",\
