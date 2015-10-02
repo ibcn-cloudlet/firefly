@@ -60,6 +60,10 @@ public class SimpleRuleRestEndpoint implements REST {
 	public Collection<String> getVariables(String type){
 		return things.getStateVariables(type);
 	}
+	
+	public Collection<String> getValues(String type, String variable){
+		return things.getStateValues(type, variable);
+	}
 
 	public void putSimpleRule(SimpleRuleDTO dto){
 		List<SimpleCondition> conditions = new ArrayList<SimpleCondition>();

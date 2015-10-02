@@ -41,7 +41,8 @@
 	          				<label class="col-sm-2 control-label">Variable</label>
 	          				<div class="col-sm-10">
 	          					<select class="form-control" ng-model="condition.variable" 
-	          						ng-options="variable for variable in condition.variables">
+	          						ng-options="variable for variable in condition.variables"
+	          						ng-change="conditionVariableChange(condition)">
 	          						<option value="">&lt;Select a state variable&gt;</option>
 	          					</select>
 	          				</div>
@@ -65,7 +66,15 @@
           				<div class="form-group" ng-hide="condition.operator=='CHANGES'">
 	          				<label class="col-sm-2 control-label">Value</label>
 	          				<div class="col-sm-10">
-	          					<input type="text" class="form-control" ng-model="condition.value"/>
+	          					<select class="form-control"
+	          						ng-hide="condition.values.length==0"
+	          						ng-model="condition.value" 
+	          						ng-options="value for value in condition.values">
+	          						<option value="">&lt;Select a value&gt;</option>
+	          					</select>
+	          					<input type="text" class="form-control" 
+	          						ng-model="condition.value"
+	          						ng-hide="condition.values.length > 0"/>
 							</div>  
 						</div>  
           			</div>

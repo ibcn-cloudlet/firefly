@@ -49,12 +49,10 @@
 		$scope.description;
 		
 		$scope.conditions = [];
-		$scope.conditions.push({});
+		$scope.conditions.push({values: []});
 		
 		$scope.actions = [];
 		$scope.actions.push({});
-		
-		
 		
 		$scope.ok = function () {
 			var simpleRuleDTO = {};
@@ -104,7 +102,7 @@
 		};
 		
 		$scope.addCondition = function(){
-			$scope.conditions.push({});
+			$scope.conditions.push({values: []});
 		};
 		
 		$scope.removeCondition = function(index){
@@ -118,12 +116,20 @@
 					});
 		};
 		
+		$scope.conditionVariableChange = function(condition){
+			$scope.simplerules.values({type: condition.thing.type, variable: condition.variable},
+					function success(values){
+				  		condition.values = values;
+					});	
+		};
+		
 		$scope.actionThingChange = function(action){
 			$scope.simplerules.methods({type: action.thing.type},
 					function success(methods){
 				  		action.methods = methods;
 					});
 		};
+	
 	});
 
 })();

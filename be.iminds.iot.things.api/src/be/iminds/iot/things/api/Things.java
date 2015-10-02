@@ -32,6 +32,7 @@ package be.iminds.iot.things.api;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -88,7 +89,6 @@ public class Things {
 		return types.get(type);
 	}
 	
-	// Use API instead of reflection?
 	public Collection<String> getStateVariables(String type){
 		Set<String> variables = new HashSet<String>();
 		Class c = types.get(type);
@@ -108,6 +108,25 @@ public class Things {
 			}
 		}
 		return variables;
+	}
+	
+	public Collection<String> getStateValues(String type, String variable){
+		Class c = types.get(type);
+		if(c!=null){
+			for(Method m : c.getMethods()){
+				if(!m.getName().toLowerCase().equals("get"+variable)){
+					continue;
+				}
+				if(m.getReturnType().isEnum()){
+					ArrayList<String> values = new ArrayList<>();
+					for(Object val : m.getReturnType().getEnumConstants()){
+						values.add(val.toString());
+					}
+					return values;
+				}
+			}
+		}
+		return null;
 	}
 	
 	public Collection<String> getMethods(String type){

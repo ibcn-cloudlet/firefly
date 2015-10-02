@@ -33,7 +33,7 @@
 
 	angular.module('be.iminds.iot.rule.simple', []).factory('simplerules',
 			function($resource) {
-				return $resource('/rest/:a/:type',{}, {
+				return $resource('/rest/:a/:type/:variable',{}, {
 					add : {
 						method : 'PUT',
 						params : {a: 'simplerule', type: ""}
@@ -46,6 +46,11 @@
 					variables : {
 						method: 'GET',
 						params : {a: 'variables', type: '@type'},
+						isArray: true
+					},
+					values : {
+						method: 'GET',
+						params : {a: 'values', type: '@type', variable: '@variable'},
 						isArray: true
 					}
 				});
