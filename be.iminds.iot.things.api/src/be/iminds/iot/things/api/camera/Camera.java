@@ -56,13 +56,6 @@ public interface Camera extends Thing {
     }
 
     /**
-     * Get the supported frame formats for this camera
-     *
-     * @return supported image formats
-     */
-    public Format[] getSupportedFormats();
-
-    /**
      * Get the state of the camera
      *
      * @return state of the camera

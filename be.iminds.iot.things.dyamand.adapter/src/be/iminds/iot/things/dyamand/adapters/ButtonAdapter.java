@@ -57,17 +57,6 @@ public class ButtonAdapter implements ServiceAdapter {
 		}
 		final Button button = new Button() {
 			@Override
-			public State[] getPossibleStates() {
-				final org.dyamand.sensors.button.Button.State[] ss = ((org.dyamand.sensors.button.Button) source)
-						.getPossibleStates();
-				final State[] states = new State[ss.length];
-				for (int i = 0; i < ss.length; i++) {
-					states[i] = State.values()[ss[i].ordinal()];
-				}
-				return states;
-			}
-
-			@Override
 			public State getState() {
 				final org.dyamand.sensors.button.Button.State s = ((org.dyamand.sensors.button.Button) source)
 						.getCurrentState();

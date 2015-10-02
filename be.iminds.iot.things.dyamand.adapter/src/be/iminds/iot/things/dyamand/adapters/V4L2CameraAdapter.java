@@ -193,13 +193,7 @@ public class V4L2CameraAdapter implements ServiceAdapter {
 			public boolean isOn(){
 				return pojo.isOn();
 			}
-
-			@Override
-			public Format[] getSupportedFormats() {
-				// TODO actually query the device?
-				return new Format[] { Format.YUV, Format.RGB, Format.GRAYSCALE, Format.MJPEG};
-			}
-
+			
 			@Override
 			public Format getFormat() {
 				return Format.values()[pojo.getFormat()];

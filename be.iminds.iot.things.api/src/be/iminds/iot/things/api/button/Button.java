@@ -39,8 +39,6 @@ public interface Button extends Thing {
     	PRESSED, RELEASED, UP, DOWN
     }
 
-    public State[] getPossibleStates();
-
     public State getState();
 
 }
