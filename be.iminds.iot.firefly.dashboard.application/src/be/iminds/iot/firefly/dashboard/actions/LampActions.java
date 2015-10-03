@@ -78,12 +78,12 @@ public class LampActions implements Actions {
 	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
 			policy=ReferencePolicy.DYNAMIC)
 	public void addLamp(Lamp l, Map<String, Object> properties){
-		UUID id = (UUID) properties.get(Thing.ID);
+		UUID id = UUID.fromString((String)properties.get(Thing.ID));
 		lamps.put(id, l);
 	}
 	
 	public void removeLamp(Lamp l, Map<String, Object> properties){
-		UUID id = (UUID) properties.get(Thing.ID);
+		UUID id = UUID.fromString((String)properties.get(Thing.ID));
 		lamps.remove(id);
 	}
 

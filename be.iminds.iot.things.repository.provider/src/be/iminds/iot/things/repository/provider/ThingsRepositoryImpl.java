@@ -214,7 +214,7 @@ public class ThingsRepositoryImpl implements ThingsRepository, EventHandler {
 	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
 			policy=ReferencePolicy.DYNAMIC)
 	public void addThing(Thing t, Map<String, Object> properties){
-		UUID id = (UUID) properties.get(Thing.ID);
+		UUID id = UUID.fromString((String)properties.get(Thing.ID));
 		// also init here in case of missed online event
 		ThingDTO thing;
 		synchronized(things){
@@ -222,7 +222,7 @@ public class ThingsRepositoryImpl implements ThingsRepository, EventHandler {
 			if(thing==null){
 				thing = new ThingDTO();
 				thing.id = id;
-				thing.gateway = (UUID) properties.get(Thing.GATEWAY);
+				thing.gateway = UUID.fromString((String)properties.get(Thing.GATEWAY));
 				thing.device = (String) properties.get(Thing.DEVICE);
 				thing.service = (String) properties.get(Thing.SERVICE);
 				thing.type = (String) properties.get(Thing.TYPE);
@@ -241,8 +241,8 @@ public class ThingsRepositoryImpl implements ThingsRepository, EventHandler {
 	
 	public void removeThing(Thing t, Map<String, Object> properties){
 		// mark offline
-		UUID id = (UUID) properties.get(Thing.ID);
-		UUID gateway = (UUID) properties.get(Thing.GATEWAY);
+		UUID id = UUID.fromString((String)properties.get(Thing.ID));
+		UUID gateway = UUID.fromString((String)properties.get(Thing.GATEWAY));
 		
 		if(online.remove(id)){
 			// When this is caused by the gateway losing connectivity, the (remote) service

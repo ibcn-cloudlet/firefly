@@ -157,12 +157,12 @@ public class CameraActions extends HttpServlet implements Actions, CameraListene
 	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
 			policy=ReferencePolicy.DYNAMIC)
 	public void addCamera(Camera c, Map<String, Object> properties){
-		UUID id = (UUID) properties.get(Thing.ID);
+		UUID id = UUID.fromString((String)properties.get(Thing.ID));
 		cameras.put(id, c);
 	}
 	
 	public void removeCamera(Camera c, Map<String, Object> properties){
-		UUID id = (UUID) properties.get(Thing.ID);
+		UUID id = UUID.fromString((String)properties.get(Thing.ID));
 		cameras.remove(id);
 	}
 

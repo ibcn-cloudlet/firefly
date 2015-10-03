@@ -131,10 +131,10 @@ public class DyamandAdapter implements EventListener {
 					final UUID thingId = UUID.nameUUIDFromBytes((device+service).getBytes());
 					
 					final Dictionary<String, Object> properties = new Hashtable<String, Object>();
-					properties.put(Thing.ID, thingId);
+					properties.put(Thing.ID, thingId.toString());
 					properties.put(Thing.DEVICE, device);
 					properties.put(Thing.SERVICE, service);
-					properties.put(Thing.GATEWAY, gatewayId);
+					properties.put(Thing.GATEWAY, gatewayId.toString());
 					properties.put(Thing.TYPE, adapter.getType());
 
 				    // Add some AIOLOS stuff

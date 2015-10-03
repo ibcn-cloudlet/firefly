@@ -160,7 +160,7 @@ public class SimpleRuleEngine implements RuleEngine, EventHandler {
 	@Reference(cardinality=ReferenceCardinality.MULTIPLE,
 			policy=ReferencePolicy.DYNAMIC)
 	public void addThing(Thing thing, Map<String, Object> properties){
-		UUID id = (UUID) properties.get(Thing.ID);
+		UUID id = UUID.fromString((String)properties.get(Thing.ID));
 		things.put(id, thing);
 		
 		// for now just iterate all rules - TODO optimize?
@@ -172,7 +172,7 @@ public class SimpleRuleEngine implements RuleEngine, EventHandler {
 	}
 	
 	public void removeThing(Thing thing, Map<String, Object> properties){
-		UUID id = (UUID) properties.get(Thing.ID);
+		UUID id = UUID.fromString((String)properties.get(Thing.ID));
 		things.remove(id);
 		
 		// for now just iterate all rules - TODO optimize?
