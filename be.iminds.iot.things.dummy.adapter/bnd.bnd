@@ -1,0 +1,29 @@
+#
+#  BUNDLE 
+#
+
+
+Bundle-Version:					1.0.0.${tstamp}
+Bundle-Description: This bundle creates dummy Things
+
+Private-Package: be.iminds.iot.things.dummy
+	
+-buildpath: \
+	osgi.enroute.base.api;version=1.0,\
+	biz.aQute.junit,\
+	be.iminds.iot.things.api;version=latest
+
+-includeresource: {readme.md}
+
+-dsannotations-inherit: true
+
+-runrequires:  \
+	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.dummy.adapter)'
+	
+-runbundles: \
+	${error;Resolve first}
+Bundle-Name: IoT Things - Dummy adapters
+Import-Package: \
+	org.osgi.framework;version='[1.7.0,2.0)',\
+	org.osgi.framework.wiring;version='[1.1.0,2.0)',\
+	*

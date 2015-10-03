@@ -4,5 +4,29 @@
       "service.factoryPid":					"be.iminds.iot.firefly",
       "service.pid":						"initial",
       "name":								"FIREFLY"
+   },
+   { 
+      "service.factoryPid":					"be.iminds.iot.things.dummy.Lamp",
+      "service.pid":						"initial",
+      "thing.id":							"de305d54-75b4-431b-adb2-eb6b9e546014",
+      "thing.gateway":						"de305d54-75b4-431b-adb2-eb6b9e546014",
+      "thing.device":						"Dummy Lamp",
+      "thing.service": 						"Dummy Lamp"
+   },
+   { 
+      "service.factoryPid":					"be.iminds.iot.things.dummy.Button",
+      "service.pid":						"initial",
+      "thing.id":							"de305d54-75b4-431b-adb2-eb6b9e546012",
+      "thing.gateway":						"de305d54-75b4-431b-adb2-eb6b9e546014",
+      "thing.device":						"Dummy Button",
+      "thing.service": 						"Dummy Button"
+   },
+   { 
+      "service.factoryPid":					"be.iminds.iot.things.dummy.TemperatureSensor",
+      "service.pid":						"initial",
+      "thing.id":							"de305d54-75b4-431b-adb2-eb6b9e546011",
+      "thing.gateway":						"de305d54-75b4-431b-adb2-eb6b9e546014",
+      "thing.device":						"Dummy Temperature",
+      "thing.service": 						"Dummy Temperature"
    }
 ]
