@@ -34,6 +34,9 @@ import be.iminds.iot.things.api.sensor.SensorValue;
 
 /**
  * Class representing a temperature value in degrees Celcius.
+ *  
+ * @author tverbele
+ *
  */
 public final class Temperature extends SensorValue {
 

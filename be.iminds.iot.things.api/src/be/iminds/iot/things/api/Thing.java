@@ -29,6 +29,23 @@
  *******************************************************************************/
 package be.iminds.iot.things.api;
 
+/**
+ * The Thing interface represents any thing. 
+ * 
+ * This interface just defines the service properties
+ * that should be set for each Thing service.
+ * 
+ * Each thing is uniquely identified with thing.id (UUID in String form). 
+ * thing.device is a name of the physical device this thing is part of.
+ * thing.service is a virtual service offered by the physical device (not to be confused with OSGi service).
+ * These concepts are originating from the DYAMAND platform.
+ * 
+ * thing.gateway is the id of the framework that brings the Thing service online.
+ * thing.type is a String identifier of the thing type (i.e. button, camera, lamp, ...)
+ *  
+ * @author tverbele
+ *
+ */
 public interface Thing {
 
     public final static String ID = "thing.id";
@@ -36,7 +53,5 @@ public interface Thing {
     public final static String SERVICE = "thing.service";
     public final static String GATEWAY = "thing.gateway";
     public final static String TYPE = "thing.type";
-    public final static String STATE_VAR = "state.variable";
-    public final static String STATE_VAL = "state.value";
     
 }

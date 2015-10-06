@@ -31,6 +31,12 @@ package be.iminds.iot.things.api.sensor.temperature;
 
 import be.iminds.iot.things.api.Thing;
 
+/**
+ * Represents a temperature sensor.
+ * 
+ * @author tverbele
+ *
+ */
 public interface TemperatureSensor extends Thing {
 
     public final static String TEMPERATURE = "temperature";

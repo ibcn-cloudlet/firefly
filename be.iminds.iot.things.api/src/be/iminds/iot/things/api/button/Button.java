@@ -31,6 +31,12 @@ package be.iminds.iot.things.api.button;
 
 import be.iminds.iot.things.api.Thing;
 
+/**
+ * A Button can be used to represent both push buttons as switches.
+ * 
+ * @author tverbele
+ *
+ */
 public interface Button extends Thing {
 
     public final static String STATE = "state";

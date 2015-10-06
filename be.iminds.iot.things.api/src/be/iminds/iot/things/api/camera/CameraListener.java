@@ -33,6 +33,12 @@ import java.util.UUID;
 
 import be.iminds.iot.things.api.camera.Camera.Format;
 
+/**
+ * Register a CameraListener with CAMERA_ID property set to listen for new frames from that camera.
+ * 
+ * @author tverbele
+ *
+ */
 public interface CameraListener {
 
     public final static String CAMERA_ID = "be.iminds.iot.thing.camera.id";

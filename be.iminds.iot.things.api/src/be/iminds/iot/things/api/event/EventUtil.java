@@ -7,7 +7,12 @@ import org.osgi.service.event.Event;
 
 import osgi.enroute.dto.api.DTOs;
 
-// TODO util functionality will become obsolete as part of OSGi Conversion RFP
+/**
+ * Utility class to convert OSGi Event classes to our typed Event classes.
+ * 
+ * @author tverbele
+ *
+ */
 public class EventUtil {
 
 	public static ChangeEvent toChangeEvent(Event event, DTOs dtos) throws Exception {

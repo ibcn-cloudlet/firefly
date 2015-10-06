@@ -32,7 +32,6 @@ package be.iminds.iot.things.api;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,7 +45,9 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * Utility class to query all available things, their state variables and actions
+ * Utility class to query all available things, 
+ * their state variables and actions using reflection.
+ * 
  * @author tverbele
  *
  */

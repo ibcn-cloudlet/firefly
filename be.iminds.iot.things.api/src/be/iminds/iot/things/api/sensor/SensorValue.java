@@ -31,6 +31,12 @@ package be.iminds.iot.things.api.sensor;
 
 import java.text.DecimalFormat;
 
+/**
+ * A generic class representing a sensor value and unit String.
+ * 
+ * @author tverbele
+ *
+ */
 public class SensorValue {
 
 	public final double value;

@@ -32,6 +32,14 @@ package be.iminds.iot.things.repository.api;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Data object for a Thing.
+ * 
+ * Not 100% pure DTO, as we allow any Object for state and UUIDs, but convenient to use.
+ * 
+ * @author tverbele
+ *
+ */
 public class ThingDTO {
 
 	// These are provided by the system (hardware)
@@ -49,8 +57,4 @@ public class ThingDTO {
 	
 	public Map<String, Object> state; /* last known state variables */
 	
-	// TODO do we need to extend this further or have separate DTOs to
-	// - keep stuff about the state? online/offline/lastonline/...?
-	// - keep stuff about the state variables in this thing?
-	// - keep history of thing events?
 }

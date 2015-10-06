@@ -33,7 +33,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * Things repository - persists all info about things
+ * Things repository - persists all info about known things.
  */
 public interface ThingsRepository {
 	

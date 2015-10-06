@@ -31,6 +31,12 @@ package be.iminds.iot.things.api.sensor.light;
 
 import be.iminds.iot.things.api.Thing;
 
+/**
+ * Represents a light sensor.
+ * 
+ * @author tverbele
+ *
+ */
 public interface LightSensor extends Thing {
 
     public final static String LIGHTLEVEL = "lightlevel";

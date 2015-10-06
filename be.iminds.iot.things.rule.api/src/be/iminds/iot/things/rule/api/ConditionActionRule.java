@@ -34,12 +34,6 @@ import java.util.UUID;
 
 import be.iminds.iot.things.api.Thing;
 
-/**
- * A Rule implementation that triggers Actions when a number of Conditions are met.
- * 
- * @author tverbele
- *
- */
 public class ConditionActionRule implements Rule {
 
 	protected final String type;

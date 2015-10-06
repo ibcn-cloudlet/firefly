@@ -35,10 +35,10 @@ import be.iminds.iot.things.api.Thing;
  * Represents a camera device. Using this API the camera metadata can be
  * queried, and the camera device can be turned on.
  *
- * Frames can be fetched from the camera using the getFrame() method
+ * Frames can be fetched from the camera using the getFrame() method.
  *
  * One can also use a push method to process frames of the Camera, by
- * registering a CameraListener
+ * registering a CameraListener.
  *
  * @author tverbele
  *

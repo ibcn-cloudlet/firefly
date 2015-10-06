@@ -31,6 +31,12 @@ package be.iminds.iot.things.api.sensor.contact;
 
 import be.iminds.iot.things.api.Thing;
 
+/**
+ * Represents a contact sensor for detecting door/window opening/closing.
+ * 
+ * @author tverbele
+ *
+ */
 public interface ContactSensor extends Thing {
 
     public final static String STATE = "state";

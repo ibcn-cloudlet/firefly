@@ -33,6 +33,12 @@ import java.awt.Color;
 
 import be.iminds.iot.things.api.Thing;
 
+/**
+ * Represents an RGB dimmable lamp.
+ * 
+ * @author tverbele
+ *
+ */
 public interface Lamp extends Thing {
 
     public final static String STATE = "state";
