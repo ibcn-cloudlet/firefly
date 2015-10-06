@@ -11,7 +11,7 @@
       "thing.id":							"de305d54-75b4-431b-adb2-eb6b9e546014",
       "thing.gateway":						"de305d54-75b4-431b-adb2-eb6b9e546014",
       "thing.device":						"Dummy Lamp",
-      "thing.service": 						"Dummy Lamp"
+      "thing.service": 						"Example Lamp"
    },
    { 
       "service.factoryPid":					"be.iminds.iot.things.dummy.Button",
@@ -19,7 +19,7 @@
       "thing.id":							"de305d54-75b4-431b-adb2-eb6b9e546012",
       "thing.gateway":						"de305d54-75b4-431b-adb2-eb6b9e546014",
       "thing.device":						"Dummy Button",
-      "thing.service": 						"Dummy Button"
+      "thing.service": 						"Example Button"
    },
    { 
       "service.factoryPid":					"be.iminds.iot.things.dummy.TemperatureSensor",
@@ -27,6 +27,6 @@
       "thing.id":							"de305d54-75b4-431b-adb2-eb6b9e546011",
       "thing.gateway":						"de305d54-75b4-431b-adb2-eb6b9e546014",
       "thing.device":						"Dummy Temperature",
-      "thing.service": 						"Dummy Temperature"
+      "thing.service": 						"Example Temperature"
    }
 ]
