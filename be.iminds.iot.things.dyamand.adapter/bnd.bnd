@@ -27,9 +27,6 @@ Implementation-BuildNumber: 0
 	org.dyamand.plugins.support.sdp.v4l2,\
 	biz.aQute.bndlib;version=3.0
 
--includeresource: {readme.md}
-
-
 -runrequires:  \
 	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.dyamand.adapter)'
 	

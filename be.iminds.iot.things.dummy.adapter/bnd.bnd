@@ -13,8 +13,6 @@ Private-Package: be.iminds.iot.things.dummy
 	biz.aQute.junit,\
 	be.iminds.iot.things.api;version=latest
 
--includeresource: {readme.md}
-
 -dsannotations-inherit: true
 
 -runrequires:  \

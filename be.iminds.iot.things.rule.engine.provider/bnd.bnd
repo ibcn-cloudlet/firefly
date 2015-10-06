@@ -18,9 +18,6 @@ Private-Package: \
 	be.iminds.iot.things.rule.api;version=latest,\
 	biz.aQute.bndlib;version=3.0
 
--includeresource: {readme.md}
-
-
 -runrequires:  \
 	osgi.identity;filter:='(osgi.identity=be.iminds.iot.things.rules.engine.provider)'
 	
