@@ -25,6 +25,8 @@
 	org.objenesis;version='[2.1,2.2)',\
 	com.esotericsoftware.kryo;version='[2.23,2.24)',\
 	de.javakaffee.kryo-serializers;version='[0.23,0.24)',\
+	jslp;version='[1.0.0,1.0.1)',\
+	be.iminds.aiolos.discovery;version='[0.6,0.7)',\
 	be.iminds.aiolos.ds;version='[0.6,0.7)',\
 	be.iminds.aiolos.repository.api;version='[0.6,0.7)',\
 	be.iminds.aiolos.remoteserviceadmin;version='[0.6,0.7)',\
