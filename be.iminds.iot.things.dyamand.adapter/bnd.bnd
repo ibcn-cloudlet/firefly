@@ -3,7 +3,7 @@
 #
 
 
-Bundle-Version:					1.0.0.${tstamp}
+Bundle-Version: 1.0.0
 Bundle-Description: This bundle converts DYAMAND services IoT Things API
 
 Private-Package: \

@@ -2,7 +2,7 @@
 #  APPLICATION
 #
 
-Bundle-Version: 1.0.0.${tstamp}
+Bundle-Version: 1.0.0
 Bundle-Description: \
 	This bundle provides a web UI showing a dashboard of your available devices.
 

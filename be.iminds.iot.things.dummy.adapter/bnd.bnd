@@ -3,7 +3,7 @@
 #
 
 
-Bundle-Version:					1.0.0.${tstamp}
+Bundle-Version: 1.0.0
 Bundle-Description: This bundle creates dummy Things
 
 Private-Package: be.iminds.iot.things.dummy

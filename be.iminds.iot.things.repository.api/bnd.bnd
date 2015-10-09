@@ -2,7 +2,7 @@
 # 
 #
 
-Bundle-Version:1.0.0.${tstamp}
+Bundle-Version: 1.0.0
 Bundle-Description: API project for a Things repository keeping Thing descriptions
 
 	
